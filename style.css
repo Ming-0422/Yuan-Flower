@@ -1,0 +1,484 @@
+/* 基礎設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans TC', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 導航欄 */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    padding: 1rem 0;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo h2 {
+    color: #ff6b9d;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: #ff6b9d;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #ff6b9d;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-cart {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ff6b9d;
+    font-weight: 500;
+}
+
+.cart-count {
+    background: #ff6b9d;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: #333;
+    margin: 3px 0;
+    transition: 0.3s;
+}
+
+/* 首頁橫幅 */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 50%, #f0f8ff 100%);
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    gap: 3vw;
+}
+
+.hero-content {
+    flex: 1 1 0;
+    max-width: 500px;
+    margin-bottom: 0;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #ff6b9d;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: #666;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease 0.2s both;
+}
+
+.hero-description {
+    font-size: 1.2rem;
+    color: #888;
+    margin-bottom: 0.5rem;
+    animation: fadeInUp 1s ease 0.4s both;
+}
+
+.hero-tagline {
+    font-size: 1rem;
+    color: #999;
+    margin-bottom: 2rem;
+    animation: fadeInUp 1s ease 0.6s both;
+}
+
+.cta-button {
+    background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInUp 1s ease 0.8s both;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 107, 157, 0.3);
+}
+
+.hero-image {
+    flex: 1;
+    position: relative;
+    height: 100vh;
+}
+
+.floating-flowers {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.flower {
+    position: absolute;
+    font-size: 3rem;
+    animation: float 6s ease-in-out infinite;
+}
+
+.flower-1 {
+    top: 20%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.flower-2 {
+    top: 40%;
+    right: 30%;
+    animation-delay: 1.5s;
+}
+
+.flower-3 {
+    bottom: 30%;
+    left: 30%;
+    animation-delay: 3s;
+}
+
+.flower-4 {
+    bottom: 20%;
+    right: 20%;
+    animation-delay: 4.5s;
+}
+
+/* 商品展示 */
+.products {
+    padding: 5rem 0;
+    background: white;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #ff6b9d;
+    margin-bottom: 3rem;
+    font-weight: 700;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.product-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+    height: 200px;
+    background: linear-gradient(135deg, #ffeef8, #fff5f7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flower-placeholder {
+    font-size: 4rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.product-info {
+    padding: 1.5rem;
+}
+
+.product-info h3 {
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.product-info p {
+    color: #666;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.product-price {
+    color: #ff6b9d;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.add-to-cart {
+    background: #ff6b9d;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+}
+
+.add-to-cart:hover {
+    background: #ff5a8a;
+}
+
+/* 關於我們 */
+.about {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, #f8f9ff 0%, #fff5f7 100%);
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.about-text h2 {
+    color: #ff6b9d;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.about-text p {
+    color: #666;
+    margin-bottom: 1rem;
+    line-height: 1.8;
+}
+
+.about-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-flower {
+    font-size: 8rem;
+    animation: rotate 20s linear infinite;
+}
+
+/* 聯繫我們 */
+.contact {
+    padding: 5rem 0;
+    background: white;
+}
+
+.contact-info {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #ffeef8, #fff5f7);
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+.contact-item:hover {
+    transform: translateY(-5px);
+}
+
+.contact-item i {
+    font-size: 1.5rem;
+    color: #ff6b9d;
+}
+
+.contact-item span {
+    color: #333;
+    font-weight: 500;
+}
+
+/* 頁腳 */
+.footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.footer p {
+    margin-bottom: 0.5rem;
+}
+
+/* 動畫 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 響應式設計 */
+@media (max-width: 1024px) {
+    .hero {
+        gap: 1vw;
+    }
+    .logo-img {
+        max-width: 260px;
+        width: 40vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        gap: 0;
+    }
+    .hero-content {
+        align-items: center;
+        text-align: center;
+        max-width: 90vw;
+        margin-bottom: 2rem;
+    }
+    .logo-img {
+        max-width: 180px;
+        width: 80vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-img {
+        max-width: 120px;
+        width: 95vw;
+    }
+    .hero-content {
+        max-width: 98vw;
+    }
+}
+
+.logo-img {
+    display: block;
+    margin: 0 auto;
+    max-width: 400px;
+    width: 32vw;
+    height: auto;
+    transition: max-width 0.3s, width 0.3s;
+    box-shadow: 0 8px 32px rgba(255,107,157,0.08);
+    border-radius: 20px;
+}
