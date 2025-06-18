@@ -109,7 +109,7 @@
 
 - **Instagram**: Yuan.Floral
 - **Line**: @343nmfok
-- **Email**: contact@yuanfloral.com
+
 
 ---
 
