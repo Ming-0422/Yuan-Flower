@@ -1,0 +1,125 @@
+package com.example.yuan.service;
+
+import com.example.yuan.dto.OrderRequest;
+import com.example.yuan.model.Member;
+import com.example.yuan.model.Order;
+import com.example.yuan.model.OrderItem;
+import com.example.yuan.repository.MemberRepository;
+import com.example.yuan.repository.OrderRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+@Transactional
+public class OrderService {
+    
+    private final OrderRepository orderRepository;
+    private final MemberRepository memberRepository;
+    private final LineBotService lineBotService;
+    
+    public OrderService(OrderRepository orderRepository, 
+                       MemberRepository memberRepository,
+                       LineBotService lineBotService) {
+        this.orderRepository = orderRepository;
+        this.memberRepository = memberRepository;
+        this.lineBotService = lineBotService;
+    }
+    
+    public Order createOrder(OrderRequest request, String username) throws Exception {
+        Order order = new Order();
+        
+        // 設定會員（如果有登入）
+        if (username != null) {
+            Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new Exception("會員不存在"));
+            order.setMember(member);
+        }
+        
+        // 設定顧客資料
+        order.setCustomerName(request.getCustomerName());
+        order.setCustomerPhone(request.getCustomerPhone());
+        order.setCustomerEmail(request.getCustomerEmail());
+        
+        // 設定收件人資料
+        order.setRecipientName(request.getRecipientName());
+        order.setRecipientPhone(request.getRecipientPhone());
+        order.setShippingAddress(request.getShippingAddress());
+        
+        // 設定運送資訊
+        order.setShippingMethod(request.getShippingMethod());
+        order.setShippingFee(request.getShippingFee());
+        order.setDeliveryDate(request.getDeliveryDate());
+        order.setDeliveryTime(request.getDeliveryTime());
+        order.setOrderNotes(request.getOrderNotes());
+        
+        // 計算總金額
+        BigDecimal subtotal = BigDecimal.ZERO;
+        
+        // 添加訂單項目
+        for (OrderRequest.CartItem cartItem : request.getCartItems()) {
+            OrderItem orderItem = new OrderItem(
+                cartItem.getProductId(),
+                cartItem.getProductName(),
+                cartItem.getQuantity(),
+                cartItem.getPrice()
+            );
+            order.addOrderItem(orderItem);
+            subtotal = subtotal.add(orderItem.getSubtotal());
+        }
+        
+        // 設定總金額（商品小計 + 運費）
+        BigDecimal totalAmount = subtotal.add(
+            request.getShippingFee() != null ? request.getShippingFee() : BigDecimal.ZERO
+        );
+        order.setTotalAmount(totalAmount);
+        
+        // 儲存訂單
+        Order savedOrder = orderRepository.save(order);
+        
+        // 發送 LINE Bot 通知
+        try {
+            lineBotService.sendOrderNotification(savedOrder)
+                .thenAccept(result -> {
+                    if ("success".equals(result)) {
+                        savedOrder.setLineNotified(true);
+                        savedOrder.setLineNotifiedAt(LocalDateTime.now());
+                        orderRepository.save(savedOrder);
+                    }
+                });
+        } catch (Exception e) {
+            // 記錄錯誤但不影響訂單建立
+            System.err.println("LINE Bot 通知發送失敗: " + e.getMessage());
+        }
+        
+        return savedOrder;
+    }
+    
+    public List<Order> getOrdersByUsername(String username) {
+        Member member = memberRepository.findByUsername(username)
+            .orElse(null);
+        if (member == null) {
+            return List.of();
+        }
+        return orderRepository.findByMemberOrderByOrderDateDesc(member);
+    }
+    
+    public Order getOrderById(Long orderId) throws Exception {
+        return orderRepository.findById(orderId)
+            .orElseThrow(() -> new Exception("訂單不存在"));
+    }
+    
+    public Order updatePaymentStatus(Long orderId, String status) throws Exception {
+        Order order = getOrderById(orderId);
+        order.setPaymentStatus(status);
+        
+        if ("已付款".equals(status)) {
+            order.setStatus("processing");
+        }
+        
+        return orderRepository.save(order);
+    }
+}

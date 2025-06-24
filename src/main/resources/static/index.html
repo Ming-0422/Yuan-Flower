@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小花圓🌸｡⋆ - 不凋花藝×手作花束×客製專屬祝福</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>小花圓🌸｡⋆</h2>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link">首頁</a>
+                <a href="#products" class="nav-link">商品</a>
+                <a href="#contact" class="nav-link">聯繫我們</a>
+            </div>
+            <div class="nav-right">
+                <button id="loginBtn" class="nav-button">登入</button>
+                <button id="registerBtn" class="nav-button">註冊</button>
+                <button id="logoutBtn" class="nav-button" style="display:none;">登出</button>
+                <span id="welcomeUser" style="margin-right: 15px; display:none; color: #ff6b9d; font-weight: bold;"></span>
+                <div class="cart-icon" id="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count" class="cart-count">0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="auth-tabs">
+                <button class="tab-button active" data-tab="login">登入</button>
+                <button class="tab-button" data-tab="register">註冊</button>
+            </div>
+
+            <div id="loginForm" class="tab-content active">
+                <h2>會員登入</h2>
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <label for="loginUsername">用戶名:</label>
+                        <input type="text" id="loginUsername" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">密碼:</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">登入</button>
+                    <p id="loginMessage" class="auth-message"></p>
+                </form>
+            </div>
+
+            <div id="registerForm" class="tab-content">
+                <h2>會員註冊</h2>
+                <form id="registerFormElement">
+                    <div class="form-group">
+                        <label for="registerUsername">用戶名:</label>
+                        <input type="text" id="registerUsername" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email:</label>
+                        <input type="email" id="registerEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">密碼:</label>
+                        <input type="password" id="registerPassword" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerAddress">地址 (選填):</label>
+                        <input type="text" id="registerAddress" name="address">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPhone">電話 (選填):</label>
+                        <input type="text" id="registerPhone" name="phone">
+                    </div>
+                    <button type="submit" class="auth-submit-btn">註冊</button>
+                    <p id="registerMessage" class="auth-message"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <header id="home" class="hero">
+        <div class="hero-content">
+            <h1>小花圓🌸｡⋆</h1>
+            <p>不凋花藝×手作花束×客製專屬祝福</p>
+            <button class="cta-button">查看商品</button>
+        </div>
+    </header>
+
+    <section id="products" class="products-section">
+        <div class="container">
+            <h2>我們的商品</h2>
+            <div class="product-grid">
+                <div class="product-item" data-id="1" data-name="永恆之戀乾燥花束" data-price="1200">
+                    <img src="https://via.placeholder.com/300x300?text=Flower+1" alt="永恆之戀乾燥花束" class="product-img">
+                    <h3>永恆之戀乾燥花束</h3>
+                    <p class="product-price">NT$ 1200</p>
+                    <button class="add-to-cart-btn">加入購物車</button>
+                </div>
+                <div class="product-item" data-id="2" data-name="浪漫粉紅永生玫瑰" data-price="850">
+                    <img src="https://via.placeholder.com/300x300?text=Flower+2" alt="浪漫粉紅永生玫瑰" class="product-img">
+                    <h3>浪漫粉紅永生玫瑰</h3>
+                    <p class="product-price">NT$ 850</p>
+                    <button class="add-to-cart-btn">加入購物車</button>
+                </div>
+                <div class="product-item" data-id="3" data-name="陽光向日葵盆栽" data-price="950">
+                    <img src="https://via.placeholder.com/300x300?text=Flower+3" alt="陽光向日葵盆栽" class="product-img">
+                    <h3>陽光向日葵盆栽</h3>
+                    <p class="product-price">NT$ 950</p>
+                    <button class="add-to-cart-btn">加入購物車</button>
+                </div>
+                <div class="product-item" data-id="4" data-name="藍色鬱金香花瓶" data-price="1500">
+                    <img src="https://via.placeholder.com/300x300?text=Flower+4" alt="藍色鬱金香花瓶" class="product-img">
+                    <h3>藍色鬱金香花瓶</h3>
+                    <p class="product-price">NT$ 1500</p>
+                    <button class="add-to-cart-btn">加入購物車</button>
+                </div>
+                <div class="product-item" data-id="5" data-name="客製化花盒" data-price="1800">
+                    <img src="https://via.placeholder.com/300x300?text=Flower+5" alt="客製化花盒" class="product-img">
+                    <h3>客製化花盒</h3>
+                    <p class="product-price">NT$ 1800</p>
+                    <button class="add-to-cart-btn">加入購物車</button>
+                </div>
+                <div class="product-item" data-id="6" data-name="法式香氛蠟燭花禮" data-price="750">
+                    <img src="https://via.placeholder.com/300x300?text=Flower+6" alt="法式香氛蠟燭花禮" class="product-img">
+                    <h3>法式香氛蠟燭花禮</h3>
+                    <p class="product-price">NT$ 750</p>
+                    <button class="add-to-cart-btn">加入購物車</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2>聯繫我們</h2>
+            <p class="contact-intro">有任何客製需求或疑問，歡迎隨時聯繫我們！</p>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>聯絡資訊</h3>
+                    <p><i class="fas fa-phone-alt"></i> 電話：0912-345678</p>
+                    <p><i class="fas fa-envelope"></i> Email：yuanflower@example.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 地址：台灣某個美麗的角落</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/your_instagram" target="_blank" aria-label="Instagram"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://line.me/ti/p/@your_line_id" target="_blank" aria-label="LINE"><i
+                                class="fab fa-line"></i></a>
+                        <a href="https://www.facebook.com/your_facebook" target="_blank" aria-label="Facebook"><i
+                                class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                <div class="contact-form-container">
+                    <h3>寄送訊息給我們</h3>
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+                            <label for="name">姓名:</label>
+                            <input type="text" id="name" name="from_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="from_email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">訊息:</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">寄出</button>
+                        <p id="form-status" class="form-status"></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 小花圓🌸｡⋆. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-modal-content">
+            <span class="close-button" id="close-cart-modal-btn">&times;</span>
+            <h2>您的購物車</h2>
+            <div id="cart-items" class="cart-items">
+                <p>購物車是空的。</p>
+            </div>
+            <div class="cart-summary">
+                總計: <span id="cart-total-price">NT$ 0</span>
+            </div>
+            <div class="cart-actions">
+                <button id="clear-cart-btn" class="clear-cart-btn">清空購物車</button>
+                <button id="checkout-btn" class="checkout-btn">前往結帳</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="checkout-modal" class="checkout-modal">
+        <div class="checkout-modal-content">
+            <span class="close-button" id="close-checkout-modal-btn">&times;</span>
+            <h2>結帳</h2>
+            <div class="checkout-steps">
+                <div class="step-indicator active" data-step="1">1. 顧客資料</div>
+                <div class="step-indicator" data-step="2">2. 運送資訊</div>
+                <div class="step-indicator" data-step="3">3. 訂單確認</div>
+                <div class="step-indicator" data-step="4">4. 付款方式</div>
+                <div class="step-indicator" data-step="5">5. 完成</div>
+            </div>
+
+            <div class="checkout-step-container">
+                <div id="checkout-step-1" class="checkout-step-content active">
+                    <h3>1. 顧客資料</h3>
+                    <form id="customer-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="customer-name">姓名:</label>
+                                <input type="text" id="customer-name" name="customerName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="customer-phone">電話:</label>
+                                <input type="tel" id="customer-phone" name="customerPhone" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="customer-email">Email:</label>
+                                <input type="email" id="customer-email" name="customerEmail" required>
+                            </div>
+                        </div>
+                        <div class="checkout-actions flex-end">
+                            <button id="goto-step-2-btn" class="checkout-btn">下一步</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="checkout-step-2" class="checkout-step-content">
+                    <h3>2. 運送資訊</h3>
+                    <form id="shipping-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="recipient-name">收件人姓名:</label>
+                                <input type="text" id="recipient-name" name="recipientName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-phone">收件人電話:</label>
+                                <input type="tel" id="recipient-phone" name="recipientPhone" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="shipping-address">收件地址:</label>
+                                <input type="text" id="shipping-address" name="shippingAddress" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="delivery-date">希望到貨日期:</label>
+                                <input type="date" id="delivery-date" name="deliveryDate">
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="delivery-time">希望到貨時段 (選填):</label>
+                                <select id="delivery-time" name="deliveryTime">
+                                    <option value="">請選擇</option>
+                                    <option value="上午">上午 (9:00 - 12:00)</option>
+                                    <option value="下午">下午 (12:00 - 17:00)</option>
+                                    <option value="晚上">晚上 (17:00 - 20:00)</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width shipping-options">
+                                <label>運送方式:</label>
+                                <label class="radio-label">
+                                    <input type="radio" name="shippingMethod" value="宅配" checked> 宅配 (運費: NT$ 80)
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="shippingMethod" value="自取"> 自取 (免運費)
+                                </label>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="order-notes">訂單備註 (選填):</label>
+                                <textarea id="order-notes" name="orderNotes" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="checkout-actions space-between">
+                            <button id="back-to-step-1-btn" class="checkout-btn secondary">返回上一步</button>
+                            <button id="goto-step-3-btn" class="checkout-btn">下一步</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="checkout-step-3" class="checkout-step-content">
+                    <h3>3. 訂單確認</h3>
+                    <div id="confirmation-summary">
+                        </div>
+                    <div class="checkout-actions space-between">
+                        <button id="back-to-step-2-btn" class="checkout-btn secondary">返回上一步</button>
+                        <button id="goto-step-4-btn" class="checkout-btn">下一步</button>
+                    </div>
+                </div>
+
+                <div id="checkout-step-4" class="checkout-step-content">
+                    <h3>4. 付款方式</h3>
+                    
+                    <div id="bank-transfer-info-checkout" class="payment-details">
+                         <h4 style="margin-bottom: 10px;">銀行轉帳資訊</h4>
+                         <p>銀行：第一銀行 (007)</p>
+                         <p>帳號：21868141845</p>
+                         <p>戶名：吳沂臻</p>
+                         <p style="margin-top: 10px; color: #e74c3c;">轉帳後請截圖透過 IG 或 Line
+                             聯繫我們，告知您的姓名及帳號後五碼，有什麼需求可以備註跟我們說，謝謝您的喜愛！</p>
+                    </div>
+
+                    <div class="checkout-actions space-between">
+                        <button id="back-to-step-3-btn" class="checkout-btn secondary">返回上一步</button>
+                        <button id="confirm-purchase-btn" class="checkout-btn">確認購買</button>
+                    </div>
+                </div>
+
+                <div id="checkout-step-5" class="checkout-step-content">
+                    <div class="confirmation-message">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>感謝您的購買！</h3>
+                        <p>我們已收到您的訂單，將盡快為您處理。</p>
+                        <button id="continue-shopping-btn" class="checkout-btn">繼續購物</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</body>
+
+</html>
