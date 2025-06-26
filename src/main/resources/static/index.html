@@ -340,7 +340,6 @@
         </div>
     </footer>
 
-    <!-- 認證 Modal -->
     <div id="authModal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -391,7 +390,6 @@
         </div>
     </div>
 
-    <!-- 購物車側邊欄 -->
     <div class="cart-sidebar">
         <div class="cart-header">
             <h3>我的購物車</h3>
@@ -409,7 +407,6 @@
     </div>
     <div class="cart-overlay"></div>
 
-    <!-- 結帳頁面 -->
     <div id="checkout-page" class="checkout-overlay-page">
         <div class="checkout-container">
             <div class="checkout-header">
@@ -511,13 +508,11 @@
                 <div id="checkout-step-3" class="checkout-step-content">
                     <h3>確認資料</h3>
                     <div id="confirmation-summary" class="confirmation-summary">
-                        <!-- Confirmation table will be injected here by JS -->
-                    </div>
+                        </div>
 
                     <h3 style="margin-top: 20px;">訂單明細</h3>
                     <div id="confirmation-order-summary" class="order-summary">
-                        <!-- Order summary will be injected here by JS -->
-                    </div>
+                        </div>
 
                     <div class="checkout-actions space-between">
                         <button id="back-to-step-2-btn" class="checkout-btn secondary">返回修改</button>
@@ -555,10 +550,8 @@
         </div>
     </div>
 
-    <!-- EmailJS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
-    <!-- JavaScript -->
     <script>
         // API 基礎 URL
         const API_BASE_URL = 'http://localhost:8080/api';
@@ -947,13 +940,15 @@
             
             updateCartUI();
             
-            // 開啟購物車
+            // 開啟購物車 (根據您的要求，已將此段註解掉，避免自動彈出)
+            /*
             const cartSidebar = document.querySelector('.cart-sidebar');
             const cartOverlay = document.querySelector('.cart-overlay');
             if (cartSidebar && cartOverlay) {
                 cartSidebar.classList.add('active');
                 cartOverlay.classList.add('active');
             }
+            */
             
             // 顯示成功訊息
             const originalText = e.target.textContent;
