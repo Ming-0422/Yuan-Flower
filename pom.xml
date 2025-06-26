@@ -85,24 +85,24 @@
         
         <!-- LINE Bot SDK -->
         <dependency>
-    		<groupId>com.linecorp.bot</groupId>
-    		<artifactId>line-bot-spring-boot</artifactId>
-   			 <version>6.0.0</version> 
-   		</dependency>
+            <groupId>com.linecorp.bot</groupId>
+            <artifactId>line-bot-spring-boot</artifactId>
+            <version>6.0.0</version>
+        </dependency>
         
         <!-- LINE Bot API Client -->
-       <dependency>
-    		<groupId>com.linecorp.bot</groupId>
-   			 <artifactId>line-bot-api-client</artifactId>
-    		<version>6.0.0</version>
-		</dependency>
+        <dependency>
+            <groupId>com.linecorp.bot</groupId>
+            <artifactId>line-bot-api-client</artifactId>
+            <version>6.0.0</version>
+        </dependency>
         
         <!-- LINE Bot Model -->
         <dependency>
-    		<groupId>com.linecorp.bot</groupId>
-    		<artifactId>line-bot-model</artifactId>
-    		<version>6.0.0</version>
-		</dependency>
+            <groupId>com.linecorp.bot</groupId>
+            <artifactId>line-bot-model</artifactId>
+            <version>6.0.0</version>
+        </dependency>
     </dependencies>
     
     <build>

@@ -18,7 +18,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.io.IOException; // 導入 IOException
+import java.io.IOException;
 import java.util.Arrays;
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -66,7 +66,7 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOriginPatterns(Arrays.asList("http://localhost:*", "http://127.0.0.1:*", "file://*"));
+        config.setAllowedOriginPatterns(Arrays.asList("http://localhost:*", "http://127.0.0.1:*", "file://*", "https://*.ngrok-free.app"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
@@ -76,36 +76,43 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.disable()) // 暫時完全關閉 CSRF
             .cors(withDefaults())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
+                    "/callback", // LINE Bot webhook - 放在最前面
                     "/api/members/register",
                     "/api/login",
                     "/api/logout",
+                    "/api/orders/create",
                     "/",
                     "/index.html",
                     "/style.css",
                     "/script.js",
+                    "/auth.js",
+                    "/cart.js",
+                    "/checkout.js",
+                    "/main.js",
+                    "/auth.css",
+                    "/cart.css",
                     "/images/**",
                     "/fonts/**",
-                    "/static/**"
+                    "/static/**",
+                    "/error"
                 ).permitAll()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/**").authenticated()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll() // 暫時允許其他所有請求
             )
             .formLogin(form -> form
-                // .loginPage("/login.html")
                 .loginProcessingUrl("/api/login")
                 .successHandler((request, response, authentication) -> {
                     response.setStatus(HttpStatus.OK.value());
                     try {
                         response.getWriter().write("Login successful!");
                         response.getWriter().flush();
-                    } catch (IOException e) { // 捕獲 IOException
+                    } catch (IOException e) {
                         System.err.println("Error writing login success response: " + e.getMessage());
-                        // 您也可以選擇拋出一個運行時異常，但通常在處理器中直接處理更平滑
-                        // throw new RuntimeException("Failed to write login success response", e);
                     }
                 })
                 .failureHandler((request, response, exception) -> {
@@ -113,7 +120,7 @@ public class SecurityConfig {
                     try {
                         response.getWriter().write("Login failed: " + exception.getMessage());
                         response.getWriter().flush();
-                    } catch (IOException e) { // 捕獲 IOException
+                    } catch (IOException e) {
                         System.err.println("Error writing login failure response: " + e.getMessage());
                     }
                 })
@@ -126,7 +133,7 @@ public class SecurityConfig {
                     try {
                         response.getWriter().write("Logout successful!");
                         response.getWriter().flush();
-                    } catch (IOException e) { // 捕獲 IOException
+                    } catch (IOException e) {
                         System.err.println("Error writing logout success response: " + e.getMessage());
                     }
                 })

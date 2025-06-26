@@ -19,11 +19,11 @@ public class OrderService {
     
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
-    private final LineBotService lineBotService;
+    private final SimpleLineBotService lineBotService;
     
     public OrderService(OrderRepository orderRepository, 
                        MemberRepository memberRepository,
-                       LineBotService lineBotService) {
+                       SimpleLineBotService lineBotService) {
         this.orderRepository = orderRepository;
         this.memberRepository = memberRepository;
         this.lineBotService = lineBotService;
@@ -120,6 +120,22 @@ public class OrderService {
             order.setStatus("processing");
         }
         
+        return orderRepository.save(order);
+    }
+    
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
+    
+    public List<Order> getOrdersByStatus(String status) {
+        return orderRepository.findByStatus(status);
+    }
+    
+    public List<Order> getOrdersByPaymentStatus(String paymentStatus) {
+        return orderRepository.findByPaymentStatus(paymentStatus);
+    }
+    
+    public Order updateOrder(Order order) {
         return orderRepository.save(order);
     }
 }
