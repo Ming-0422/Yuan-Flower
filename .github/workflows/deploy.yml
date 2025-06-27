@@ -16,7 +16,7 @@ jobs:
       - name: Set up JDK 21 # 步驟 2: 設定 Java 開發工具包 (JDK) 版本
         uses: actions/setup-java@v4
         with:
-          java-version: '21' # <-- 這裡設定為您確認的 Java 21
+          java-version: '21' # <-- 您的 Java 版本
           distribution: 'temurin' # 推薦的 OpenJDK 發行版
           cache: 'maven' # 啟用 Maven 依賴緩存，加速建置
 
@@ -29,5 +29,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }} # GitHub 自動提供的 token，用於授權
           publish_dir: ./target/classes/static # <-- 這裡指定 Maven 建置後靜態檔案的輸出路徑
-          publish_branch: main # <-- 關鍵: 將部署目標分支設定為 main
-          destination_dir: docs # <-- 關鍵: 將靜態檔案放在 main 分支下的 'docs' 資料夾裡
+          publish_branch: gh-pages # <-- 關鍵修改: 將部署目標分支設定為 gh-pages
+          # 注意: 由於部署到 gh-pages 分支，不需要 destination_dir 這一行，請確保它已被刪除
