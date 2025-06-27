@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小花圓🌸｡⋆ - 不凋花藝×手作花束×客製專屬祝福</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>小花圓🌸｡⋆</h2>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link">首頁</a>
+                <a href="#products" class="nav-link">商品</a>
+                <a href="#contact" class="nav-link">聯繫我們</a>
+            </div>
+            <div class="nav-right">
+                <button id="loginBtn" class="nav-button">登入</button>
+                <button id="registerBtn" class="nav-button">註冊</button>
+                <button id="logoutBtn" class="nav-button" style="display: none;">登出</button>
+                <span id="welcomeUser" style="margin-right: 15px; display: none; color: #ff6b9d; font-weight: bold;"></span>
+                
+                <div class="nav-cart" id="cart-icon">
+                    <i class="fas fa-shopping-cart"></i> 
+                    <span class="cart-count" id="cart-count">0</span>
+                </div>
+                <div class="hamburger">
+                    <span></span> 
+                    <span></span> 
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">小花圓🌸｡⋆</h1>
+            <p class="hero-subtitle">不凋花藝×手作花束×客製專屬祝福</p>
+            <p class="hero-description">永不凋謝的柔軟，為生活綁一束溫暖</p>
+            <p class="hero-tagline">小花圓陪你把心意送出去.ᐟ.ᐟ.ᐟ</p>
+            <button class="cta-button">來挑花吧 ♡</button>
+            <p class="shipping-notice">✿ 全館消費滿 600 元享免運優惠喔 ♡</p>
+        </div>
+        <div class="hero-right">
+            <img src="image/flower.png" class="logo-img" alt="花朵logo">
+        </div>
+    </section>
+
+    <section id="products" class="products">
+        <div class="container" style="display: flex; gap: 2rem; align-items: flex-start;">
+            <aside style="min-width: 140px;">
+                <h3 style="color: #2d3e50; font-size: 1.3rem; margin-bottom: 1rem;">分類</h3>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 0.7rem;"><a href="#potted"
+                            style="color: #2d3e50; text-decoration: none; font-weight: bold;">小盆栽</a></li>
+                    <li style="margin-bottom: 0.7rem;"><a href="#bouquet"
+                            style="color: #2d3e50; text-decoration: none; font-weight: bold;">花束</a></li>
+                    <li><a href="#flowers" style="color: #2d3e50; text-decoration: none; font-weight: bold;">精選單花</a></li>
+                </ul>
+            </aside>
+
+            <div style="flex: 1;">
+                <h2 id="potted" class="section-title">小盆栽</h2>
+                <div class="products-grid">
+                    <div class="product-card product-item" data-id="f1" data-name="微醺粉黛-春日小花盆栽" data-price="129">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f1.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>微醺粉黛-春日小花盆栽</h3>
+                            <div class="product-price">NT$ 129</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                    <div class="product-card product-item" data-id="f2" data-name="迷你鬱金香小盆栽 (單個)" data-price="129">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f2.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>迷你鬱金香小盆栽 (單個)</h3>
+                            <div class="product-price">NT$ 129</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                    <div class="product-card product-item" data-id="f3" data-name="迷你向日葵小盆栽" data-price="129">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f3.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>迷你向日葵小盆栽</h3>
+                            <div class="product-price">NT$ 129</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                    <div class="product-card product-item" data-id="f6" data-name="有錢花小盆栽(單個)" data-price="168">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f6.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>有錢花小盆栽(單個)</h3>
+                            <div class="product-price">NT$ 168</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                    <div class="product-card product-item" data-id="f12" data-name="發財樹" data-price="268">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f12.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>發財樹</h3>
+                            <div class="product-price">NT$ 268</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                    <div class="product-card product-item" data-id="f18" data-name="盛開幸福-桃花小盆栽" data-price="129">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f18.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>盛開幸福-桃花小盆栽</h3>
+                            <div class="product-price">NT$ 129</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                </div>
+                <br><br><br>
+                <h2 id="bouquet" class="section-title">花束</h2>
+                <br>
+                <div class="products-grid">
+                    <div class="product-card product-item" data-id="f4" data-name="晴日絮語-向日葵花束" data-price="499">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f4.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>晴日絮語-向日葵花束</h3>
+                            <div class="product-price">NT$ 499</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                    <div class="product-card product-item" data-id="f5" data-name="暖陽相遇-向日葵鬱金香花束" data-price="499">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f5.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>暖陽相遇-向日葵鬱金香花束</h3>
+                            <div class="product-price">NT$ 499</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                    <div class="product-card product-item" data-id="f7" data-name="熱戀宣言-鬱金香花束" data-price="499">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f7.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>熱戀宣言-鬱金香花束</h3>
+                            <div class="product-price">NT$ 499</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                    <div class="product-card product-item" data-id="f8" data-name="千尋同款-香豌豆花束" data-price="699">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f8.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>千尋同款-香豌豆花束</h3>
+                            <div class="product-price">NT$ 699</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                    <div class="product-card product-item" data-id="f10" data-name="優雅傾城-虞美人花束" data-price="499">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f10.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>優雅傾城-虞美人花束</h3>
+                            <div class="product-price">NT$ 499</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                    <div class="product-card product-item" data-id="f13" data-name="落日甜夢-鈴蘭花燈" data-price="899">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f13.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>落日甜夢-鈴蘭花燈</h3>
+                            <div class="product-price">NT$ 899</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                    <div class="product-card product-item" data-id="f14" data-name="溫柔絮語-桔梗花束" data-price="499">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f14.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>溫柔絮語-桔梗花束</h3>
+                            <div class="product-price">NT$ 499</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card product-item" data-id="f17" data-name="純淨綻放-百合花束" data-price="499">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f17.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>純淨綻放-百合花束</h3>
+                            <div class="product-price">NT$ 499</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                    <div class="product-card product-item" data-id="f19" data-name="野原廣志同款花束" data-price="1688">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f19.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>野原廣志同款花束</h3>
+                            <div class="product-price">NT$ 1688</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                    <div class="product-card product-item" data-id="f11" data-name="花語傾心-冰島罌粟花束" data-price="499">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f11.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>花語傾心-冰島罌粟花束</h3>
+                            <div class="product-price">NT$ 499</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                </div>
+                <br><br><br>
+                <h2 id="flowers" class="section-title">精選單花</h2>
+                <br>
+                <div class="products-grid">
+                    <div class="product-card product-item" data-id="f9" data-name="馨意綻放-康乃馨(單支)" data-price="199">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f9.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>馨意綻放-康乃馨(單支)</h3>
+                            <div class="product-price">NT$ 199</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                    <div class="product-card product-item" data-id="f15" data-name="清晨花露-鬱金香(單支)" data-price="199">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f15.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>清晨花露-鬱金香(單支)</h3>
+                            <div class="product-price">NT$ 199</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card product-item" data-id="f16" data-name="暖暖陽光-向日葵" data-price="499">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f16.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>暖暖陽光-向日葵</h3>
+                            <div class="product-price">NT$ 499</div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">聯繫小花圓 ♡</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fab fa-instagram"></i>
+                    <a href="https://www.instagram.com/yuan.floral/" target="_blank" rel="noopener noreferrer">IG:
+                        Yuan.Floral</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-line"></i>
+                    <a href="https://lin.ee/06qM8wn" target="_blank" rel="noopener noreferrer">Line: @343nmfok</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 小花圓🌸｡⋆. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="auth-tabs">
+                <button class="tab-button active" data-tab="login">登入</button>
+                <button class="tab-button" data-tab="register">註冊</button>
+            </div>
+            <div id="loginForm" class="tab-content active">
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <label for="login-username">用戶名</label>
+                        <input type="text" id="login-username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">密碼</label>
+                        <input type="password" id="login-password" name="password" required>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">登入</button>
+                    <p id="loginMessage" class="auth-message"></p>
+                </form>
+            </div>
+            <div id="registerForm" class="tab-content">
+                <form id="registerFormElement">
+                    <div class="form-group">
+                        <label for="register-username">用戶名</label>
+                        <input type="text" id="register-username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">電子郵件</label>
+                        <input type="email" id="register-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">密碼</label>
+                        <input type="password" id="register-password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-address">地址</label>
+                        <input type="text" id="register-address" name="address">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-phone">電話</label>
+                        <input type="tel" id="register-phone" name="phone">
+                    </div>
+                    <button type="submit" class="auth-submit-btn">註冊</button>
+                    <p id="registerMessage" class="auth-message"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <h3>我的購物車</h3>
+            <button class="close-cart-btn">&times;</button>
+        </div>
+        <div class="cart-items">
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>總計:</strong>
+                <span id="cart-total-price">NT$ 0</span>
+            </div>
+            <button class="checkout-btn">前往結帳</button>
+        </div>
+    </div>
+    <div class="cart-overlay"></div>
+
+    <div id="checkout-page" class="checkout-overlay-page">
+        <div class="checkout-container">
+            <div class="checkout-header">
+                <h2>結帳</h2>
+                <button class="close-checkout-btn">&times;</button>
+            </div>
+            <div class="checkout-steps">
+                <div class="step active" data-step="1">1. 顧客資料</div>
+                <div class="step-arrow">&gt;</div>
+                <div class="step" data-step="2">2. 寄送方式</div>
+                <div class="step-arrow">&gt;</div>
+                <div class="step" data-step="3">3. 確認資料</div>
+                <div class="step-arrow">&gt;</div>
+                <div class="step" data-step="4">4. 付款資訊</div>
+            </div>
+
+            <div class="checkout-content">
+                <div id="checkout-step-1" class="checkout-step-content active">
+                    <h3>訂單明細</h3>
+                    <div id="checkout-order-summary" class="order-summary"></div>
+                    <h3>顧客資料</h3>
+                    <form id="customer-info-form" class="form-grid">
+                        <div class="form-group">
+                            <label for="customer-name">收件人</label>
+                            <input type="text" id="customer-name" required autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="customer-phone">電話</label>
+                            <input type="tel" id="customer-phone" required autocomplete="off">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="customer-email">電子郵件</label>
+                            <input type="email" id="customer-email" required autocomplete="off">
+                        </div>
+                    </form>
+                    <div class="checkout-actions">
+                        <button id="goto-step-2-btn" class="checkout-btn">選擇寄送方式</button>
+                    </div>
+                </div>
+
+                <div id="checkout-step-2" class="checkout-step-content">
+                    <h3>寄送方式</h3>
+                    <form id="shipping-info-form">
+                        <div class="shipping-options">
+                            <label class="radio-label">
+                                <input type="radio" name="shipping-method" value="homedelivery" checked>
+                                指定地址
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="shipping-method" value="711">
+                                7-11 門市取貨
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="shipping-method" value="familymart">
+                                全家門市取貨
+                            </label>
+                        </div>
+
+                        <div id="home-delivery-fields" class="form-grid">
+                            <div class="form-group full-width">
+                                <label for="customer-address">地址</label>
+                                <input type="text" id="customer-address" required autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div id="store-pickup-fields" class="form-grid" style="display: none;">
+                            <div class="form-group full-width">
+                                <label for="pickup-store-info">門市名稱以及店號</label>
+                                <input type="text" id="pickup-store-info" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="margin-top: 1rem;">
+                            <div class="form-group">
+                                <label for="delivery-date">希望到貨日</label>
+                                <input type="date" id="delivery-date">
+                            </div>
+                            <div class="form-group">
+                                <label for="delivery-time">希望時段</label>
+                                <select id="delivery-time">
+                                    <option value="">請選擇</option>
+                                    <option value="上午">上午 (09:00-12:00)</option>
+                                    <option value="下午">下午 (13:00-17:00)</option>
+                                    <option value="晚上">晚上 (18:00-21:00)</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="order-notes">備註</label>
+                                <textarea id="order-notes" rows="3" placeholder="有什麼特殊需求請告訴我們..."></textarea>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="checkout-actions space-between">
+                        <button id="back-to-step-1-btn" class="checkout-btn secondary">返回上一步</button>
+                        <button id="goto-step-3-btn" class="checkout-btn">確認資料</button>
+                    </div>
+                </div>
+
+                <div id="checkout-step-3" class="checkout-step-content">
+                    <h3>確認資料</h3>
+                    <div id="confirmation-summary" class="confirmation-summary">
+                        </div>
+
+                    <h3 style="margin-top: 20px;">訂單明細</h3>
+                    <div id="confirmation-order-summary" class="order-summary">
+                        </div>
+
+                    <div class="checkout-actions space-between">
+                        <button id="back-to-step-2-btn" class="checkout-btn secondary">返回修改</button>
+                        <button id="goto-step-4-btn" class="checkout-btn">前往付款</button>
+                    </div>
+                </div>
+
+                <div id="checkout-step-4" class="checkout-step-content">
+                    <h3>付款方式</h3>
+
+                    <div id="bank-transfer-info-checkout" class="payment-details">
+                        <h4 style="margin-bottom: 10px;">銀行轉帳資訊</h4>
+                        <p>銀行：第一銀行 (007)</p>
+                        <p>帳號：21868141845</p>
+                        <p>戶名：吳沂臻</p>
+                        <p style="margin-top: 10px; color: #e74c3c;">轉帳後請截圖透過 IG 或 Line
+                            聯繫我們，告知您的姓名及帳號後五碼，有什麼需求可以備註跟我們說，謝謝您的喜愛！</p>
+                    </div>
+
+                    <div class="checkout-actions space-between">
+                        <button id="back-to-step-3-btn" class="checkout-btn secondary">返回上一步</button>
+                        <button id="confirm-purchase-btn" class="checkout-btn">確認購買</button>
+                    </div>
+                </div>
+
+                <div id="checkout-step-5" class="checkout-step-content">
+                    <div class="confirmation-message">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>感謝您的購買！</h3>
+                        <p>我們已收到您的訂單，將盡快為您處理。</p>
+                        <button id="continue-shopping-btn" class="checkout-btn">繼續購物</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    <script>
+        // API 基礎 URL
+        const API_BASE_URL = 'http://localhost:8080/api';
+
+        // 全域購物車變數
+        let cart = [];
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM 載入完成');
+            
+            // 初始化 EmailJS
+            if (typeof emailjs !== 'undefined') {
+                emailjs.init({ publicKey: 'jM2R9RmgbvvAfadTq' });
+                console.log('EmailJS 初始化成功');
+            } else {
+                console.error('EmailJS 載入失敗');
+            }
+            
+            // 載入購物車數據
+            cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // 檢查登入狀態
+            checkAuthStatus();
+            
+            // 初始化所有功能
+            initializeEventListeners();
+            initializeAuth();
+            setupShoppingCart();
+            setupCheckout();
+            
+            // 圖片載入處理
+            document.querySelectorAll('.product-img').forEach(img => {
+                if (img.complete) {
+                    setObjectFit(img);
+                } else {
+                    img.onload = function() {
+                        setObjectFit(img);
+                    }
+                }
+            });
+            
+            // 初始更新購物車UI
+            updateCartUI();
+        });
+
+        // 初始化事件監聽器
+        function initializeEventListeners() {
+            console.log('初始化事件監聽器');
+            
+            // 平滑滾動
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', smoothScroll);
+            });
+
+            // 漢堡選單
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            if (hamburger) {
+                hamburger.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                    hamburger.classList.toggle('active');
+                });
+            }
+
+            // 導航欄滾動效果
+            window.addEventListener('scroll', handleNavbarScroll);
+
+            // CTA按鈕
+            const ctaButton = document.querySelector('.cta-button');
+            if (ctaButton) {
+                ctaButton.addEventListener('click', () => {
+                    document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+                });
+            }
+        }
+
+        // 認證相關功能
+        function initializeAuth() {
+            console.log('初始化認證功能');
+            
+            const authModal = document.getElementById('authModal');
+            const loginBtn = document.getElementById('loginBtn');
+            const registerBtn = document.getElementById('registerBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const closeBtn = document.querySelector('.close-button');
+            const tabButtons = document.querySelectorAll('.tab-button');
+            
+            // 開啟登入模態框
+            if (loginBtn) {
+                loginBtn.addEventListener('click', () => {
+                    authModal.style.display = 'block';
+                    showTab('login');
+                });
+            }
+            
+            // 開啟註冊模態框
+            if (registerBtn) {
+                registerBtn.addEventListener('click', () => {
+                    authModal.style.display = 'block';
+                    showTab('register');
+                });
+            }
+            
+            // 關閉模態框
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    authModal.style.display = 'none';
+                });
+            }
+            
+            // 點擊外部關閉
+            window.addEventListener('click', (e) => {
+                if (e.target === authModal) {
+                    authModal.style.display = 'none';
+                }
+            });
+            
+            // 標籤切換
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tab = button.getAttribute('data-tab');
+                    showTab(tab);
+                });
+            });
+            
+            // 登入表單提交
+            const loginForm = document.getElementById('loginFormElement');
+            if (loginForm) {
+                loginForm.addEventListener('submit', handleLogin);
+            }
+            
+            // 註冊表單提交
+            const registerForm = document.getElementById('registerFormElement');
+            if (registerForm) {
+                registerForm.addEventListener('submit', handleRegister);
+            }
+            
+            // 登出
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', handleLogout);
+            }
+        }
+
+        function showTab(tabName) {
+            // 更新標籤按鈕
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
+            });
+            
+            // 更新內容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.toggle('active', content.id === tabName + 'Form');
+            });
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            console.log('處理登入');
+            
+            const formData = new FormData(e.target);
+            const loginData = {
+                username: formData.get('username'),
+                password: formData.get('password')
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams(loginData),
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    localStorage.setItem('username', loginData.username);
+                    document.getElementById('authModal').style.display = 'none';
+                    checkAuthStatus();
+                    showMessage('loginMessage', '登入成功！', 'success');
+                    e.target.reset();
+                } else {
+                    showMessage('loginMessage', '登入失敗，請檢查用戶名和密碼', 'error');
+                }
+            } catch (error) {
+                console.error('登入錯誤:', error);
+                showMessage('loginMessage', '發生錯誤，請稍後再試', 'error');
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            console.log('處理註冊');
+            
+            const formData = new FormData(e.target);
+            const registerData = {
+                username: formData.get('username'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                address: formData.get('address') || '',
+                phone: formData.get('phone') || ''
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/members/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(registerData)
+                });
+                
+                if (response.ok) {
+                    showMessage('registerMessage', '註冊成功！請登入', 'success');
+                    setTimeout(() => {
+                        showTab('login');
+                    }, 1500);
+                    e.target.reset();
+                } else {
+                    const error = await response.text();
+                    showMessage('registerMessage', error || '註冊失敗', 'error');
+                }
+            } catch (error) {
+                console.error('註冊錯誤:', error);
+                showMessage('registerMessage', '發生錯誤，請稍後再試', 'error');
+            }
+        }
+
+        async function handleLogout() {
+            try {
+                await fetch(`${API_BASE_URL}/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                localStorage.removeItem('username');
+                checkAuthStatus();
+            } catch (error) {
+                console.error('登出失敗:', error);
+            }
+        }
+
+        function checkAuthStatus() {
+            const username = localStorage.getItem('username');
+            const loginBtn = document.getElementById('loginBtn');
+            const registerBtn = document.getElementById('registerBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const welcomeUser = document.getElementById('welcomeUser');
+            
+            if (username) {
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (registerBtn) registerBtn.style.display = 'none';
+                if (logoutBtn) logoutBtn.style.display = 'block';
+                if (welcomeUser) {
+                    welcomeUser.style.display = 'inline';
+                    welcomeUser.textContent = `歡迎, ${username}!`;
+                }
+            } else {
+                if (loginBtn) loginBtn.style.display = 'block';
+                if (registerBtn) registerBtn.style.display = 'block';
+                if (logoutBtn) logoutBtn.style.display = 'none';
+                if (welcomeUser) welcomeUser.style.display = 'none';
+            }
+        }
+
+        function showMessage(elementId, message, type) {
+            const messageElement = document.getElementById(elementId);
+            if (messageElement) {
+                messageElement.textContent = message;
+                messageElement.className = `auth-message ${type}`;
+                messageElement.style.display = 'block';
+                
+                setTimeout(() => {
+                    messageElement.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // 平滑滾動
+        function smoothScroll(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            if (targetSection) {
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        // 導航欄滾動效果
+        function handleNavbarScroll() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                navbar.style.boxShadow = '0 2px 30px rgba(0, 0, 0, 0.15)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            }
+        }
+
+        // 商品圖片自動判斷比例切換 object-fit
+        function setObjectFit(img) {
+            const ratio = img.naturalWidth / img.naturalHeight;
+            if (ratio > 1.2 || ratio < 0.83) {
+                img.style.objectFit = 'cover';
+            } else {
+                img.style.objectFit = 'contain';
+            }
+        }
+
+        // 購物車功能
+        function setupShoppingCart() {
+            console.log('初始化購物車');
+            
+            const cartSidebar = document.querySelector('.cart-sidebar');
+            const cartOverlay = document.querySelector('.cart-overlay');
+            const openCartBtn = document.querySelector('.nav-cart');
+            const closeCartBtn = document.querySelector('.close-cart-btn');
+            const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+            const cartItemsContainer = document.querySelector('.cart-items');
+            
+            // 開啟購物車
+            if (openCartBtn) {
+                openCartBtn.addEventListener('click', () => {
+                    if (cartSidebar && cartOverlay) {
+                        cartSidebar.classList.add('active');
+                        cartOverlay.classList.add('active');
+                    }
+                });
+            }
+            
+            // 關閉購物車
+            if (closeCartBtn) {
+                closeCartBtn.addEventListener('click', () => {
+                    if (cartSidebar && cartOverlay) {
+                        cartSidebar.classList.remove('active');
+                        cartOverlay.classList.remove('active');
+                    }
+                });
+            }
+            
+            if (cartOverlay) {
+                cartOverlay.addEventListener('click', () => {
+                    cartSidebar.classList.remove('active');
+                    cartOverlay.classList.remove('active');
+                });
+            }
+            
+            // 加入購物車按鈕
+            addToCartButtons.forEach(btn => {
+                btn.addEventListener('click', addToCart);
+            });
+            
+            // 購物車操作
+            if (cartItemsContainer) {
+                cartItemsContainer.addEventListener('click', handleCartActions);
+            }
+        }
+
+        // 加入購物車
+        function addToCart(e) {
+            console.log('加入購物車被點擊');
+            
+            const productCard = e.target.closest('.product-card');
+            if (!productCard) return;
+            
+            const id = productCard.dataset.id;
+            const name = productCard.dataset.name;
+            const price = parseInt(productCard.dataset.price);
+            const image = productCard.querySelector('img')?.src || '';
+            const priceText = `NT$ ${price}`;
+
+            const existingItem = cart.find(item => item.id === id);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ id, name, price, priceText, image, quantity: 1 });
+            }
+            
+            updateCartUI();
+            
+            // 開啟購物車 (根據您的要求，已將此段註解掉，避免自動彈出)
+            /*
+            const cartSidebar = document.querySelector('.cart-sidebar');
+            const cartOverlay = document.querySelector('.cart-overlay');
+            if (cartSidebar && cartOverlay) {
+                cartSidebar.classList.add('active');
+                cartOverlay.classList.add('active');
+            }
+            */
+            
+            // 顯示成功訊息
+            const originalText = e.target.textContent;
+            e.target.textContent = '已加入購物車！';
+            e.target.disabled = true;
+            
+            setTimeout(() => {
+                e.target.textContent = originalText;
+                e.target.disabled = false;
+            }, 1000);
+        }
+
+        // 更新購物車UI
+        function updateCartUI() {
+            const cartItemsContainer = document.querySelector('.cart-items');
+            const cartCount = document.querySelector('.cart-count');
+            const cartTotalPrice = document.getElementById('cart-total-price');
+            
+            if (!cartItemsContainer || !cartCount || !cartTotalPrice) {
+                console.log('購物車元素不存在，跳過更新');
+                return;
+            }
+            
+            console.log('更新購物車UI，當前購物車:', cart);
+            
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            let totalItems = 0;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p style="text-align: center; color: #999; padding: 2rem;">購物車是空的</p>';
+                cartCount.textContent = '0';
+                cartTotalPrice.textContent = 'NT$ 0';
+                localStorage.setItem('cart', JSON.stringify(cart));
+                return;
+            }
+
+            cart.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('cart-item');
+                itemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <span class="cart-item-price">${item.priceText}</span>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn" data-id="${item.id}" data-action="decrease">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn" data-id="${item.id}" data-action="increase">+</button>
+                        </div>
+                    </div>
+                    <button class="remove-item-btn" data-id="${item.id}">&times;</button>
+                `;
+                cartItemsContainer.appendChild(itemElement);
+                total += item.price * item.quantity;
+                totalItems += item.quantity;
+            });
+
+            cartTotalPrice.textContent = `NT$ ${total.toLocaleString()}`;
+            cartCount.textContent = totalItems;
+            
+            // 更新 localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            console.log('購物車UI更新完成，總計:', total, '商品數量:', totalItems);
+        }
+
+        // 處理購物車操作
+        function handleCartActions(e) {
+            const target = e.target;
+            const id = target.dataset.id;
+            
+            if (target.classList.contains('quantity-btn')) {
+                const action = target.dataset.action;
+                const item = cart.find(item => item.id === id);
+                
+                if (item) {
+                    if (action === 'increase') {
+                        item.quantity++;
+                    } else if (action === 'decrease') {
+                        item.quantity--;
+                        if (item.quantity <= 0) {
+                            cart = cart.filter(cartItem => cartItem.id !== id);
+                        }
+                    }
+                }
+                updateCartUI();
+            }
+            
+            if (target.classList.contains('remove-item-btn')) {
+                cart = cart.filter(item => item.id !== id);
+                updateCartUI();
+            }
+        }
+
+        // 結帳功能設置
+        function setupCheckout() {
+            const checkoutBtn = document.querySelector('.checkout-btn');
+            const checkoutPage = document.getElementById('checkout-page');
+            const closeCheckoutBtn = document.querySelector('.close-checkout-btn');
+
+            if (checkoutBtn) {
+                checkoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('購物車結帳按鈕被點擊');
+                    
+                    if (cart.length === 0) {
+                        alert('您的購物車是空的！');
+                        return;
+                    }
+                    
+                    // 檢查登入狀態
+                    const username = localStorage.getItem('username');
+                    console.log('當前登入用戶:', username);
+                    
+                    if (!username) {
+                        console.log('用戶未登入，顯示登入要求提示');
+                        showLoginRequired();
+                        return;
+                    }
+                    
+                    console.log('用戶已登入，進入結帳流程');
+                    if (checkoutPage) {
+                        switchCheckoutStep(1);
+                        updateCheckoutSummary();
+                        checkoutPage.classList.add('active');
+                        
+                        // 關閉購物車
+                        const cartSidebar = document.querySelector('.cart-sidebar');
+                        const cartOverlay = document.querySelector('.cart-overlay');
+                        if (cartSidebar && cartOverlay) {
+                            cartSidebar.classList.remove('active');
+                            cartOverlay.classList.remove('active');
+                        }
+                    }
+                });
+            }
+            
+            if (closeCheckoutBtn) {
+                closeCheckoutBtn.addEventListener('click', () => {
+                    if (checkoutPage) {
+                        checkoutPage.classList.remove('active');
+                    }
+                });
+            }
+
+            // 結帳步驟按鈕
+            setupCheckoutSteps();
+        }
+
+        // 設置結帳步驟
+        function setupCheckoutSteps() {
+            const gotoStep2Btn = document.getElementById('goto-step-2-btn');
+            const gotoStep3Btn = document.getElementById('goto-step-3-btn');
+            const gotoStep4Btn = document.getElementById('goto-step-4-btn');
+            const backToStep1Btn = document.getElementById('back-to-step-1-btn');
+            const backToStep2Btn = document.getElementById('back-to-step-2-btn');
+            const backToStep3Btn = document.getElementById('back-to-step-3-btn');
+            const confirmPurchaseBtn = document.getElementById('confirm-purchase-btn');
+            const continueShoppingBtn = document.getElementById('continue-shopping-btn');
+
+            const customerForm = document.getElementById('customer-info-form');
+            const shippingForm = document.getElementById('shipping-info-form');
+            
+            if (gotoStep2Btn) {
+                gotoStep2Btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (customerForm && customerForm.checkValidity()) {
+                        switchCheckoutStep(2);
+                        handleShippingMethodChange();
+                    } else if (customerForm) {
+                        customerForm.reportValidity();
+                    }
+                });
+            }
+
+            if (gotoStep3Btn) {
+                gotoStep3Btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (shippingForm && shippingForm.checkValidity()) {
+                        renderConfirmationSummary();
+                        switchCheckoutStep(3);
+                    } else if (shippingForm) {
+                        shippingForm.reportValidity();
+                    }
+                });
+            }
+
+            if (gotoStep4Btn) {
+                gotoStep4Btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    switchCheckoutStep(4);
+                });
+            }
+
+            if (backToStep1Btn) {
+                backToStep1Btn.addEventListener('click', () => switchCheckoutStep(1));
+            }
+
+            if (backToStep2Btn) {
+                backToStep2Btn.addEventListener('click', () => switchCheckoutStep(2));
+            }
+
+            if (backToStep3Btn) {
+                backToStep3Btn.addEventListener('click', () => switchCheckoutStep(3));
+            }
+
+            if (confirmPurchaseBtn) {
+                confirmPurchaseBtn.addEventListener('click', finishPurchase);
+            }
+
+            if (continueShoppingBtn) {
+                continueShoppingBtn.addEventListener('click', () => {
+                    const checkoutPage = document.getElementById('checkout-page');
+                    if (checkoutPage) {
+                        checkoutPage.classList.remove('active');
+                    }
+                });
+            }
+
+            // 寄送方式切換
+            const shippingMethodRadios = document.querySelectorAll('input[name="shipping-method"]');
+            shippingMethodRadios.forEach(radio => {
+                radio.addEventListener('change', handleShippingMethodChange);
+            });
+        }
+
+        // 顯示登入要求
+        function showLoginRequired() {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 3000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: white;
+                padding: 2rem;
+                border-radius: 15px;
+                text-align: center;
+                max-width: 400px;
+                margin: 0 1rem;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            `;
+            
+            content.innerHTML = `
+                <div style="margin-bottom: 1.5rem;">
+                    <i class="fas fa-user-lock" style="font-size: 3rem; color: #ff6b9d; margin-bottom: 1rem;"></i>
+                    <h3 style="color: #333; margin-bottom: 0.5rem;">需要登入才能結帳</h3>
+                    <p style="color: #666; line-height: 1.5;">
+                        為了提供更好的購物體驗和訂單管理，<br>
+                        請先登入或註冊會員帳號
+                    </p>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button id="login-required-login" style="
+                        background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+                        color: white;
+                        border: none;
+                        padding: 0.8rem 1.2rem;
+                        border-radius: 25px;
+                        cursor: pointer;
+                        font-weight: 500;
+                        transition: transform 0.2s ease;
+                    ">立即登入</button>
+                    <button id="login-required-register" style="
+                        background: none;
+                        color: #ff6b9d;
+                        border: 2px solid #ff6b9d;
+                        padding: 0.8rem 1.2rem;
+                        border-radius: 25px;
+                        cursor: pointer;
+                        font-weight: 500;
+                        transition: all 0.2s ease;
+                    ">註冊會員</button>
+                    <button id="login-required-close" style="
+                        background: #f0f0f0;
+                        color: #666;
+                        border: none;
+                        padding: 0.8rem 1.2rem;
+                        border-radius: 25px;
+                        cursor: pointer;
+                        font-weight: 500;
+                    ">稍後再說</button>
+                </div>
+            `;
+            
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+            
+            // 按鈕事件
+            document.getElementById('login-required-login').addEventListener('click', () => {
+                document.body.removeChild(modal);
+                
+                // 關閉購物車
+                const cartSidebar = document.querySelector('.cart-sidebar');
+                const cartOverlay = document.querySelector('.cart-overlay');
+                if (cartSidebar && cartOverlay) {
+                    cartSidebar.classList.remove('active');
+                    cartOverlay.classList.remove('active');
+                }
+                
+                const authModal = document.getElementById('authModal');
+                if (authModal) {
+                    authModal.style.display = 'block';
+                    showTab('login');
+                }
+            });
+            
+            document.getElementById('login-required-register').addEventListener('click', () => {
+                document.body.removeChild(modal);
+                
+                // 關閉購物車
+                const cartSidebar = document.querySelector('.cart-sidebar');
+                const cartOverlay = document.querySelector('.cart-overlay');
+                if (cartSidebar && cartOverlay) {
+                    cartSidebar.classList.remove('active');
+                    cartOverlay.classList.remove('active');
+                }
+                
+                const authModal = document.getElementById('authModal');
+                if (authModal) {
+                    authModal.style.display = 'block';
+                    showTab('register');
+                }
+            });
+            
+            document.getElementById('login-required-close').addEventListener('click', () => {
+                document.body.removeChild(modal);
+            });
+            
+            // 點擊外部關閉
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            });
+        }
+
+        // 切換結帳步驟
+        function switchCheckoutStep(stepNumber) {
+            // 檢查登入狀態
+            const username = localStorage.getItem('username');
+            if (!username) {
+                const checkoutPage = document.getElementById('checkout-page');
+                if (checkoutPage) {
+                    checkoutPage.classList.remove('active');
+                }
+                showLoginRequired();
+                return false;
+            }
+            
+            document.querySelectorAll('.checkout-step-content').forEach(el => el.classList.remove('active'));
+            const targetStep = document.querySelector(`#checkout-step-${stepNumber}`);
+            if (targetStep) {
+                targetStep.classList.add('active');
+            }
+            
+            document.querySelectorAll('.checkout-steps .step').forEach(el => el.classList.remove('active'));
+            const targetStepIndicator = document.querySelector(`.step[data-step="${stepNumber}"]`);
+            if (targetStepIndicator) {
+                targetStepIndicator.classList.add('active');
+            }
+            
+            return true;
+        }
+
+        // 更新結帳訂單摘要
+        function updateCheckoutSummary() {
+            const summaryContainer = document.getElementById('checkout-order-summary');
+            renderOrderSummary(summaryContainer);
+        }
+
+        // 渲染訂單摘要
+        function renderOrderSummary(container) {
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999; padding: 2rem;">購物車是空的</p>';
+                return;
+            }
+
+            let subtotal = 0;
+            cart.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('cart-item');
+                itemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+                    <div class="cart-item-info">
+                        <h4>${item.name} (x${item.quantity})</h4>
+                        <span class="cart-item-price">${item.priceText}</span>
+                    </div>
+                    <div class="cart-item-total">NT$ ${(item.price * item.quantity).toLocaleString()}</div>
+                `;
+                container.appendChild(itemElement);
+                subtotal += item.price * item.quantity;
+            });
+
+            const shippingFee = subtotal >= 600 ? 0 : 60;
+            const total = subtotal + shippingFee;
+
+            const summaryTotals = document.createElement('div');
+            summaryTotals.classList.add('summary-totals');
+            summaryTotals.style.cssText = "margin-top: 1rem; border-top: 1px solid #eee; padding-top: 1rem;";
+            summaryTotals.innerHTML = `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>小計</span>
+                    <span>NT$ ${subtotal.toLocaleString()}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>運費</span>
+                    <span>NT$ ${shippingFee.toLocaleString()}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem;">
+                    <span>總計</span>
+                    <span>NT$ ${total.toLocaleString()}</span>
+                </div>
+            `;
+            container.appendChild(summaryTotals);
+        }
+
+        // 處理寄送方式變更
+        function handleShippingMethodChange() {
+            const selectedMethod = document.querySelector('input[name="shipping-method"]:checked');
+            const homeDeliveryFields = document.getElementById('home-delivery-fields');
+            const storePickupFields = document.getElementById('store-pickup-fields');
+            const addressInput = document.getElementById('customer-address');
+            const storeInput = document.getElementById('pickup-store-info');
+            
+            if (!selectedMethod) return;
+            
+            const method = selectedMethod.value;
+            if (method === 'homedelivery') {
+                if (homeDeliveryFields) homeDeliveryFields.style.display = 'block';
+                if (storePickupFields) storePickupFields.style.display = 'none';
+                if (addressInput) addressInput.required = true;
+                if (storeInput) storeInput.required = false;
+            } else {
+                if (homeDeliveryFields) homeDeliveryFields.style.display = 'none';
+                if (storePickupFields) storePickupFields.style.display = 'block';
+                if (addressInput) addressInput.required = false;
+                if (storeInput) storeInput.required = true;
+            }
+        }
+
+        // 渲染確認摘要
+        function renderConfirmationSummary() {
+            const nameInput = document.getElementById('customer-name');
+            const phoneInput = document.getElementById('customer-phone');
+            const emailInput = document.getElementById('customer-email');
+            const shippingMethodInput = document.querySelector('input[name="shipping-method"]:checked');
+            const confirmationSummaryContainer = document.getElementById('confirmation-summary');
+            const addressInput = document.getElementById('customer-address');
+            const storeInput = document.getElementById('pickup-store-info');
+            
+            if (!nameInput || !phoneInput || !emailInput || !shippingMethodInput || !confirmationSummaryContainer) return;
+            
+            const name = nameInput.value;
+            const phone = phoneInput.value;
+            const email = emailInput.value;
+            const shippingMethod = shippingMethodInput.value;
+            
+            let shippingInfo = '';
+            if (shippingMethod === 'homedelivery') {
+                const address = addressInput ? addressInput.value : '';
+                shippingInfo = `
+                    <tr>
+                        <td>寄送方式</td>
+                        <td>指定地址</td>
+                    </tr>
+                    <tr>
+                        <td>地址</td>
+                        <td>${address}</td>
+                    </tr>
+                `;
+            } else {
+                const storeName = shippingMethod === '711' ? '7-11 門市' : '全家門市';
+                const storeInfo = storeInput ? storeInput.value : '';
+                shippingInfo = `
+                    <tr>
+                        <td>寄送方式</td>
+                        <td>${storeName}</td>
+                    </tr>
+                    <tr>
+                        <td>門市資訊</td>
+                        <td>${storeInfo}</td>
+                    </tr>
+                `;
+            }
+
+            const deliveryDateInput = document.getElementById('delivery-date');
+            const deliveryTimeInput = document.getElementById('delivery-time');
+            const orderNotesInput = document.getElementById('order-notes');
+            
+            const deliveryDate = deliveryDateInput ? deliveryDateInput.value : '';
+            const deliveryTime = deliveryTimeInput ? deliveryTimeInput.value : '';
+            const orderNotes = orderNotesInput ? orderNotesInput.value : '';
+
+            confirmationSummaryContainer.innerHTML = `
+                <h4 style="text-align: left; margin-bottom: 1rem; font-weight: bold;">顧客與寄送資訊</h4>
+                <table class="summary-table">
+                    <tr>
+                        <td>收件人</td>
+                        <td>${name}</td>
+                    </tr>
+                    <tr>
+                        <td>電話</td>
+                        <td>${phone}</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>${email}</td>
+                    </tr>
+                    ${shippingInfo}
+                    ${deliveryDate ? `<tr><td>希望到貨日</td><td>${deliveryDate}</td></tr>` : ''}
+                    ${deliveryTime ? `<tr><td>希望時段</td><td>${deliveryTime}</td></tr>` : ''}
+                    ${orderNotes ? `<tr><td>備註</td><td>${orderNotes}</td></tr>` : ''}
+                </table>
+            `;
+
+            const orderSummaryContainer = document.getElementById('confirmation-order-summary');
+            renderOrderSummary(orderSummaryContainer);
+        }
+
+        // 完成購買
+        async function finishPurchase() {
+            const nameInput = document.getElementById('customer-name');
+            const phoneInput = document.getElementById('customer-phone');
+            const emailInput = document.getElementById('customer-email');
+            const shippingMethodInput = document.querySelector('input[name="shipping-method"]:checked');
+            const addressInput = document.getElementById('customer-address');
+            const storeInput = document.getElementById('pickup-store-info');
+            
+            if (!nameInput || !phoneInput || !emailInput || !shippingMethodInput) {
+                alert('請填寫完整資料');
+                return;
+            }
+            
+            const name = nameInput.value;
+            const phone = phoneInput.value;
+            const email = emailInput.value;
+            const shippingMethod = shippingMethodInput.value;
+            
+            let recipientName = name;
+            let recipientPhone = phone;
+            let shippingAddress = '';
+            
+            if (shippingMethod === 'homedelivery') {
+                shippingAddress = addressInput ? addressInput.value : '';
+            } else {
+                const storeName = shippingMethod === '711' ? '7-11 門市' : '全家門市';
+                const storeInfo = storeInput ? storeInput.value : '';
+                shippingAddress = `${storeName}: ${storeInfo}`;
+            }
+
+            // 計算金額
+            let subtotal = 0;
+            const cartItems = cart.map(item => {
+                subtotal += item.price * item.quantity;
+                return {
+                    productId: parseInt(item.id.replace('f', '')),
+                    productName: item.name,
+                    quantity: item.quantity,
+                    price: item.price
+                };
+            });
+            
+            const shippingFee = subtotal >= 600 ? 0 : 60;
+            const total = subtotal + shippingFee;
+
+            // 準備訂單資料
+            const deliveryDateInput = document.getElementById('delivery-date');
+            const deliveryTimeInput = document.getElementById('delivery-time');
+            const orderNotesInput = document.getElementById('order-notes');
+            
+            const orderData = {
+                customerName: name,
+                customerPhone: phone,
+                customerEmail: email,
+                recipientName: recipientName,
+                recipientPhone: recipientPhone,
+                shippingAddress: shippingAddress,
+                shippingMethod: shippingMethod === 'homedelivery' ? '指定地址' : 
+                               shippingMethod === '711' ? '7-11 門市取貨' : '全家門市取貨',
+                shippingFee: shippingFee,
+                deliveryDate: deliveryDateInput ? deliveryDateInput.value || null : null,
+                deliveryTime: deliveryTimeInput ? deliveryTimeInput.value || null : null,
+                orderNotes: orderNotesInput ? orderNotesInput.value || null : null,
+                cartItems: cartItems
+            };
+
+            try {
+                // 發送訂單到後端 API
+                const response = await fetch(`${API_BASE_URL}/orders/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData),
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    const order = await response.json();
+                    console.log('訂單建立成功:', order);
+                } else {
+                    console.error('訂單API失敗，但繼續使用 EmailJS');
+                }
+            } catch (error) {
+                console.error('訂單API錯誤:', error);
+            }
+
+            // 發送 EmailJS 通知
+            try {
+                if (typeof emailjs !== 'undefined') {
+                    const orderItemsHTML = cartItems.map(item => 
+                        `<li>${item.productName} x ${item.quantity} - NT$ ${(item.price * item.quantity).toLocaleString()}</li>`
+                    ).join('');
+                    
+                    const orderSummaryHTML = `
+                        <ul>${orderItemsHTML}</ul>
+                        <p>小計: NT$ ${subtotal.toLocaleString()}</p>
+                        <p>運費: NT$ ${shippingFee > 0 ? shippingFee.toLocaleString() : '免運'}</p>
+                        <p><strong>總計: NT$ ${total.toLocaleString()}</strong></p>
+                    `;
+                    
+                    const templateParams = {
+                        customer_name: name,
+                        customer_phone: phone,
+                        shipping_info: shippingAddress,
+                        order_summary: orderSummaryHTML,
+                        total_price: `NT$ ${total.toLocaleString()}`,
+                    };
+
+                    await emailjs.send('service_ysd0u6p', 'template_7igw7tb', templateParams);
+                    console.log('EmailJS 發送成功');
+                }
+            } catch (err) {
+                console.error('EmailJS 發送失敗:', err);
+            }
+
+            // 切換到完成步驟並清空購物車
+            switchCheckoutStep(5);
+            cart = [];
+            updateCartUI();
+        }
+
+        // 錯誤處理
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript 錯誤:', e.error);
+        });
+
+        console.log('所有腳本載入完成');
+    </script>
+</body>
+</html>
