@@ -18,22 +18,20 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'maven' # 因為您是 Maven 專案，所以用 'maven'
+          cache: 'maven'
 
       - name: Build Java project and package static files
         run: |
-          # 您是 Maven 專案，所以請使用這行:
-          mvn clean install -DskipTests
+          mvn clean install -DskipTests # 執行 Maven 建置
 
-      - name: Locate Static Files # 偵錯用途，非必要
-        run: |
-          echo "Listing contents of target/classes/static:"
-          ls -R target/classes/static/ || true # 再次確認靜態檔案是否存在於此路徑
-
-      - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages # 使用 peaceiris/actions-gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # 您是 Maven 專案，所以使用這個 publish_dir 路徑:
-          publish_dir: ./target/classes/static
-          publish_branch: gh-pages # 指定發佈到 'gh-pages' 分支
+          publish_dir: ./target/classes/static # Java 專案建置後，靜態檔案的來源路徑
+          
+          # --- 關鍵修改點 ---
+          # 讓它推送到 'main' 分支，並且放在 'docs' 資料夾下
+          publish_branch: main # <--- 將目標分支改為 main
+          destination_dir: docs # <--- 指定在 main 分支下的目標資料夾
+          # --- 關鍵修改點 ---
