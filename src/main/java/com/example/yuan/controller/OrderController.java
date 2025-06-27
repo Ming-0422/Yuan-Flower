@@ -5,6 +5,7 @@ import com.example.yuan.model.Order;
 import com.example.yuan.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,19 +25,27 @@ public class OrderController {
     public ResponseEntity<?> createOrder(@RequestBody OrderRequest orderRequest, 
                                        Authentication authentication) {
         try {
-            // 如果用戶已登入，使用登入的用戶名；否則使用 null（訪客訂單）
-            String username = authentication != null ? authentication.getName() : null;
+            // 檢查是否已登入
+            if (authentication == null || !authentication.isAuthenticated() 
+                || authentication instanceof AnonymousAuthenticationToken) {
+                System.out.println("未登入用戶嘗試建立訂單");
+                return new ResponseEntity<>("請先登入會員", HttpStatus.UNAUTHORIZED);
+            }
+            
+            String username = authentication.getName();
+            System.out.println("已登入用戶建立訂單: " + username);
             
             Order order = orderService.createOrder(orderRequest, username);
             return new ResponseEntity<>(order, HttpStatus.CREATED);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
     
     @GetMapping("/my-orders")
     public ResponseEntity<List<Order>> getMyOrders(Authentication authentication) {
-        if (authentication == null) {
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         
@@ -51,7 +60,8 @@ public class OrderController {
             Order order = orderService.getOrderById(orderId);
             
             // 檢查權限：只有訂單擁有者或管理員可以查看
-            if (authentication != null && order.getMember() != null) {
+            if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken) 
+                && order.getMember() != null) {
                 if (!order.getMember().getUsername().equals(authentication.getName())) {
                     return new ResponseEntity<>(HttpStatus.FORBIDDEN);
                 }

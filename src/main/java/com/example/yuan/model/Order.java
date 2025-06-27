@@ -2,6 +2,7 @@ package com.example.yuan.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class Order {
     @Column(precision = 8, scale = 2)
     private BigDecimal shippingFee;
     
-    private LocalDateTime deliveryDate;
+    private LocalDate deliveryDate;  // 改為 LocalDate
     
     private String deliveryTime;
     
@@ -121,8 +122,8 @@ public class Order {
     public BigDecimal getShippingFee() { return shippingFee; }
     public void setShippingFee(BigDecimal shippingFee) { this.shippingFee = shippingFee; }
     
-    public LocalDateTime getDeliveryDate() { return deliveryDate; }
-    public void setDeliveryDate(LocalDateTime deliveryDate) { this.deliveryDate = deliveryDate; }
+    public LocalDate getDeliveryDate() { return deliveryDate; }  // 改為 LocalDate
+    public void setDeliveryDate(LocalDate deliveryDate) { this.deliveryDate = deliveryDate; }  // 改為 LocalDate
     
     public String getDeliveryTime() { return deliveryTime; }
     public void setDeliveryTime(String deliveryTime) { this.deliveryTime = deliveryTime; }

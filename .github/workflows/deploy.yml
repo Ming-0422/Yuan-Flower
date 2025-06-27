@@ -1,0 +1,39 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # 當 'main' 分支有新的提交時，觸發這個工作流程
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17 # 根據您的 Java 版本調整
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven' # 因為您是 Maven 專案，所以用 'maven'
+
+      - name: Build Java project and package static files
+        run: |
+          # 您是 Maven 專案，所以請使用這行:
+          mvn clean install -DskipTests
+
+      - name: Locate Static Files # 偵錯用途，非必要
+        run: |
+          echo "Listing contents of target/classes/static:"
+          ls -R target/classes/static/ || true # 再次確認靜態檔案是否存在於此路徑
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # 您是 Maven 專案，所以使用這個 publish_dir 路徑:
+          publish_dir: ./target/classes/static
+          publish_branch: gh-pages # 指定發佈到 'gh-pages' 分支

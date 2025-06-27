@@ -32,12 +32,15 @@ public class OrderService {
     public Order createOrder(OrderRequest request, String username) throws Exception {
         Order order = new Order();
         
-        // 設定會員（如果有登入）
-        if (username != null) {
-            Member member = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new Exception("會員不存在"));
-            order.setMember(member);
+        // 設定會員（必須有登入）
+        if (username == null || username.trim().isEmpty()) {
+            throw new Exception("請先登入會員");
         }
+        
+        Member member = memberRepository.findByUsername(username)
+            .orElseThrow(() -> new Exception("會員不存在"));
+        order.setMember(member);
+        System.out.println("為會員 " + username + " 建立訂單");
         
         // 設定顧客資料
         order.setCustomerName(request.getCustomerName());
@@ -79,20 +82,30 @@ public class OrderService {
         
         // 儲存訂單
         Order savedOrder = orderRepository.save(order);
+        System.out.println("訂單已儲存，訂單編號: " + savedOrder.getOrderId());
         
         // 發送 LINE Bot 通知
         try {
+            System.out.println("準備發送 LINE Bot 通知...");
             lineBotService.sendOrderNotification(savedOrder)
                 .thenAccept(result -> {
+                    System.out.println("LINE Bot 通知結果: " + result);
                     if ("success".equals(result)) {
                         savedOrder.setLineNotified(true);
                         savedOrder.setLineNotifiedAt(LocalDateTime.now());
                         orderRepository.save(savedOrder);
+                        System.out.println("LINE Bot 通知狀態已更新");
                     }
+                })
+                .exceptionally(ex -> {
+                    System.err.println("LINE Bot 通知處理異常: " + ex.getMessage());
+                    ex.printStackTrace();
+                    return null;
                 });
         } catch (Exception e) {
             // 記錄錯誤但不影響訂單建立
             System.err.println("LINE Bot 通知發送失敗: " + e.getMessage());
+            e.printStackTrace();
         }
         
         return savedOrder;

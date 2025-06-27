@@ -9,6 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy; // 引入 SessionCreationPolicy
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -76,71 +77,75 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // 暫時完全關閉 CSRF
-            .cors(withDefaults())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/callback", // LINE Bot webhook - 放在最前面
-                    "/api/members/register",
-                    "/api/login",
-                    "/api/logout",
-                    "/api/orders/create",
-                    "/",
-                    "/index.html",
-                    "/style.css",
-                    "/script.js",
-                    "/auth.js",
-                    "/cart.js",
-                    "/checkout.js",
-                    "/main.js",
-                    "/auth.css",
-                    "/cart.css",
-                    "/images/**",
-                    "/fonts/**",
-                    "/static/**",
-                    "/error"
-                ).permitAll()
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/**").authenticated()
-                .anyRequest().permitAll() // 暫時允許其他所有請求
-            )
-            .formLogin(form -> form
-                .loginProcessingUrl("/api/login")
-                .successHandler((request, response, authentication) -> {
-                    response.setStatus(HttpStatus.OK.value());
-                    try {
-                        response.getWriter().write("Login successful!");
-                        response.getWriter().flush();
-                    } catch (IOException e) {
-                        System.err.println("Error writing login success response: " + e.getMessage());
-                    }
-                })
-                .failureHandler((request, response, exception) -> {
-                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                    try {
-                        response.getWriter().write("Login failed: " + exception.getMessage());
-                        response.getWriter().flush();
-                    } catch (IOException e) {
-                        System.err.println("Error writing login failure response: " + e.getMessage());
-                    }
-                })
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutUrl("/api/logout")
-                .logoutSuccessHandler((request, response, authentication) -> {
-                    response.setStatus(HttpStatus.OK.value());
-                    try {
-                        response.getWriter().write("Logout successful!");
-                        response.getWriter().flush();
-                    } catch (IOException e) {
-                        System.err.println("Error writing logout success response: " + e.getMessage());
-                    }
-                })
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .permitAll()
-            );
+                .csrf(csrf -> csrf.disable()) // 暫時完全關閉 CSRF
+                .cors(withDefaults())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/callback", // LINE Bot webhook - 放在最前面
+                                "/api/members/register",
+                                "/api/login",
+                                "/api/logout",
+                                "/api/orders/create",
+                                "/",
+                                "/index.html",
+                                "/style.css",
+                                "/script.js",
+                                "/auth.js",
+                                "/cart.js",
+                                "/checkout.js",
+                                "/main.js",
+                                "/auth.css",
+                                "/cart.css",
+                                "/images/**",
+                                "/fonts/**",
+                                "/static/**",
+                                "/error"
+                        ).permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/**").authenticated()
+                        .anyRequest().permitAll() // 暫時允許其他所有請求
+                )
+                .formLogin(form -> form
+                        .loginProcessingUrl("/api/login")
+                        .successHandler((request, response, authentication) -> {
+                            response.setStatus(HttpStatus.OK.value());
+                            try {
+                                response.getWriter().write("Login successful!");
+                                response.getWriter().flush();
+                            } catch (IOException e) {
+                                System.err.println("Error writing login success response: " + e.getMessage());
+                            }
+                        })
+                        .failureHandler((request, response, exception) -> {
+                            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                            try {
+                                response.getWriter().write("Login failed: " + exception.getMessage());
+                                response.getWriter().flush();
+                            } catch (IOException e) {
+                                System.err.println("Error writing login failure response: " + e.getMessage());
+                            }
+                        })
+                        .permitAll()
+                )
+                .sessionManagement(session -> session // 新增的 sessionManagement 配置
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .maximumSessions(1)
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/api/logout")
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpStatus.OK.value());
+                            try {
+                                response.getWriter().write("Logout successful!");
+                                response.getWriter().flush();
+                            } catch (IOException e) {
+                                System.err.println("Error writing logout success response: " + e.getMessage());
+                            }
+                        })
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+                );
 
         return http.build();
     }

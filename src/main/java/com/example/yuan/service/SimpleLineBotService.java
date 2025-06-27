@@ -21,29 +21,43 @@ public class SimpleLineBotService {
     
     public SimpleLineBotService(LineMessagingClient lineMessagingClient) {
         this.lineMessagingClient = lineMessagingClient;
+        System.out.println("=== LINE Bot Service 建構中 ===");
     }
     
     /**
      * 發送訂單通知（純文字版本）
      */
     public CompletableFuture<String> sendOrderNotification(Order order) {
+        System.out.println("=== 開始發送 LINE Bot 通知 ===");
+        System.out.println("Admin User ID: " + adminUserId);
+        System.out.println("Admin User ID 長度: " + (adminUserId != null ? adminUserId.length() : 0));
+        System.out.println("訂單編號: " + order.getOrderId());
+        
         try {
             String message = buildOrderMessage(order);
+            System.out.println("訊息內容長度: " + message.length());
+            
             TextMessage textMessage = new TextMessage(message);
             PushMessage pushMessage = new PushMessage(adminUserId, textMessage);
+            
+            System.out.println("準備調用 LINE API...");
             
             return lineMessagingClient.pushMessage(pushMessage)
                 .thenApply(response -> {
                     System.out.println("LINE Bot 通知發送成功: " + response);
+                    System.out.println("Response RequestId: " + response.getRequestId());
+                    System.out.println("Response Message: " + response.getMessage());
                     return "success";
                 })
                 .exceptionally(throwable -> {
                     System.err.println("LINE Bot 通知發送失敗: " + throwable.getMessage());
+                    System.err.println("錯誤類型: " + throwable.getClass().getName());
                     throwable.printStackTrace();
                     return "failed";
                 });
         } catch (Exception e) {
             System.err.println("建立 LINE Bot 訊息失敗: " + e.getMessage());
+            System.err.println("錯誤類型: " + e.getClass().getName());
             e.printStackTrace();
             return CompletableFuture.completedFuture("failed");
         }
@@ -98,12 +112,17 @@ public class SimpleLineBotService {
             PushMessage pushMessage = new PushMessage(adminUserId, textMessage);
             
             lineMessagingClient.pushMessage(pushMessage)
+                .thenAccept(response -> {
+                    System.out.println("訊息發送成功: " + response);
+                })
                 .exceptionally(throwable -> {
                     System.err.println("訊息發送失敗: " + throwable.getMessage());
+                    throwable.printStackTrace();
                     return null;
                 });
         } catch (Exception e) {
             System.err.println("發送訊息時發生錯誤: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     
