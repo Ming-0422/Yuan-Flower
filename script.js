@@ -1,5 +1,6 @@
 // API 基礎 URL
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'https://yuan-flower.onrender.com/api';
+
 
 // 全域購物車變數
 let cart = [];
