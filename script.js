@@ -175,29 +175,38 @@ async function handleLogin(e) {
         password: formData.get('password')
     };
     
+    console.log('Attempting login with:', loginData.username); // 除錯用
+    
     try {
         const response = await fetch(`${API_BASE_URL}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json' // 添加這行
             },
             body: new URLSearchParams(loginData),
             credentials: 'include'
         });
         
+        console.log('Login response status:', response.status); // 除錯用
+        
         if (response.ok) {
+            const responseData = await response.json();
+            console.log('Login response:', responseData); // 除錯用
+            
             // 登入成功後檢查實際認證狀態
             await checkAuthStatus();
             
             document.getElementById('authModal').style.display = 'none';
-            showMessage('loginMessage', '登入成功！', 'success');
+            showMessage('loginMessage', responseData.message || '登入成功！', 'success');
             e.target.reset();
         } else {
-            showMessage('loginMessage', '登入失敗，請檢查用戶名和密碼', 'error');
+            const errorData = await response.json().catch(() => ({ message: '登入失敗，請檢查用戶名和密碼' }));
+            showMessage('loginMessage', errorData.message, 'error');
         }
     } catch (error) {
         console.error('登入錯誤:', error);
-        showMessage('loginMessage', '發生錯誤，請稍後再試', 'error');
+        showMessage('loginMessage', '網路錯誤，請稍後再試', 'error');
     }
 }
 
