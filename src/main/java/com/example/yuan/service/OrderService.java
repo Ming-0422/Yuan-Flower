@@ -56,8 +56,10 @@ public class OrderService {
         order.setShippingMethod(request.getShippingMethod());
         order.setShippingFee(request.getShippingFee());
         order.setDeliveryDate(request.getDeliveryDate());
-        order.setDeliveryTime(request.getDeliveryTime());
         order.setOrderNotes(request.getOrderNotes());
+        
+        // 設定銀行帳號後五碼
+        order.setBankAccountLast5(request.getBankAccountLast5());
         
         // 計算總金額
         BigDecimal subtotal = BigDecimal.ZERO;
@@ -91,17 +93,21 @@ public class OrderService {
                 .thenAccept(result -> {
                     System.out.println("LINE Bot 通知結果: " + result);
                     if ("success".equals(result)) {
-                        savedOrder.setLineNotified(true);
-                        savedOrder.setLineNotifiedAt(LocalDateTime.now());
-                        orderRepository.save(savedOrder);
-                        System.out.println("LINE Bot 通知狀態已更新");
+                        // 在異步線程中更新訂單狀態
+                        Order orderToUpdate = orderRepository.findById(savedOrder.getOrderId()).orElse(null);
+                        if (orderToUpdate != null) {
+                            orderToUpdate.setLineNotified(true);
+                            orderToUpdate.setLineNotifiedAt(LocalDateTime.now());
+                            orderRepository.save(orderToUpdate);
+                            System.out.println("LINE Bot 通知狀態已更新");
+                        }
                     }
                 })
                 .exceptionally(ex -> {
                     System.err.println("LINE Bot 通知處理異常: " + ex.getMessage());
                     ex.printStackTrace();
                     return null;
-                });
+                }).join(); // 等待異步操作完成
         } catch (Exception e) {
             // 記錄錯誤但不影響訂單建立
             System.err.println("LINE Bot 通知發送失敗: " + e.getMessage());

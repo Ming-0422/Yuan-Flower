@@ -67,7 +67,10 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
+        config.setAllowCredentials(true);
         config.setAllowedOriginPatterns(Arrays.asList("http://localhost:*", "http://127.0.0.1:*", "file://*", "https://*.ngrok-free.app"));
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
@@ -85,7 +88,7 @@ public class SecurityConfig {
                                 "/api/members/register",
                                 "/api/login",
                                 "/api/logout",
-                                "/api/orders/create",
+                                "/api/auth/status", // 新增：允許檢查認證狀態
                                 "/",
                                 "/index.html",
                                 "/style.css",
@@ -97,13 +100,14 @@ public class SecurityConfig {
                                 "/auth.css",
                                 "/cart.css",
                                 "/images/**",
+                                "/image/**", // 修正圖片路徑
                                 "/fonts/**",
                                 "/static/**",
                                 "/error"
                         ).permitAll()
+                        .requestMatchers("/api/orders/create").authenticated() // 訂單建立需要認證
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/**").authenticated()
-                        .anyRequest().permitAll() // 暫時允許其他所有請求
                 )
                 .formLogin(form -> form
                         .loginProcessingUrl("/api/login")

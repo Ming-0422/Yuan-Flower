@@ -1,5 +1,6 @@
 package com.example.yuan.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -35,7 +36,7 @@ public class Order {
     @Column(nullable = false)
     private String customerPhone;
     
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String customerEmail;
     
     // 收件人資料
@@ -54,9 +55,7 @@ public class Order {
     @Column(precision = 8, scale = 2)
     private BigDecimal shippingFee;
     
-    private LocalDate deliveryDate;  // 改為 LocalDate
-    
-    private String deliveryTime;
+    private LocalDate deliveryDate;
     
     @Column(columnDefinition = "TEXT")
     private String orderNotes;
@@ -66,12 +65,17 @@ public class Order {
     
     private String paymentStatus = "待付款";
     
+    // 新增：銀行帳號後五碼
+    @Column(length = 5)
+    private String bankAccountLast5;
+    
     // LINE 通知狀態
     private boolean lineNotified = false;
     
     private LocalDateTime lineNotifiedAt;
     
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<OrderItem> orderItems = new ArrayList<>();
     
     @PrePersist
@@ -122,11 +126,8 @@ public class Order {
     public BigDecimal getShippingFee() { return shippingFee; }
     public void setShippingFee(BigDecimal shippingFee) { this.shippingFee = shippingFee; }
     
-    public LocalDate getDeliveryDate() { return deliveryDate; }  // 改為 LocalDate
-    public void setDeliveryDate(LocalDate deliveryDate) { this.deliveryDate = deliveryDate; }  // 改為 LocalDate
-    
-    public String getDeliveryTime() { return deliveryTime; }
-    public void setDeliveryTime(String deliveryTime) { this.deliveryTime = deliveryTime; }
+    public LocalDate getDeliveryDate() { return deliveryDate; }
+    public void setDeliveryDate(LocalDate deliveryDate) { this.deliveryDate = deliveryDate; }
     
     public String getOrderNotes() { return orderNotes; }
     public void setOrderNotes(String orderNotes) { this.orderNotes = orderNotes; }
@@ -136,6 +137,10 @@ public class Order {
     
     public String getPaymentStatus() { return paymentStatus; }
     public void setPaymentStatus(String paymentStatus) { this.paymentStatus = paymentStatus; }
+    
+    // 新增：銀行帳號後五碼的 getter/setter
+    public String getBankAccountLast5() { return bankAccountLast5; }
+    public void setBankAccountLast5(String bankAccountLast5) { this.bankAccountLast5 = bankAccountLast5; }
     
     public boolean isLineNotified() { return lineNotified; }
     public void setLineNotified(boolean lineNotified) { this.lineNotified = lineNotified; }

@@ -11,12 +11,7 @@ public class LineBotWebhookController {
     
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
-        System.out.println("收到訊息！");
-        System.out.println("User ID: " + event.getSource().getUserId());
-        System.out.println("訊息內容: " + event.getMessage().getText());
-        
-        // 您可以在這裡看到發送訊息的用戶的 User ID
-        // 將這個 ID 設定為 admin-user-id
+        // 目前不需要處理一般文字訊息，保持空白即可
     }
     
     @EventMapping

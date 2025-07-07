@@ -25,18 +25,16 @@ public class OrderController {
     public ResponseEntity<?> createOrder(@RequestBody OrderRequest orderRequest, 
                                        Authentication authentication) {
         try {
-            // 檢查是否已登入
-            if (authentication == null || !authentication.isAuthenticated() 
-                || authentication instanceof AnonymousAuthenticationToken) {
-                System.out.println("未登入用戶嘗試建立訂單");
-                return new ResponseEntity<>("請先登入會員", HttpStatus.UNAUTHORIZED);
-            }
-            
             String username = authentication.getName();
             System.out.println("已登入用戶建立訂單: " + username);
             
             Order order = orderService.createOrder(orderRequest, username);
-            return new ResponseEntity<>(order, HttpStatus.CREATED);
+            
+            // 創建一個簡單的回應物件，避免序列化整個 Order 物件
+            String responseJson = String.format("{\"orderId\": %d, \"message\": \"訂單建立成功\"}", order.getOrderId());
+            
+            return new ResponseEntity<>(responseJson, HttpStatus.CREATED);
+            
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

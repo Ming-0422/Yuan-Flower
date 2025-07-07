@@ -144,8 +144,7 @@ public class SimpleLineBotService {
         // 顧客資料
         message.append("👤 顧客資料:\n");
         message.append("姓名: ").append(order.getCustomerName()).append("\n");
-        message.append("電話: ").append(order.getCustomerPhone()).append("\n");
-        message.append("Email: ").append(order.getCustomerEmail()).append("\n\n");
+        message.append("電話: ").append(order.getCustomerPhone()).append("\n\n");
         
         // 收件人資料
         message.append("📦 收件人資料:\n");
@@ -158,9 +157,6 @@ public class SimpleLineBotService {
             message.append("希望到貨日: ")
                    .append(order.getDeliveryDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                    .append("\n");
-        }
-        if (order.getDeliveryTime() != null && !order.getDeliveryTime().isEmpty()) {
-            message.append("希望時段: ").append(order.getDeliveryTime()).append("\n");
         }
         message.append("\n");
         
@@ -183,7 +179,11 @@ public class SimpleLineBotService {
         }
         
         message.append("\n💳 付款方式: ").append(order.getPaymentMethod());
-        message.append("\n💵 付款狀態: ").append(order.getPaymentStatus());
+        
+        // 新增銀行帳號後五碼
+        if (order.getBankAccountLast5() != null && !order.getBankAccountLast5().isEmpty()) {
+            message.append("\n💰 銀行帳號後五碼: ").append(order.getBankAccountLast5());
+        }
         
         return message.toString();
     }
