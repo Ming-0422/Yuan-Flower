@@ -304,7 +304,7 @@ function initializeEventListeners() {
     }
 }
 
-// 認證相關功能
+// 認證相關功能 - 修復事件冒泡問題
 function initializeAuth() {
     const authModal = document.getElementById('authModal');
     const loginBtn = document.getElementById('loginBtn');
@@ -313,17 +313,21 @@ function initializeAuth() {
     const closeBtn = document.querySelector('.close-button');
     const tabButtons = document.querySelectorAll('.tab-button');
 
-    // 開啟登入模態框
+    // 開啟登入模態框 - 加入阻止事件冒泡
     if (loginBtn) {
-        loginBtn.addEventListener('click', () => {
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // 阻止事件冒泡
             authModal.style.display = 'block';
             showTab('login');
         });
     }
 
-    // 開啟註冊模態框
+    // 開啟註冊模態框 - 加入阻止事件冒泡
     if (registerBtn) {
-        registerBtn.addEventListener('click', () => {
+        registerBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // 阻止事件冒泡
             authModal.style.display = 'block';
             showTab('register');
         });
@@ -331,7 +335,9 @@ function initializeAuth() {
 
     // 關閉模態框
     if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
+        closeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // 阻止事件冒泡
             authModal.style.display = 'none';
         });
     }
@@ -345,7 +351,9 @@ function initializeAuth() {
 
     // 標籤切換
     tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // 阻止事件冒泡
             const tab = button.getAttribute('data-tab');
             showTab(tab);
         });
@@ -363,11 +371,30 @@ function initializeAuth() {
         registerForm.addEventListener('submit', handleRegister);
     }
 
-    // 登出
+    // 登出 - 加入阻止事件冒泡
     if (logoutBtn) {
-        logoutBtn.addEventListener('click', handleLogout);
+        logoutBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // 阻止事件冒泡
+            await handleLogout();
+        });
     }
 }
+
+// 額外的保護措施：在導航欄上添加事件委託檢查
+document.addEventListener('DOMContentLoaded', function() {
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        navbar.addEventListener('click', function(e) {
+            // 如果點擊的是認證相關按鈕，阻止冒泡
+            if (e.target.closest('#loginBtn') || 
+                e.target.closest('#registerBtn') || 
+                e.target.closest('#logoutBtn')) {
+                e.stopPropagation();
+            }
+        }, true); // 使用捕獲階段
+    }
+});
 
 function showTab(tabName) {
     // 更新標籤按鈕
@@ -666,6 +693,9 @@ function setupShoppingCart() {
 
 // 加入購物車
 function addToCart(e) {
+    e.preventDefault();
+    e.stopPropagation(); // 阻止事件冒泡
+    
     const productCard = e.target.closest('.product-card');
     if (!productCard) return;
 
@@ -747,6 +777,8 @@ function updateCartUI() {
 
 // 處理購物車操作
 function handleCartActions(e) {
+    e.stopPropagation(); // 阻止事件冒泡
+    
     const target = e.target;
     const id = target.dataset.id;
 
@@ -782,6 +814,7 @@ function setupCheckout() {
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', async function (e) {
             e.preventDefault();
+            e.stopPropagation(); // 阻止事件冒泡
 
             if (cart.length === 0) {
                 showCustomAlert('您的購物車是空的！', 'fas fa-shopping-cart', '購物車提示');
@@ -851,7 +884,9 @@ function setupCheckout() {
     }
 
     if (closeCheckoutBtn) {
-        closeCheckoutBtn.addEventListener('click', () => {
+        closeCheckoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // 阻止事件冒泡
             if (checkoutPage) {
                 checkoutPage.classList.remove('active');
             }
