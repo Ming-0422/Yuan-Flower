@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy; // 引入 SessionCreationPolicy
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -68,8 +70,9 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.setAllowCredentials(true);
-        config.setAllowedOriginPatterns(Arrays.asList("http://localhost:*", "http://127.0.0.1:*", "file://*", "https://*.ngrok-free.app",
-        "https://yuan-flower.onrender.com"));
+        config.setAllowedOriginPatterns(
+                Arrays.asList("http://localhost:*", "http://127.0.0.1:*", "file://*", "https://*.ngrok-free.app",
+                        "https://yuan-flower.onrender.com"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
@@ -81,15 +84,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // 暫時完全關閉 CSRF
+                .csrf(csrf -> csrf.disable()) // 完全關閉 CSRF
                 .cors(withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/callback", // LINE Bot webhook - 放在最前面
+                                "/callback", // LINE Bot webhook
                                 "/api/members/register",
-                                "/api/login",
+                                "/api/login", // 確保登入路徑允許
                                 "/api/logout",
-                                "/api/auth/status", // 新增：允許檢查認證狀態
+                                "/api/auth/status",
                                 "/",
                                 "/index.html",
                                 "/style.css",
@@ -101,21 +104,23 @@ public class SecurityConfig {
                                 "/auth.css",
                                 "/cart.css",
                                 "/images/**",
-                                "/image/**", // 修正圖片路徑
+                                "/image/**",
                                 "/fonts/**",
                                 "/static/**",
-                                "/error"
-                        ).permitAll()
-                        .requestMatchers("/api/orders/create").authenticated() // 訂單建立需要認證
+                                "/error")
+                        .permitAll()
+                        .requestMatchers("/api/orders/create").authenticated()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/**").authenticated()
-                )
+                        .requestMatchers("/api/**").authenticated())
                 .formLogin(form -> form
                         .loginProcessingUrl("/api/login")
+                        .usernameParameter("username") // 明確指定參數名
+                        .passwordParameter("password") // 明確指定參數名
                         .successHandler((request, response, authentication) -> {
                             response.setStatus(HttpStatus.OK.value());
+                            response.setContentType("application/json;charset=UTF-8");
                             try {
-                                response.getWriter().write("Login successful!");
+                                response.getWriter().write("{\"success\": true, \"message\": \"Login successful!\"}");
                                 response.getWriter().flush();
                             } catch (IOException e) {
                                 System.err.println("Error writing login success response: " + e.getMessage());
@@ -123,25 +128,28 @@ public class SecurityConfig {
                         })
                         .failureHandler((request, response, exception) -> {
                             response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                            response.setContentType("application/json;charset=UTF-8");
                             try {
-                                response.getWriter().write("Login failed: " + exception.getMessage());
+                                response.getWriter().write("{\"success\": false, \"message\": \"Login failed: "
+                                        + exception.getMessage() + "\"}");
                                 response.getWriter().flush();
                             } catch (IOException e) {
                                 System.err.println("Error writing login failure response: " + e.getMessage());
                             }
                         })
-                        .permitAll()
-                )
-                .sessionManagement(session -> session // 新增的 sessionManagement 配置
+                        .permitAll())
+                .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                         .maximumSessions(1)
+                        .sessionRegistry(sessionRegistry()) // 添加 session registry
                 )
                 .logout(logout -> logout
                         .logoutUrl("/api/logout")
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.setStatus(HttpStatus.OK.value());
+                            response.setContentType("application/json;charset=UTF-8");
                             try {
-                                response.getWriter().write("Logout successful!");
+                                response.getWriter().write("{\"success\": true, \"message\": \"Logout successful!\"}");
                                 response.getWriter().flush();
                             } catch (IOException e) {
                                 System.err.println("Error writing logout success response: " + e.getMessage());
@@ -149,9 +157,14 @@ public class SecurityConfig {
                         })
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
-                        .permitAll()
-                );
+                        .permitAll());
 
         return http.build();
+    }
+
+    // 添加 SessionRegistry Bean
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
     }
 }
