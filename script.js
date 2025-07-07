@@ -1,7 +1,6 @@
 // API 基礎 URL
 const API_BASE_URL = 'https://yuan-flower.onrender.com/api';
 
-
 // 全域購物車變數
 let cart = [];
 
@@ -21,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 初始化所有功能
     initializeEventListeners();
     initializeAuth();
+    initializeRegistrationValidation();  // 添加註冊驗證初始化
     setupShoppingCart();
     setupCheckout();
 
@@ -38,6 +38,221 @@ document.addEventListener('DOMContentLoaded', function () {
     // 初始更新購物車UI
     updateCartUI();
 });
+
+// 驗證規則
+const validationRules = {
+    username: {
+        pattern: /^[a-zA-Z0-9_]{3,20}$/,
+        message: '用戶名只能包含字母、數字和底線，3-20個字符'
+    },
+    email: {
+        pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        message: '請輸入有效的電子郵件地址'
+    },
+    password: {
+        pattern: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
+        message: '密碼必須至少6個字符，包含至少1個大寫字母和1個小寫字母'
+    },
+    phone: {
+        pattern: /^09[0-9]{8}$/,
+        message: '請輸入有效的台灣手機號碼 (09xxxxxxxx)'
+    }
+};
+
+// 初始化註冊表單驗證
+function initializeRegistrationValidation() {
+    const form = document.getElementById('registerFormElement');
+    if (!form) return;
+
+    const inputs = {
+        username: document.getElementById('register-username'),
+        email: document.getElementById('register-email'),
+        password: document.getElementById('register-password'),
+        phone: document.getElementById('register-phone')
+    };
+
+    // 為每個輸入框添加即時驗證
+    Object.keys(inputs).forEach(field => {
+        const input = inputs[field];
+        if (input) {
+            input.addEventListener('input', () => validateField(field, input));
+            input.addEventListener('blur', () => validateField(field, input));
+        }
+    });
+
+    // 密碼強度指示器
+    if (inputs.password) {
+        inputs.password.addEventListener('input', updatePasswordStrength);
+    }
+
+    // 表單提交驗證
+    form.addEventListener('submit', handleEnhancedRegister);
+}
+
+// 驗證單個欄位
+function validateField(fieldName, input) {
+    const rule = validationRules[fieldName];
+    const errorElement = document.getElementById(`${fieldName}-error`);
+    const value = input.value.trim();
+    
+    let isValid = false;
+    let message = rule.message;
+
+    if (!value) {
+        message = '此欄位為必填';
+    } else if (rule.pattern.test(value)) {
+        isValid = true;
+    }
+
+    // 特殊驗證：用戶名長度
+    if (fieldName === 'username' && value.length > 0) {
+        if (value.length < 3) {
+            message = '用戶名至少需要3個字符';
+            isValid = false;
+        } else if (value.length > 20) {
+            message = '用戶名不能超過20個字符';
+            isValid = false;
+        }
+    }
+
+    // 更新UI
+    input.classList.toggle('valid', isValid);
+    input.classList.toggle('invalid', !isValid);
+    
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.classList.toggle('show', !isValid);
+    }
+
+    // 更新提交按鈕狀態
+    updateSubmitButtonState();
+    
+    return isValid;
+}
+
+// 密碼強度指示器
+function updatePasswordStrength() {
+    const password = document.getElementById('register-password').value;
+    const strengthIndicator = document.getElementById('password-strength');
+    
+    if (!strengthIndicator) return;
+
+    let strength = 0;
+    let strengthClass = '';
+    
+    // 檢查密碼強度
+    if (password.length >= 6) strength++;
+    if (/[a-z]/.test(password)) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/[0-9]/.test(password)) strength++;
+    if (/[^a-zA-Z0-9]/.test(password)) strength++;
+
+    if (strength < 3) {
+        strengthClass = 'weak';
+    } else if (strength < 4) {
+        strengthClass = 'medium';
+    } else {
+        strengthClass = 'strong';
+    }
+
+    strengthIndicator.className = `password-strength ${strengthClass}`;
+}
+
+// 更新提交按鈕狀態
+function updateSubmitButtonState() {
+    const submitBtn = document.querySelector('#registerFormElement .auth-submit-btn');
+    if (!submitBtn) return;
+
+    const inputs = [
+        document.getElementById('register-username'),
+        document.getElementById('register-email'),
+        document.getElementById('register-password'),
+        document.getElementById('register-phone')
+    ];
+
+    const allValid = inputs.every(input => {
+        if (!input) return false;
+        const fieldName = input.name;
+        const value = input.value.trim();
+        return value && validationRules[fieldName].pattern.test(value);
+    });
+
+    submitBtn.disabled = !allValid;
+}
+
+// 增強的註冊處理函數
+async function handleEnhancedRegister(e) {
+    e.preventDefault();
+    
+    // 最終驗證所有欄位
+    const inputs = {
+        username: document.getElementById('register-username'),
+        email: document.getElementById('register-email'),
+        password: document.getElementById('register-password'),
+        phone: document.getElementById('register-phone')
+    };
+
+    let allValid = true;
+    Object.keys(inputs).forEach(field => {
+        if (!validateField(field, inputs[field])) {
+            allValid = false;
+        }
+    });
+
+    if (!allValid) {
+        showMessage('registerMessage', '請修正表單中的錯誤', 'error');
+        return;
+    }
+
+    const formData = new FormData(e.target);
+    const registerData = {
+        username: formData.get('username').trim(),
+        email: formData.get('email').trim(),
+        password: formData.get('password'),
+        phone: formData.get('phone').trim()
+        // 移除 address 欄位
+    };
+    
+    // 顯示載入狀態
+    const submitBtn = e.target.querySelector('.auth-submit-btn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = '註冊中...';
+    submitBtn.disabled = true;
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/members/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(registerData)
+        });
+        
+        if (response.ok) {
+            showMessage('registerMessage', '註冊成功！請登入', 'success');
+            setTimeout(() => {
+                showTab('login');
+                // 自動填入用戶名到登入表單
+                const loginUsername = document.getElementById('login-username');
+                if (loginUsername) {
+                    loginUsername.value = registerData.username;
+                }
+            }, 1500);
+            e.target.reset();
+            updatePasswordStrength(); // 清除密碼強度指示器
+        } else {
+            const error = await response.text();
+            showMessage('registerMessage', error || '註冊失敗', 'error');
+        }
+    } catch (error) {
+        console.error('註冊錯誤:', error);
+        showMessage('registerMessage', '網路錯誤，請稍後再試', 'error');
+    } finally {
+        // 恢復按鈕狀態
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }
+}
 
 // 初始化事件監聽器
 function initializeEventListeners() {
@@ -142,7 +357,7 @@ function initializeAuth() {
         loginForm.addEventListener('submit', handleLogin);
     }
 
-    // 註冊表單提交
+    // 註冊表單提交（這個會被 handleEnhancedRegister 覆蓋）
     const registerForm = document.getElementById('registerFormElement');
     if (registerForm) {
         registerForm.addEventListener('submit', handleRegister);
@@ -175,24 +390,24 @@ async function handleLogin(e) {
         password: formData.get('password')
     };
 
-    console.log('Attempting login with:', loginData.username); // 除錯用
+    console.log('Attempting login with:', loginData.username);
 
     try {
         const response = await fetch(`${API_BASE_URL}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json' // 添加這行
+                'Accept': 'application/json'
             },
             body: new URLSearchParams(loginData),
             credentials: 'include'
         });
 
-        console.log('Login response status:', response.status); // 除錯用
+        console.log('Login response status:', response.status);
 
         if (response.ok) {
             const responseData = await response.json();
-            console.log('Login response:', responseData); // 除錯用
+            console.log('Login response:', responseData);
 
             // 登入成功後檢查實際認證狀態
             await checkAuthStatus();
@@ -218,7 +433,6 @@ async function handleRegister(e) {
         username: formData.get('username'),
         email: formData.get('email'),
         password: formData.get('password'),
-        address: formData.get('address') || '',
         phone: formData.get('phone') || ''
     };
 
@@ -370,7 +584,7 @@ function setObjectFit(img) {
     }
 }
 
-// 購物車功能
+// 購物車功能 - 修復版本
 function setupShoppingCart() {
     const cartSidebar = document.querySelector('.cart-sidebar');
     const cartOverlay = document.querySelector('.cart-overlay');
@@ -379,43 +593,43 @@ function setupShoppingCart() {
     const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
     const cartItemsContainer = document.querySelector('.cart-items');
 
-    // 開啟購物車
+    // 清除購物車圖示的所有現有事件監聽器
     if (openCartBtn) {
-        openCartBtn.addEventListener('click', () => {
-            console.log('Cart icon clicked!'); // 除錯用
+        // 克隆元素來移除所有事件監聽器
+        const newOpenCartBtn = openCartBtn.cloneNode(true);
+        openCartBtn.parentNode.replaceChild(newOpenCartBtn, openCartBtn);
+        
+        // 重新添加單一事件監聽器
+        newOpenCartBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('購物車圖示被點擊'); // 除錯用
+            
             if (cartSidebar && cartOverlay) {
-                cartSidebar.classList.add('active');
-                cartOverlay.classList.add('active');
-            }
-        });
-    }
-    // 完整的購物車除錯
-    console.log('=== 購物車除錯 ===');
-    console.log('購物車數據:', cart);
-    console.log('購物車圖示:', document.querySelector('.nav-cart'));
-    console.log('購物車側邊欄:', document.querySelector('.cart-sidebar'));
-    console.log('購物車遮罩:', document.querySelector('.cart-overlay'));
-
-    // 檢查事件監聽器
-    const cartIcon = document.querySelector('.nav-cart');
-    if (cartIcon) {
-        console.log('購物車圖示存在，添加點擊測試');
-        cartIcon.onclick = function () {
-            console.log('購物車被點擊！');
-            const sidebar = document.querySelector('.cart-sidebar');
-            const overlay = document.querySelector('.cart-overlay');
-            if (sidebar && overlay) {
-                sidebar.classList.add('active');
-                overlay.classList.add('active');
-                console.log('購物車應該已打開');
+                const isOpen = cartSidebar.classList.contains('active');
+                
+                if (isOpen) {
+                    // 關閉購物車
+                    cartSidebar.classList.remove('active');
+                    cartOverlay.classList.remove('active');
+                    console.log('購物車已關閉');
+                } else {
+                    // 開啟購物車
+                    cartSidebar.classList.add('active');
+                    cartOverlay.classList.add('active');
+                    console.log('購物車已開啟');
+                }
             } else {
                 console.log('找不到購物車元素');
             }
-        };
+        });
     }
+
     // 關閉購物車
     if (closeCartBtn) {
-        closeCartBtn.addEventListener('click', () => {
+        closeCartBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             if (cartSidebar && cartOverlay) {
                 cartSidebar.classList.remove('active');
                 cartOverlay.classList.remove('active');
@@ -423,10 +637,13 @@ function setupShoppingCart() {
         });
     }
 
+    // 點擊遮罩關閉
     if (cartOverlay) {
-        cartOverlay.addEventListener('click', () => {
-            cartSidebar.classList.remove('active');
-            cartOverlay.classList.remove('active');
+        cartOverlay.addEventListener('click', function(e) {
+            if (e.target === cartOverlay) {
+                cartSidebar.classList.remove('active');
+                cartOverlay.classList.remove('active');
+            }
         });
     }
 
@@ -439,6 +656,12 @@ function setupShoppingCart() {
     if (cartItemsContainer) {
         cartItemsContainer.addEventListener('click', handleCartActions);
     }
+
+    // 除錯資訊
+    console.log('購物車功能已初始化');
+    console.log('購物車圖示:', newOpenCartBtn || openCartBtn);
+    console.log('購物車側邊欄:', cartSidebar);
+    console.log('購物車遮罩:', cartOverlay);
 }
 
 // 加入購物車
