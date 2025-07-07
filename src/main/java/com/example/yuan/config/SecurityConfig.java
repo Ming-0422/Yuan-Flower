@@ -68,7 +68,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.setAllowCredentials(true);
-        config.setAllowedOriginPatterns(Arrays.asList("http://localhost:*", "http://127.0.0.1:*", "file://*", "https://*.ngrok-free.app"));
+        config.setAllowedOriginPatterns(Arrays.asList("http://localhost:*", "http://127.0.0.1:*", "file://*", "https://*.ngrok-free.app",
+        "https://yuan-flower.onrender.com"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
