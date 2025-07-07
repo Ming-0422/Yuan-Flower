@@ -234,7 +234,7 @@ body {
     width: 32vw;
     height: auto;
     transition: max-width 0.3s, width 0.3s;
-    box-shadow: 0 8px 32px rgba(255,107,157,0.08);
+    box-shadow: 0 8px 32px rgba(255, 107, 157, 0.08);
     border-radius: 20px;
 }
 
@@ -436,7 +436,7 @@ footer p {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
@@ -558,7 +558,7 @@ footer p {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 1001;
     opacity: 0;
     visibility: hidden;
@@ -579,7 +579,7 @@ footer p {
     height: 100%;
     background: white;
     z-index: 1002;
-    box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
     transition: right 0.4s ease-in-out;
     display: flex;
     flex-direction: column;
@@ -717,7 +717,7 @@ footer p {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
     z-index: 2000;
     display: none;
     align-items: center;
@@ -735,7 +735,7 @@ footer p {
     max-width: 800px;
     height: 90vh;
     border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -888,7 +888,7 @@ footer p {
     height: 1rem;
 }
 
-.radio-label input[type="radio"]:checked + * {
+.radio-label input[type="radio"]:checked+* {
     font-weight: bold;
 }
 
@@ -962,6 +962,7 @@ footer p {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -972,9 +973,11 @@ footer p {
     0% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(-10px);
     }
+
     100% {
         transform: translateY(0);
     }
@@ -984,16 +987,19 @@ footer p {
     0% {
         box-shadow: 0 2px 15px rgba(255, 182, 193, 0.2);
     }
+
     50% {
         box-shadow: 0 2px 20px rgba(255, 182, 193, 0.6);
     }
+
     100% {
         box-shadow: 0 2px 15px rgba(255, 182, 193, 0.2);
     }
 }
 
 /* 商品字體設定 */
-#products, #products * {
+#products,
+#products * {
     font-family: 'Zen Maru Gothic', 'Noto Sans TC', '微軟正黑體', Arial, sans-serif !important;
 }
 
@@ -1002,6 +1008,7 @@ footer p {
     .hero {
         gap: 1vw;
     }
+
     .logo-img {
         max-width: 260px;
         width: 40vw;
@@ -1020,30 +1027,33 @@ footer p {
         text-align: center;
         gap: 0;
     }
+
     .hero-content {
         align-items: center;
         text-align: center;
         max-width: 90vw;
         margin-bottom: 2rem;
     }
+
     .logo-img {
         max-width: 180px;
         width: 80vw;
     }
+
     .hero-right {
         margin-top: 1rem;
     }
-    
+
     .shipping-notice {
         font-size: 1.1rem;
         bottom: -12rem;
         padding: 0.6rem 1.2rem;
     }
-    
+
     .hamburger {
         display: flex;
     }
-    
+
     .nav-menu {
         display: none;
         position: absolute;
@@ -1051,30 +1061,30 @@ footer p {
         left: 0;
         right: 0;
         background: white;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         padding: 1rem;
         flex-direction: column;
     }
-    
+
     .nav-menu.active {
         display: flex;
     }
-    
+
     .nav-link {
         text-align: center;
         padding: 1rem;
         width: 100%;
     }
-    
+
     .form-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .checkout-container {
         width: 95%;
         padding: 1rem;
     }
-    
+
     .checkout-steps {
         font-size: 0.8em;
     }
@@ -1084,17 +1094,17 @@ footer p {
     .products-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .contact-info {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .checkout-container {
         height: 95vh;
         max-width: 95vw;
     }
-    
+
     .checkout-content {
         padding: 1rem;
     }
@@ -1105,28 +1115,108 @@ footer p {
         max-width: 120px;
         width: 95vw;
     }
+
     .hero-content {
         max-width: 98vw;
     }
-    
+
     .hero-title {
         font-size: 2.5rem;
     }
-    
+
     .hero-subtitle {
         font-size: 1.2rem;
     }
-    
+
     .nav-container {
         padding: 0 10px;
     }
-    
+
     .nav-right {
         gap: 0.5rem;
     }
-    
+
     .nav-button {
         padding: 6px 12px;
         font-size: 12px;
+    }
+
+    /* 表單驗證樣式 */
+    .form-group {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+
+    .form-group input.valid {
+        border-color: #28a745;
+        background-color: #f8fff9;
+    }
+
+    .form-group input.invalid {
+        border-color: #dc3545;
+        background-color: #fff8f8;
+    }
+
+    .error-message {
+        color: #dc3545;
+        font-size: 0.875em;
+        margin-top: 0.25rem;
+        display: none;
+    }
+
+    .error-message.show {
+        display: block;
+    }
+
+    /* 密碼強度指示器 */
+    .password-strength {
+        height: 4px;
+        margin-top: 0.5rem;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+
+    .password-strength.weak {
+        background-color: #dc3545;
+        width: 33%;
+    }
+
+    .password-strength.medium {
+        background-color: #ffc107;
+        width: 66%;
+    }
+
+    .password-strength.strong {
+        background-color: #28a745;
+        width: 100%;
+    }
+
+    /* 即時驗證反饋 */
+    .validation-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2em;
+    }
+
+    .validation-icon.valid {
+        color: #28a745;
+    }
+
+    .validation-icon.invalid {
+        color: #dc3545;
+    }
+
+    /* 表單提交按鈕狀態 */
+    .auth-submit-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    .auth-submit-btn:disabled:hover {
+        transform: none;
+        box-shadow: none;
     }
 }

@@ -7,7 +7,8 @@
     <title>小花圓🌸｡⋆ - 不凋花藝×手作花束×客製專屬祝福</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -28,15 +29,16 @@
                 <button id="loginBtn" class="nav-button">登入</button>
                 <button id="registerBtn" class="nav-button">註冊</button>
                 <button id="logoutBtn" class="nav-button" style="display: none;">登出</button>
-                <span id="welcomeUser" style="margin-right: 15px; display: none; color: #ff6b9d; font-weight: bold;"></span>
-                
+                <span id="welcomeUser"
+                    style="margin-right: 15px; display: none; color: #ff6b9d; font-weight: bold;"></span>
+
                 <div class="nav-cart" id="cart-icon">
-                    <i class="fas fa-shopping-cart"></i> 
+                    <i class="fas fa-shopping-cart"></i>
                     <span class="cart-count" id="cart-count">0</span>
                 </div>
                 <div class="hamburger">
-                    <span></span> 
-                    <span></span> 
+                    <span></span>
+                    <span></span>
                     <span></span>
                 </div>
             </div>
@@ -66,7 +68,8 @@
                             style="color: #2d3e50; text-decoration: none; font-weight: bold;">小盆栽</a></li>
                     <li style="margin-bottom: 0.7rem;"><a href="#bouquet"
                             style="color: #2d3e50; text-decoration: none; font-weight: bold;">花束</a></li>
-                    <li style="margin-bottom: 0.7rem;"><a href="#flowers" style="color: #2d3e50; text-decoration: none; font-weight: bold;">精選單花</a></li>
+                    <li style="margin-bottom: 0.7rem;"><a href="#flowers"
+                            style="color: #2d3e50; text-decoration: none; font-weight: bold;">精選單花</a></li>
                     <li><a href="#vase" style="color: #2d3e50; text-decoration: none; font-weight: bold;">花瓶組</a></li>
                 </ul>
             </aside>
@@ -493,198 +496,210 @@
             <div id="registerForm" class="tab-content">
                 <form id="registerFormElement">
                     <div class="form-group">
-                        <label for="register-username">用戶名</label>
-                        <input type="text" id="register-username" name="username" required>
+                        <label for="register-username">用戶名 *</label>
+                        <input type="text" id="register-username" name="username" required minlength="3" maxlength="20"
+                            pattern="^[a-zA-Z0-9_]+$" title="用戶名只能包含字母、數字和底線，3-20個字符">
+                        <span id="username-error" class="error-message">用戶名只能包含字母、數字和底線，3-20個字符</span>
                     </div>
+
                     <div class="form-group">
-                        <label for="register-email">電子郵件</label>
+                        <label for="register-email">電子郵件 *</label>
                         <input type="email" id="register-email" name="email" required>
+                        <span id="email-error" class="error-message">請輸入有效的電子郵件地址</span>
                     </div>
+
                     <div class="form-group">
-                        <label for="register-password">密碼</label>
-                        <input type="password" id="register-password" name="password" required>
+                        <label for="register-password">密碼 *</label>
+                        <input type="password" id="register-password" name="password" required minlength="6"
+                            maxlength="50" title="密碼必須至少6個字符，包含至少1個大寫字母和1個小寫字母">
+                        <span id="password-error" class="error-message">密碼必須至少6個字符，包含至少1個大寫字母和1個小寫字母</span>
+                        <div class="password-strength" id="password-strength"></div>
                     </div>
+
                     <div class="form-group">
-                        <label for="register-address">地址</label>
-                        <input type="text" id="register-address" name="address">
+                        <label for="register-phone">電話 *</label>
+                        <input type="tel" id="register-phone" name="phone" required pattern="^09[0-9]{8}$"
+                            title="請輸入有效的台灣手機號碼 (09xxxxxxxx)">
+                        <span id="phone-error" class="error-message">請輸入有效的台灣手機號碼 (09xxxxxxxx)</span>
                     </div>
-                    <div class="form-group">
-                        <label for="register-phone">電話</label>
-                        <input type="tel" id="register-phone" name="phone">
-                    </div>
+
                     <button type="submit" class="auth-submit-btn">註冊</button>
                     <p id="registerMessage" class="auth-message"></p>
                 </form>
             </div>
-        </div>
-    </div>
 
-    <!-- 購物車側邊欄 -->
-    <div class="cart-sidebar">
-        <div class="cart-header">
-            <h3>我的購物車</h3>
-            <button class="close-cart-btn">&times;</button>
-        </div>
-        <div class="cart-items">
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <strong>總計:</strong>
-                <span id="cart-total-price">NT$ 0</span>
-            </div>
-            <button class="checkout-btn">前往結帳</button>
-        </div>
-    </div>
-    <div class="cart-overlay"></div>
-
-    <!-- 結帳頁面 -->
-    <div id="checkout-page" class="checkout-overlay-page">
-        <div class="checkout-container">
-            <div class="checkout-header">
-                <h2>結帳</h2>
-                <button class="close-checkout-btn">&times;</button>
-            </div>
-            <div class="checkout-steps">
-                <div class="step active" data-step="1">1. 訂單確認</div>
-                <div class="step-arrow">&gt;</div>
-                <div class="step" data-step="2">2. 寄送方式</div>
-                <div class="step-arrow">&gt;</div>
-                <div class="step" data-step="3">3. 確認資料</div>
-                <div class="step-arrow">&gt;</div>
-                <div class="step" data-step="4">4. 付款資訊</div>
-            </div>
-
-            <div class="checkout-content">
-                <div id="checkout-step-1" class="checkout-step-content active">
-                    <h3>訂單明細</h3>
-                    <div id="checkout-order-summary" class="order-summary"></div>
-                    <h3>顧客資料</h3>
-                    <form id="customer-info-form" class="form-grid">
-                        <div class="form-group">
-                            <label for="customer-name">收件人</label>
-                            <input type="text" id="customer-name" required autocomplete="off">
-                        </div>
-                        <div class="form-group">
-                            <label for="customer-phone">電話</label>
-                            <input type="tel" id="customer-phone" required autocomplete="off">
-                            <span id="customer-phone-error" class="error-message">電話號碼格式不正確 (應為10位數字)。</span>
-                        </div>
-                    </form>
-                    <div class="checkout-actions">
-                        <button id="goto-step-2-btn" class="checkout-btn">選擇寄送方式</button>
-                    </div>
+            <!-- 購物車側邊欄 -->
+            <div class="cart-sidebar">
+                <div class="cart-header">
+                    <h3>我的購物車</h3>
+                    <button class="close-cart-btn">&times;</button>
                 </div>
-
-                <div id="checkout-step-2" class="checkout-step-content">
-                    <h3>寄送方式</h3>
-                    <form id="shipping-info-form">
-                        <div class="shipping-options">
-                            <label class="radio-label">
-                                <input type="radio" name="shipping-method" value="homedelivery" checked>
-                                指定地址
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="shipping-method" value="711">
-                                7-11 門市取貨
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="shipping-method" value="familymart">
-                                全家門市取貨
-                            </label>
-                        </div>
-
-                        <div id="home-delivery-fields" class="form-grid">
-                            <div class="form-group full-width">
-                                <label for="customer-address">地址</label>
-                                <input type="text" id="customer-address" required autocomplete="off">
-                                <span id="customer-address-error" class="error-message">請輸入有效的地址。</span>
-                            </div>
-                        </div>
-
-                        <div id="store-pickup-fields" class="form-grid" style="display: none;">
-                            <div class="form-group full-width">
-                                <label for="pickup-store-info">門市名稱以及店號</label>
-                                <input type="text" id="pickup-store-info" autocomplete="off">
-                            </div>
-                        </div>
-
-                        <div class="form-grid" style="margin-top: 1rem;">
-                            <div class="form-group">
-                                <label for="delivery-date">希望到貨日</label>
-                                <input type="text" id="delivery-date" name="delivery-date" placeholder="請選擇日期...">
-                            </div>
-                            <div class="form-group">
-                                <label for="bank-account-last5">銀行帳號後5碼</label>
-                                <input type="text" id="bank-account-last5" name="bank-account-last5" placeholder="請輸入銀行帳號後5碼" maxlength="5">
-                                <span id="bank-account-last5-error" class="error-message">請輸入5位數字。</span>
-                            </div>
-                        </div>
-                        <div class="form-grid" style="margin-top: 1rem;">
-                            <div class="form-group full-width">
-                                <label for="order-notes">備註</label>
-                                <textarea id="order-notes" rows="3" placeholder="有什麼特殊需求請告訴我們..."></textarea>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="checkout-actions space-between">
-                        <button id="back-to-step-1-btn" class="checkout-btn secondary">返回上一步</button>
-                        <button id="goto-step-3-btn" class="checkout-btn">確認資料</button>
-                    </div>
+                <div class="cart-items">
                 </div>
-
-                <div id="checkout-step-3" class="checkout-step-content">
-                    <h3>確認資料</h3>
-                    <div id="confirmation-summary" class="confirmation-summary"></div>
-
-                    <h3 style="margin-top: 20px;">訂單明細</h3>
-                    <div id="confirmation-order-summary" class="order-summary"></div>
-
-                    <div class="checkout-actions space-between">
-                        <button id="back-to-step-2-btn" class="checkout-btn secondary">返回修改</button>
-                        <button id="goto-step-4-btn" class="checkout-btn">前往付款</button>
+                <div class="cart-footer">
+                    <div class="cart-total">
+                        <strong>總計:</strong>
+                        <span id="cart-total-price">NT$ 0</span>
                     </div>
-                </div>
-
-                <div id="checkout-step-4" class="checkout-step-content">
-                    <h3>付款方式</h3>
-
-                    <div id="bank-transfer-info-checkout" class="payment-details">
-                        <h4 style="margin-bottom: 10px;">銀行轉帳資訊</h4>
-                        <p>銀行：第一銀行 (007)</p>
-                        <p>帳號：21868141845</p>
-                        <p>戶名：吳沂臻</p>
-                        <p style="margin-top: 10px; color: #e74c3c;">如果遇到問題可以到IG或Line詢問，有什麼需求可以跟我們說，謝謝您的喜愛！</p>
-                    </div>
-
-                    <div class="checkout-actions space-between">
-                        <button id="back-to-step-3-btn" class="checkout-btn secondary">返回上一步</button>
-                        <button id="confirm-purchase-btn" class="checkout-btn">確認購買</button>
-                    </div>
-                </div>
-
-                <div id="checkout-step-5" class="checkout-step-content">
-                    <div class="confirmation-message">
-                        <i class="fas fa-check-circle"></i>
-                        <h3>感謝您的購買！</h3>
-                        <p>我們已收到您的訂單，將盡快為您處理。</p>
-                        
-                        <div id="order-success-info" style="margin: 1.5rem 0; padding: 1rem; background-color: #f8f9fa; border-radius: 8px; text-align: center;">
-                            <h4 style="margin-bottom: 0.5rem; color: #333;">您的訂單編號</h4>
-                            <p id="final-order-id" style="font-size: 1.5em; font-weight: bold; color: #ff6b9d; letter-spacing: 2px;"></p>
-                        </div>
-
-                        <button id="continue-shopping-btn" class="checkout-btn">繼續購物</button>
-                    </div>
+                    <button class="checkout-btn">前往結帳</button>
                 </div>
             </div>
-        </div>
-    </div>
+            <div class="cart-overlay"></div>
 
-    <!-- 引入 JavaScript 檔案 -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://npmcdn.com/flatpickr/dist/l10n/zh_tw.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script src="script.js"></script>
+            <!-- 結帳頁面 -->
+            <div id="checkout-page" class="checkout-overlay-page">
+                <div class="checkout-container">
+                    <div class="checkout-header">
+                        <h2>結帳</h2>
+                        <button class="close-checkout-btn">&times;</button>
+                    </div>
+                    <div class="checkout-steps">
+                        <div class="step active" data-step="1">1. 訂單確認</div>
+                        <div class="step-arrow">&gt;</div>
+                        <div class="step" data-step="2">2. 寄送方式</div>
+                        <div class="step-arrow">&gt;</div>
+                        <div class="step" data-step="3">3. 確認資料</div>
+                        <div class="step-arrow">&gt;</div>
+                        <div class="step" data-step="4">4. 付款資訊</div>
+                    </div>
+
+                    <div class="checkout-content">
+                        <div id="checkout-step-1" class="checkout-step-content active">
+                            <h3>訂單明細</h3>
+                            <div id="checkout-order-summary" class="order-summary"></div>
+                            <h3>顧客資料</h3>
+                            <form id="customer-info-form" class="form-grid">
+                                <div class="form-group">
+                                    <label for="customer-name">收件人</label>
+                                    <input type="text" id="customer-name" required autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label for="customer-phone">電話</label>
+                                    <input type="tel" id="customer-phone" required autocomplete="off">
+                                    <span id="customer-phone-error" class="error-message">電話號碼格式不正確 (應為10位數字)。</span>
+                                </div>
+                            </form>
+                            <div class="checkout-actions">
+                                <button id="goto-step-2-btn" class="checkout-btn">選擇寄送方式</button>
+                            </div>
+                        </div>
+
+                        <div id="checkout-step-2" class="checkout-step-content">
+                            <h3>寄送方式</h3>
+                            <form id="shipping-info-form">
+                                <div class="shipping-options">
+                                    <label class="radio-label">
+                                        <input type="radio" name="shipping-method" value="homedelivery" checked>
+                                        指定地址
+                                    </label>
+                                    <label class="radio-label">
+                                        <input type="radio" name="shipping-method" value="711">
+                                        7-11 門市取貨
+                                    </label>
+                                    <label class="radio-label">
+                                        <input type="radio" name="shipping-method" value="familymart">
+                                        全家門市取貨
+                                    </label>
+                                </div>
+
+                                <div id="home-delivery-fields" class="form-grid">
+                                    <div class="form-group full-width">
+                                        <label for="customer-address">地址</label>
+                                        <input type="text" id="customer-address" required autocomplete="off">
+                                        <span id="customer-address-error" class="error-message">請輸入有效的地址。</span>
+                                    </div>
+                                </div>
+
+                                <div id="store-pickup-fields" class="form-grid" style="display: none;">
+                                    <div class="form-group full-width">
+                                        <label for="pickup-store-info">門市名稱以及店號</label>
+                                        <input type="text" id="pickup-store-info" autocomplete="off">
+                                    </div>
+                                </div>
+
+                                <div class="form-grid" style="margin-top: 1rem;">
+                                    <div class="form-group">
+                                        <label for="delivery-date">希望到貨日</label>
+                                        <input type="text" id="delivery-date" name="delivery-date"
+                                            placeholder="請選擇日期...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bank-account-last5">銀行帳號後5碼</label>
+                                        <input type="text" id="bank-account-last5" name="bank-account-last5"
+                                            placeholder="請輸入銀行帳號後5碼" maxlength="5">
+                                        <span id="bank-account-last5-error" class="error-message">請輸入5位數字。</span>
+                                    </div>
+                                </div>
+                                <div class="form-grid" style="margin-top: 1rem;">
+                                    <div class="form-group full-width">
+                                        <label for="order-notes">備註</label>
+                                        <textarea id="order-notes" rows="3" placeholder="有什麼特殊需求請告訴我們..."></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="checkout-actions space-between">
+                                <button id="back-to-step-1-btn" class="checkout-btn secondary">返回上一步</button>
+                                <button id="goto-step-3-btn" class="checkout-btn">確認資料</button>
+                            </div>
+                        </div>
+
+                        <div id="checkout-step-3" class="checkout-step-content">
+                            <h3>確認資料</h3>
+                            <div id="confirmation-summary" class="confirmation-summary"></div>
+
+                            <h3 style="margin-top: 20px;">訂單明細</h3>
+                            <div id="confirmation-order-summary" class="order-summary"></div>
+
+                            <div class="checkout-actions space-between">
+                                <button id="back-to-step-2-btn" class="checkout-btn secondary">返回修改</button>
+                                <button id="goto-step-4-btn" class="checkout-btn">前往付款</button>
+                            </div>
+                        </div>
+
+                        <div id="checkout-step-4" class="checkout-step-content">
+                            <h3>付款方式</h3>
+
+                            <div id="bank-transfer-info-checkout" class="payment-details">
+                                <h4 style="margin-bottom: 10px;">銀行轉帳資訊</h4>
+                                <p>銀行：第一銀行 (007)</p>
+                                <p>帳號：21868141845</p>
+                                <p>戶名：吳沂臻</p>
+                                <p style="margin-top: 10px; color: #e74c3c;">如果遇到問題可以到IG或Line詢問，有什麼需求可以跟我們說，謝謝您的喜愛！</p>
+                            </div>
+
+                            <div class="checkout-actions space-between">
+                                <button id="back-to-step-3-btn" class="checkout-btn secondary">返回上一步</button>
+                                <button id="confirm-purchase-btn" class="checkout-btn">確認購買</button>
+                            </div>
+                        </div>
+
+                        <div id="checkout-step-5" class="checkout-step-content">
+                            <div class="confirmation-message">
+                                <i class="fas fa-check-circle"></i>
+                                <h3>感謝您的購買！</h3>
+                                <p>我們已收到您的訂單，將盡快為您處理。</p>
+
+                                <div id="order-success-info"
+                                    style="margin: 1.5rem 0; padding: 1rem; background-color: #f8f9fa; border-radius: 8px; text-align: center;">
+                                    <h4 style="margin-bottom: 0.5rem; color: #333;">您的訂單編號</h4>
+                                    <p id="final-order-id"
+                                        style="font-size: 1.5em; font-weight: bold; color: #ff6b9d; letter-spacing: 2px;">
+                                    </p>
+                                </div>
+
+                                <button id="continue-shopping-btn" class="checkout-btn">繼續購物</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 引入 JavaScript 檔案 -->
+            <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+            <script src="https://npmcdn.com/flatpickr/dist/l10n/zh_tw.js"></script>
+            <script type="text/javascript"
+                src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+            <script src="script.js"></script>
 </body>
 
 </html>
