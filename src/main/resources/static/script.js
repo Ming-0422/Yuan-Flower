@@ -6,35 +6,35 @@ const API_BASE_URL = 'https://yuan-flower.onrender.com/api';
 let cart = [];
 
 // 初始化
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // 初始化 EmailJS
     if (typeof emailjs !== 'undefined') {
         emailjs.init({ publicKey: 'jM2R9RmgbvvAfadTq' });
     }
-    
+
     // 載入購物車數據
     cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
+
     // 檢查登入狀態
     checkAuthStatus();
-    
+
     // 初始化所有功能
     initializeEventListeners();
     initializeAuth();
     setupShoppingCart();
     setupCheckout();
-    
+
     // 圖片載入處理
     document.querySelectorAll('.product-img').forEach(img => {
         if (img.complete) {
             setObjectFit(img);
         } else {
-            img.onload = function() {
+            img.onload = function () {
                 setObjectFit(img);
             }
         }
     });
-    
+
     // 初始更新購物車UI
     updateCartUI();
 });
@@ -50,7 +50,7 @@ function initializeEventListeners() {
     // 漢堡選單
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
-    
+
     if (hamburger && navMenu) {
         hamburger.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -97,7 +97,7 @@ function initializeAuth() {
     const logoutBtn = document.getElementById('logoutBtn');
     const closeBtn = document.querySelector('.close-button');
     const tabButtons = document.querySelectorAll('.tab-button');
-    
+
     // 開啟登入模態框
     if (loginBtn) {
         loginBtn.addEventListener('click', () => {
@@ -105,7 +105,7 @@ function initializeAuth() {
             showTab('login');
         });
     }
-    
+
     // 開啟註冊模態框
     if (registerBtn) {
         registerBtn.addEventListener('click', () => {
@@ -113,21 +113,21 @@ function initializeAuth() {
             showTab('register');
         });
     }
-    
+
     // 關閉模態框
     if (closeBtn) {
         closeBtn.addEventListener('click', () => {
             authModal.style.display = 'none';
         });
     }
-    
+
     // 點擊外部關閉
     window.addEventListener('click', (e) => {
         if (e.target === authModal) {
             authModal.style.display = 'none';
         }
     });
-    
+
     // 標籤切換
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -135,19 +135,19 @@ function initializeAuth() {
             showTab(tab);
         });
     });
-    
+
     // 登入表單提交
     const loginForm = document.getElementById('loginFormElement');
     if (loginForm) {
         loginForm.addEventListener('submit', handleLogin);
     }
-    
+
     // 註冊表單提交
     const registerForm = document.getElementById('registerFormElement');
     if (registerForm) {
         registerForm.addEventListener('submit', handleRegister);
     }
-    
+
     // 登出
     if (logoutBtn) {
         logoutBtn.addEventListener('click', handleLogout);
@@ -159,7 +159,7 @@ function showTab(tabName) {
     document.querySelectorAll('.tab-button').forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
     });
-    
+
     // 更新內容
     document.querySelectorAll('.tab-content').forEach(content => {
         content.classList.toggle('active', content.id === tabName + 'Form');
@@ -168,15 +168,15 @@ function showTab(tabName) {
 
 async function handleLogin(e) {
     e.preventDefault();
-    
+
     const formData = new FormData(e.target);
     const loginData = {
         username: formData.get('username'),
         password: formData.get('password')
     };
-    
+
     console.log('Attempting login with:', loginData.username); // 除錯用
-    
+
     try {
         const response = await fetch(`${API_BASE_URL}/login`, {
             method: 'POST',
@@ -187,16 +187,16 @@ async function handleLogin(e) {
             body: new URLSearchParams(loginData),
             credentials: 'include'
         });
-        
+
         console.log('Login response status:', response.status); // 除錯用
-        
+
         if (response.ok) {
             const responseData = await response.json();
             console.log('Login response:', responseData); // 除錯用
-            
+
             // 登入成功後檢查實際認證狀態
             await checkAuthStatus();
-            
+
             document.getElementById('authModal').style.display = 'none';
             showMessage('loginMessage', responseData.message || '登入成功！', 'success');
             e.target.reset();
@@ -212,7 +212,7 @@ async function handleLogin(e) {
 
 async function handleRegister(e) {
     e.preventDefault();
-    
+
     const formData = new FormData(e.target);
     const registerData = {
         username: formData.get('username'),
@@ -221,7 +221,7 @@ async function handleRegister(e) {
         address: formData.get('address') || '',
         phone: formData.get('phone') || ''
     };
-    
+
     try {
         const response = await fetch(`${API_BASE_URL}/members/register`, {
             method: 'POST',
@@ -230,7 +230,7 @@ async function handleRegister(e) {
             },
             body: JSON.stringify(registerData)
         });
-        
+
         if (response.ok) {
             showMessage('registerMessage', '註冊成功！請登入', 'success');
             setTimeout(() => {
@@ -253,7 +253,7 @@ async function handleLogout() {
             method: 'POST',
             credentials: 'include'
         });
-        
+
         localStorage.removeItem('username');
         checkAuthStatus();
     } catch (error) {
@@ -269,7 +269,7 @@ async function checkAuthStatus() {
             method: 'GET',
             credentials: 'include'
         });
-        
+
         if (response.ok) {
             const authData = await response.json();
             if (authData.authenticated) {
@@ -298,7 +298,7 @@ function showMessage(elementId, message, type) {
         messageElement.textContent = message;
         messageElement.className = `auth-message ${type}`;
         messageElement.style.display = 'block';
-        
+
         setTimeout(() => {
             messageElement.style.display = 'none';
         }, 3000);
@@ -311,7 +311,7 @@ function updateUIForLoggedInUser(username) {
     const registerBtn = document.getElementById('registerBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const welcomeUser = document.getElementById('welcomeUser');
-    
+
     if (loginBtn) loginBtn.style.display = 'none';
     if (registerBtn) registerBtn.style.display = 'none';
     if (logoutBtn) logoutBtn.style.display = 'block';
@@ -327,7 +327,7 @@ function updateUIForLoggedOutUser() {
     const registerBtn = document.getElementById('registerBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const welcomeUser = document.getElementById('welcomeUser');
-    
+
     if (loginBtn) loginBtn.style.display = 'block';
     if (registerBtn) registerBtn.style.display = 'block';
     if (logoutBtn) logoutBtn.style.display = 'none';
@@ -339,7 +339,7 @@ function smoothScroll(e) {
     e.preventDefault();
     const targetId = this.getAttribute('href');
     const targetSection = document.querySelector(targetId);
-    
+
     if (targetSection) {
         targetSection.scrollIntoView({
             behavior: 'smooth',
@@ -378,17 +378,41 @@ function setupShoppingCart() {
     const closeCartBtn = document.querySelector('.close-cart-btn');
     const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
     const cartItemsContainer = document.querySelector('.cart-items');
-    
+
     // 開啟購物車
     if (openCartBtn) {
         openCartBtn.addEventListener('click', () => {
+            console.log('Cart icon clicked!'); // 除錯用
             if (cartSidebar && cartOverlay) {
                 cartSidebar.classList.add('active');
                 cartOverlay.classList.add('active');
             }
         });
     }
-    
+    // 完整的購物車除錯
+    console.log('=== 購物車除錯 ===');
+    console.log('購物車數據:', cart);
+    console.log('購物車圖示:', document.querySelector('.nav-cart'));
+    console.log('購物車側邊欄:', document.querySelector('.cart-sidebar'));
+    console.log('購物車遮罩:', document.querySelector('.cart-overlay'));
+
+    // 檢查事件監聽器
+    const cartIcon = document.querySelector('.nav-cart');
+    if (cartIcon) {
+        console.log('購物車圖示存在，添加點擊測試');
+        cartIcon.onclick = function () {
+            console.log('購物車被點擊！');
+            const sidebar = document.querySelector('.cart-sidebar');
+            const overlay = document.querySelector('.cart-overlay');
+            if (sidebar && overlay) {
+                sidebar.classList.add('active');
+                overlay.classList.add('active');
+                console.log('購物車應該已打開');
+            } else {
+                console.log('找不到購物車元素');
+            }
+        };
+    }
     // 關閉購物車
     if (closeCartBtn) {
         closeCartBtn.addEventListener('click', () => {
@@ -398,19 +422,19 @@ function setupShoppingCart() {
             }
         });
     }
-    
+
     if (cartOverlay) {
         cartOverlay.addEventListener('click', () => {
             cartSidebar.classList.remove('active');
             cartOverlay.classList.remove('active');
         });
     }
-    
+
     // 加入購物車按鈕
     addToCartButtons.forEach(btn => {
         btn.addEventListener('click', addToCart);
     });
-    
+
     // 購物車操作
     if (cartItemsContainer) {
         cartItemsContainer.addEventListener('click', handleCartActions);
@@ -421,7 +445,7 @@ function setupShoppingCart() {
 function addToCart(e) {
     const productCard = e.target.closest('.product-card');
     if (!productCard) return;
-    
+
     const id = productCard.dataset.id;
     const name = productCard.dataset.name;
     const price = parseInt(productCard.dataset.price);
@@ -434,14 +458,14 @@ function addToCart(e) {
     } else {
         cart.push({ id, name, price, priceText, image, quantity: 1 });
     }
-    
+
     updateCartUI();
-    
+
     // 顯示成功訊息
     const originalText = e.target.textContent;
     e.target.textContent = '已加入購物車！';
     e.target.disabled = true;
-    
+
     setTimeout(() => {
         e.target.textContent = originalText;
         e.target.disabled = false;
@@ -453,11 +477,11 @@ function updateCartUI() {
     const cartItemsContainer = document.querySelector('.cart-items');
     const cartCount = document.querySelector('.cart-count');
     const cartTotalPrice = document.getElementById('cart-total-price');
-    
+
     if (!cartItemsContainer || !cartCount || !cartTotalPrice) {
         return;
     }
-    
+
     cartItemsContainer.innerHTML = '';
     let total = 0;
     let totalItems = 0;
@@ -493,7 +517,7 @@ function updateCartUI() {
 
     cartTotalPrice.textContent = `NT$ ${total.toLocaleString()}`;
     cartCount.textContent = totalItems;
-    
+
     // 更新 localStorage
     localStorage.setItem('cart', JSON.stringify(cart));
 }
@@ -502,11 +526,11 @@ function updateCartUI() {
 function handleCartActions(e) {
     const target = e.target;
     const id = target.dataset.id;
-    
+
     if (target.classList.contains('quantity-btn')) {
         const action = target.dataset.action;
         const item = cart.find(item => item.id === id);
-        
+
         if (item) {
             if (action === 'increase') {
                 item.quantity++;
@@ -519,7 +543,7 @@ function handleCartActions(e) {
         }
         updateCartUI();
     }
-    
+
     if (target.classList.contains('remove-item-btn')) {
         cart = cart.filter(item => item.id !== id);
         updateCartUI();
@@ -533,14 +557,14 @@ function setupCheckout() {
     const closeCheckoutBtn = document.querySelector('.close-checkout-btn');
 
     if (checkoutBtn) {
-        checkoutBtn.addEventListener('click', async function(e) {
+        checkoutBtn.addEventListener('click', async function (e) {
             e.preventDefault();
-            
+
             if (cart.length === 0) {
                 showCustomAlert('您的購物車是空的！', 'fas fa-shopping-cart', '購物車提示');
                 return;
             }
-            
+
             // 檢查後端實際登入狀態
             const response = await fetch(`${API_BASE_URL}/auth/status`, {
                 method: 'GET',
@@ -561,11 +585,11 @@ function setupCheckout() {
                 showLoginRequired();
                 return;
             }
-            
+
             // 同步前端狀態
             localStorage.setItem('username', authData.username);
             updateUIForLoggedInUser(authData.username);
-            
+
             // 進入結帳流程
             if (checkoutPage) {
                 // 設定日期選擇器的最小日期為明天，最大日期為半年後
@@ -575,15 +599,15 @@ function setupCheckout() {
                     tomorrow.setDate(tomorrow.getDate() + 1);
                     const maxDate = new Date();
                     maxDate.setDate(maxDate.getDate() + 180);
-                    
+
                     const yyyy = tomorrow.getFullYear();
                     const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
                     const dd = String(tomorrow.getDate()).padStart(2, '0');
-                    
+
                     const maxYyyy = maxDate.getFullYear();
                     const maxMm = String(maxDate.getMonth() + 1).padStart(2, '0');
                     const maxDd = String(maxDate.getDate()).padStart(2, '0');
-                    
+
                     deliveryDateInput.min = `${yyyy}-${mm}-${dd}`;
                     deliveryDateInput.max = `${maxYyyy}-${maxMm}-${maxDd}`;
                 }
@@ -591,7 +615,7 @@ function setupCheckout() {
                 switchCheckoutStep(1);
                 updateCheckoutSummary();
                 checkoutPage.classList.add('active');
-                
+
                 // 關閉購物車
                 const cartSidebar = document.querySelector('.cart-sidebar');
                 const cartOverlay = document.querySelector('.cart-overlay');
@@ -602,7 +626,7 @@ function setupCheckout() {
             }
         });
     }
-    
+
     if (closeCheckoutBtn) {
         closeCheckoutBtn.addEventListener('click', () => {
             if (checkoutPage) {
@@ -628,7 +652,7 @@ function setupCheckoutSteps() {
 
     const customerForm = document.getElementById('customer-info-form');
     const shippingForm = document.getElementById('shipping-info-form');
-    
+
     if (gotoStep2Btn) {
         gotoStep2Btn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -732,15 +756,15 @@ function initializeDatePicker() {
         locale: customLocale,
         dateFormat: "Y-m-d",
 
-        onChange: function(selectedDates, dateStr, instance) {
+        onChange: function (selectedDates, dateStr, instance) {
             removeExistingWarning();
             // 移除週末限制，所有日期都可以選擇
         },
-        onReady: function(selectedDates, dateStr, instance) {
+        onReady: function (selectedDates, dateStr, instance) {
             const container = instance.calendarContainer;
             const buttonContainer = document.createElement('div');
             buttonContainer.style.cssText = "padding: 0 10px 10px; display: flex; gap: 5px; justify-content: center;";
-            
+
             const quickDates = [
                 { label: '明天', days: 1 },
                 { label: '3天後', days: 3 },
@@ -749,7 +773,7 @@ function initializeDatePicker() {
                 { label: '三個月後', days: 90 }
             ];
 
-            quickDates.forEach(({label, days}) => {
+            quickDates.forEach(({ label, days }) => {
                 const button = document.createElement('button');
                 button.type = 'button';
                 button.className = 'flatpickr-button';
@@ -851,7 +875,7 @@ function showLoginRequired() {
         align-items: center;
         justify-content: center;
     `;
-    
+
     const content = document.createElement('div');
     content.style.cssText = `
         background: white;
@@ -862,7 +886,7 @@ function showLoginRequired() {
         margin: 0 1rem;
         box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     `;
-    
+
     content.innerHTML = `
         <div style="margin-bottom: 1.5rem;">
             <i class="fas fa-user-lock" style="font-size: 3rem; color: #ff6b9d; margin-bottom: 1rem;"></i>
@@ -904,14 +928,14 @@ function showLoginRequired() {
             ">稍後再說</button>
         </div>
     `;
-    
+
     modal.appendChild(content);
     document.body.appendChild(modal);
-    
+
     // 按鈕事件
     document.getElementById('login-required-login').addEventListener('click', () => {
         document.body.removeChild(modal);
-        
+
         // 關閉購物車
         const cartSidebar = document.querySelector('.cart-sidebar');
         const cartOverlay = document.querySelector('.cart-overlay');
@@ -919,17 +943,17 @@ function showLoginRequired() {
             cartSidebar.classList.remove('active');
             cartOverlay.classList.remove('active');
         }
-        
+
         const authModal = document.getElementById('authModal');
         if (authModal) {
             authModal.style.display = 'block';
             showTab('login');
         }
     });
-    
+
     document.getElementById('login-required-register').addEventListener('click', () => {
         document.body.removeChild(modal);
-        
+
         // 關閉購物車
         const cartSidebar = document.querySelector('.cart-sidebar');
         const cartOverlay = document.querySelector('.cart-overlay');
@@ -937,18 +961,18 @@ function showLoginRequired() {
             cartSidebar.classList.remove('active');
             cartOverlay.classList.remove('active');
         }
-        
+
         const authModal = document.getElementById('authModal');
         if (authModal) {
             authModal.style.display = 'block';
             showTab('register');
         }
     });
-    
+
     document.getElementById('login-required-close').addEventListener('click', () => {
         document.body.removeChild(modal);
     });
-    
+
     // 點擊外部關閉
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
@@ -972,7 +996,7 @@ function showCustomAlert(message, iconClass = 'fas fa-info-circle', title = '提
         align-items: center;
         justify-content: center;
     `;
-    
+
     const content = document.createElement('div');
     content.style.cssText = `
         background: white;
@@ -983,7 +1007,7 @@ function showCustomAlert(message, iconClass = 'fas fa-info-circle', title = '提
         margin: 0 1rem;
         box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     `;
-    
+
     content.innerHTML = `
         <div style="margin-bottom: 1.5rem;">
             <i class="${iconClass}" style="font-size: 3rem; color: #ff6b9d; margin-bottom: 1rem;"></i>
@@ -1005,14 +1029,14 @@ function showCustomAlert(message, iconClass = 'fas fa-info-circle', title = '提
             ">確定</button>
         </div>
     `;
-    
+
     modal.appendChild(content);
     document.body.appendChild(modal);
-    
+
     document.getElementById('custom-alert-close').addEventListener('click', () => {
         document.body.removeChild(modal);
     });
-    
+
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             document.body.removeChild(modal);
@@ -1032,19 +1056,19 @@ function switchCheckoutStep(stepNumber) {
         showLoginRequired();
         return false;
     }
-    
+
     document.querySelectorAll('.checkout-step-content').forEach(el => el.classList.remove('active'));
     const targetStep = document.querySelector(`#checkout-step-${stepNumber}`);
     if (targetStep) {
         targetStep.classList.add('active');
     }
-    
+
     document.querySelectorAll('.checkout-steps .step').forEach(el => el.classList.remove('active'));
     const targetStepIndicator = document.querySelector(`.step[data-step="${stepNumber}"]`);
     if (targetStepIndicator) {
         targetStepIndicator.classList.add('active');
     }
-    
+
     return true;
 }
 
@@ -1110,9 +1134,9 @@ function handleShippingMethodChange() {
     const storePickupFields = document.getElementById('store-pickup-fields');
     const addressInput = document.getElementById('customer-address');
     const storeInput = document.getElementById('pickup-store-info');
-    
+
     if (!selectedMethod) return;
-    
+
     const method = selectedMethod.value;
     if (method === 'homedelivery') {
         if (homeDeliveryFields) homeDeliveryFields.style.display = 'block';
@@ -1135,13 +1159,13 @@ function renderConfirmationSummary() {
     const confirmationSummaryContainer = document.getElementById('confirmation-summary');
     const addressInput = document.getElementById('customer-address');
     const storeInput = document.getElementById('pickup-store-info');
-    
+
     if (!nameInput || !phoneInput || !shippingMethodInput || !confirmationSummaryContainer) return;
-    
+
     const name = nameInput.value;
     const phone = phoneInput.value;
     const shippingMethod = shippingMethodInput.value;
-    
+
     let shippingInfo = '';
     if (shippingMethod === 'homedelivery') {
         const address = addressInput ? addressInput.value : '';
@@ -1173,7 +1197,7 @@ function renderConfirmationSummary() {
     const deliveryDateInput = document.getElementById('delivery-date');
     const orderNotesInput = document.getElementById('order-notes');
     const bankAccountLast5Input = document.getElementById('bank-account-last5');
-    
+
     const deliveryDate = deliveryDateInput ? deliveryDateInput.value : '';
     const orderNotes = orderNotesInput ? orderNotesInput.value : '';
     const bankAccountLast5 = bankAccountLast5Input ? bankAccountLast5Input.value : '';
@@ -1207,20 +1231,20 @@ async function finishPurchase() {
     const shippingMethodInput = document.querySelector('input[name="shipping-method"]:checked');
     const addressInput = document.getElementById('customer-address');
     const storeInput = document.getElementById('pickup-store-info');
-    
+
     if (!nameInput || !phoneInput || !shippingMethodInput) {
         showCustomAlert('請填寫完整資料', 'fas fa-exclamation-circle', '資料填寫提示');
         return;
     }
-    
+
     const name = nameInput.value;
     const phone = phoneInput.value;
     const shippingMethod = shippingMethodInput.value;
-    
+
     let recipientName = name;
     let recipientPhone = phone;
     let shippingAddress = '';
-    
+
     if (shippingMethod === 'homedelivery') {
         shippingAddress = addressInput ? addressInput.value : '';
     } else {
@@ -1240,7 +1264,7 @@ async function finishPurchase() {
             price: item.price
         };
     });
-    
+
     const shippingFee = subtotal >= 600 ? 0 : 60;
     const total = subtotal + shippingFee;
 
@@ -1248,22 +1272,22 @@ async function finishPurchase() {
     const deliveryDateInput = document.getElementById('delivery-date');
     const orderNotesInput = document.getElementById('order-notes');
     const bankAccountLast5Input = document.getElementById('bank-account-last5');
-    
+
     const orderData = {
-            customerName: name,
-            customerPhone: phone,
-            customerEmail: null,
-            recipientName: recipientName,
-            recipientPhone: recipientPhone,
-            shippingAddress: shippingAddress,
-            shippingMethod: shippingMethod === 'homedelivery' ? '指定地址' : 
-                           shippingMethod === '711' ? '7-11 門市取貨' : '全家門市取貨',
-            shippingFee: shippingFee,
-            deliveryDate: deliveryDateInput ? deliveryDateInput.value || null : null,
-            orderNotes: orderNotesInput ? orderNotesInput.value || null : null,
-            bankAccountLast5: bankAccountLast5Input ? bankAccountLast5Input.value || null : null,
-            cartItems: cartItems
-        };
+        customerName: name,
+        customerPhone: phone,
+        customerEmail: null,
+        recipientName: recipientName,
+        recipientPhone: recipientPhone,
+        shippingAddress: shippingAddress,
+        shippingMethod: shippingMethod === 'homedelivery' ? '指定地址' :
+            shippingMethod === '711' ? '7-11 門市取貨' : '全家門市取貨',
+        shippingFee: shippingFee,
+        deliveryDate: deliveryDateInput ? deliveryDateInput.value || null : null,
+        orderNotes: orderNotesInput ? orderNotesInput.value || null : null,
+        bankAccountLast5: bankAccountLast5Input ? bankAccountLast5Input.value || null : null,
+        cartItems: cartItems
+    };
 
     try {
         // 發送訂單到後端 API
@@ -1275,12 +1299,12 @@ async function finishPurchase() {
             body: JSON.stringify(orderData),
             credentials: 'include'
         });
-        
+
         if (!response.ok) {
             const errorText = await response.text();
             throw new Error(`訂單建立失敗: ${errorText}`);
         }
-        
+
         // 解析回應
         const responseData = await response.json();
 
@@ -1314,9 +1338,9 @@ async function finishPurchase() {
             };
 
             emailjs.send('service_y0212', 'template_y0212', templateParams)
-                .then(function(response) {
+                .then(function (response) {
                     console.log('EmailJS SUCCESS!', response.status, response.text);
-                }, function(error) {
+                }, function (error) {
                     console.error('EmailJS FAILED...', error);
                 });
         }
