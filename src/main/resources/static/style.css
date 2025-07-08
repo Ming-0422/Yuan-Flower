@@ -573,7 +573,8 @@ footer p {
 .cart-sidebar {
     position: fixed;
     top: 0;
-    right: -400px; /* 改為固定值而不是百分比 */
+    right: -400px;
+    /* 改為固定值而不是百分比 */
     width: 100%;
     max-width: 400px;
     height: 100%;
@@ -587,7 +588,8 @@ footer p {
 
 /* 購物車開啟狀態 */
 .cart-sidebar.active {
-    right: 0; /* 移動到視窗右邊 */
+    right: 0;
+    /* 移動到視窗右邊 */
 }
 
 .cart-header {

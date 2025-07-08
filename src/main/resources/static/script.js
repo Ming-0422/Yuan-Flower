@@ -6,11 +6,6 @@ let cart = [];
 
 // 初始化
 document.addEventListener('DOMContentLoaded', function () {
-    // 初始化 EmailJS
-    if (typeof emailjs !== 'undefined') {
-        emailjs.init({ publicKey: 'jM2R9RmgbvvAfadTq' });
-    }
-
     // 載入購物車數據
     cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -1545,12 +1540,12 @@ async function finishPurchase() {
                 total_amount: `NT$ ${total.toLocaleString()}`
             };
 
-            emailjs.send('service_y0212', 'template_y0212', templateParams)
-                .then(function (response) {
-                    console.log('EmailJS SUCCESS!', response.status, response.text);
-                }, function (error) {
-                    console.error('EmailJS FAILED...', error);
-                });
+            // emailjs.send('service_y0212', 'template_y0212', templateParams)
+            //     .then(function (response) {
+            //         console.log('EmailJS SUCCESS!', response.status, response.text);
+            //     }, function (error) {
+            //         console.error('EmailJS FAILED...', error);
+            //     });
         }
 
     } catch (error) {
