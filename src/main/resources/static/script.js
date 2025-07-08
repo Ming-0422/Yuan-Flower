@@ -106,7 +106,7 @@ function initializeAuth() {
 
     // 開啟登入模態框
     if (loginBtn && authModal) {
-        loginBtn.addEventListener('click', function(e) {
+        loginBtn.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             console.log('登入按鈕被點擊');
@@ -118,7 +118,7 @@ function initializeAuth() {
 
     // 開啟註冊模態框
     if (registerBtn && authModal) {
-        registerBtn.addEventListener('click', function(e) {
+        registerBtn.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             console.log('註冊按鈕被點擊');
@@ -130,7 +130,7 @@ function initializeAuth() {
 
     // 關閉模態框
     if (closeBtn && authModal) {
-        closeBtn.addEventListener('click', function(e) {
+        closeBtn.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             console.log('關閉按鈕被點擊');
@@ -140,7 +140,7 @@ function initializeAuth() {
 
     // 點擊外部關閉
     if (authModal) {
-        authModal.addEventListener('click', function(e) {
+        authModal.addEventListener('click', function (e) {
             if (e.target === authModal) {
                 console.log('點擊外部關閉模態框');
                 authModal.style.display = 'none';
@@ -150,7 +150,7 @@ function initializeAuth() {
 
     // 標籤切換
     tabButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
+        button.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             const tab = button.getAttribute('data-tab');
@@ -173,7 +173,7 @@ function initializeAuth() {
 
     // 登出
     if (logoutBtn) {
-        logoutBtn.addEventListener('click', async function(e) {
+        logoutBtn.addEventListener('click', async function (e) {
             e.preventDefault();
             e.stopPropagation();
             console.log('登出按鈕被點擊');
@@ -201,14 +201,14 @@ function setupShoppingCart() {
         // 移除現有事件監聽器
         const newOpenCartBtn = openCartBtn.cloneNode(true);
         openCartBtn.parentNode.replaceChild(newOpenCartBtn, openCartBtn);
-        
-        newOpenCartBtn.addEventListener('click', function(e) {
+
+        newOpenCartBtn.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             console.log('購物車圖示被點擊');
-            
+
             const isOpen = cartSidebar.classList.contains('active');
-            
+
             if (isOpen) {
                 cartSidebar.classList.remove('active');
                 cartOverlay.classList.remove('active');
@@ -223,7 +223,7 @@ function setupShoppingCart() {
 
     // 關閉購物車
     if (closeCartBtn && cartSidebar && cartOverlay) {
-        closeCartBtn.addEventListener('click', function(e) {
+        closeCartBtn.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             cartSidebar.classList.remove('active');
@@ -233,7 +233,7 @@ function setupShoppingCart() {
 
     // 點擊遮罩關閉
     if (cartOverlay && cartSidebar) {
-        cartOverlay.addEventListener('click', function(e) {
+        cartOverlay.addEventListener('click', function (e) {
             if (e.target === cartOverlay) {
                 cartSidebar.classList.remove('active');
                 cartOverlay.classList.remove('active');
@@ -257,7 +257,7 @@ function setupShoppingCart() {
 // 確保 showTab 函數存在
 function showTab(tabName) {
     console.log('顯示標籤:', tabName);
-    
+
     // 更新標籤按鈕
     document.querySelectorAll('.tab-button').forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
@@ -324,7 +324,7 @@ function validateField(fieldName, input) {
     const rule = validationRules[fieldName];
     const errorElement = document.getElementById(`${fieldName}-error`);
     const value = input.value.trim();
-    
+
     let isValid = false;
     let message = rule.message;
 
@@ -348,7 +348,7 @@ function validateField(fieldName, input) {
     // 更新UI
     input.classList.toggle('valid', isValid);
     input.classList.toggle('invalid', !isValid);
-    
+
     if (errorElement) {
         errorElement.textContent = message;
         errorElement.classList.toggle('show', !isValid);
@@ -356,7 +356,7 @@ function validateField(fieldName, input) {
 
     // 更新提交按鈕狀態
     updateSubmitButtonState();
-    
+
     return isValid;
 }
 
@@ -364,12 +364,12 @@ function validateField(fieldName, input) {
 function updatePasswordStrength() {
     const password = document.getElementById('register-password').value;
     const strengthIndicator = document.getElementById('password-strength');
-    
+
     if (!strengthIndicator) return;
 
     let strength = 0;
     let strengthClass = '';
-    
+
     // 檢查密碼強度
     if (password.length >= 6) strength++;
     if (/[a-z]/.test(password)) strength++;
@@ -413,7 +413,7 @@ function updateSubmitButtonState() {
 // 增強的註冊處理函數
 async function handleEnhancedRegister(e) {
     e.preventDefault();
-    
+
     // 最終驗證所有欄位
     const inputs = {
         username: document.getElementById('register-username'),
@@ -441,13 +441,13 @@ async function handleEnhancedRegister(e) {
         password: formData.get('password'),
         phone: formData.get('phone').trim()
     };
-    
+
     // 顯示載入狀態
     const submitBtn = e.target.querySelector('.auth-submit-btn');
     const originalText = submitBtn.textContent;
     submitBtn.textContent = '註冊中...';
     submitBtn.disabled = true;
-    
+
     try {
         const response = await fetch(`${API_BASE_URL}/members/register`, {
             method: 'POST',
@@ -456,7 +456,7 @@ async function handleEnhancedRegister(e) {
             },
             body: JSON.stringify(registerData)
         });
-        
+
         if (response.ok) {
             showMessage('registerMessage', '註冊成功！請登入', 'success');
             setTimeout(() => {
@@ -654,7 +654,7 @@ function setObjectFit(img) {
 function addToCart(e) {
     e.preventDefault();
     e.stopPropagation(); // 阻止事件冒泡
-    
+
     const productCard = e.target.closest('.product-card');
     if (!productCard) return;
 
@@ -737,7 +737,7 @@ function updateCartUI() {
 // 處理購物車操作
 function handleCartActions(e) {
     e.stopPropagation(); // 阻止事件冒泡
-    
+
     const target = e.target;
     const id = target.dataset.id;
 
@@ -779,8 +779,11 @@ function debugElements() {
 window.debugElements = debugElements;
 
 // 結帳功能設置
+// script.js
+
 function setupCheckout() {
-    const checkoutBtn = document.querySelector('.checkout-btn');
+    // 明確指定選取 .cart-sidebar 容器內的 .checkout-btn
+    const checkoutBtn = document.querySelector('.cart-sidebar .checkout-btn');
     const checkoutPage = document.getElementById('checkout-page');
     const closeCheckoutBtn = document.querySelector('.close-checkout-btn');
 
