@@ -566,8 +566,8 @@ footer p {
 }
 
 .cart-overlay.active {
-    opacity: 1;
-    visibility: visible;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 .cart-sidebar {
@@ -585,8 +585,12 @@ footer p {
     flex-direction: column;
 }
 
+/* 購物車調試修復 */
 .cart-sidebar.active {
-    right: 0;
+    right: 0 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(0) !important;
 }
 
 .cart-header {
