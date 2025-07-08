@@ -3,13 +3,20 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* 移除iOS點擊高亮 */
+}
+
+html {
+    font-size: 16px; /* 基準字體大小 */
+    -webkit-text-size-adjust: 100%; /* 防止iOS橫向模式字體放大 */
 }
 
 body {
-    font-family: 'Noto Sans TC', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     color: #333;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
 }
 
 .container {
@@ -25,6 +32,7 @@ body {
     width: 100%;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     z-index: 1000;
     padding: 1rem 0;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
@@ -37,12 +45,13 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    min-height: 44px; /* iOS最小觸控高度 */
 }
 
 .nav-logo h2 {
     color: #ff6b9d;
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
 }
 
 .nav-menu {
@@ -56,6 +65,10 @@ body {
     font-weight: 500;
     transition: color 0.3s ease;
     position: relative;
+    padding: 0.5rem 0;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
 }
 
 .nav-link:hover {
@@ -80,7 +93,7 @@ body {
 .nav-right {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: clamp(0.5rem, 2vw, 1.5rem);
 }
 
 .nav-cart {
@@ -91,6 +104,9 @@ body {
     font-weight: 500;
     cursor: pointer;
     position: relative;
+    padding: 0.5rem;
+    min-width: 44px;
+    min-height: 44px;
 }
 
 .cart-count {
@@ -112,6 +128,11 @@ body {
     display: none;
     flex-direction: column;
     cursor: pointer;
+    padding: 0.5rem;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
 }
 
 .hamburger span {
@@ -130,8 +151,10 @@ body {
     padding: 8px 16px;
     border-radius: 20px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: clamp(0.75rem, 2vw, 0.875rem);
     transition: all 0.3s ease;
+    min-height: 36px;
+    white-space: nowrap;
 }
 
 .nav-button:hover {
@@ -142,6 +165,7 @@ body {
 /* 首頁橫幅 */
 .hero {
     min-height: 100vh;
+    min-height: 100dvh; /* 動態視窗高度 */
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -151,6 +175,7 @@ body {
     overflow: hidden;
     text-align: left;
     gap: 3vw;
+    padding-top: 80px;
 }
 
 .hero-content {
@@ -163,6 +188,7 @@ body {
     align-items: flex-start;
     justify-content: center;
     position: relative;
+    padding: 0 20px;
 }
 
 .hero-title,
@@ -175,7 +201,7 @@ body {
 }
 
 .hero-title {
-    font-size: 3.5rem;
+    font-size: clamp(2rem, 6vw, 3.5rem);
     font-weight: 700;
     color: #ff6b9d;
     margin-bottom: 1rem;
@@ -183,21 +209,21 @@ body {
 }
 
 .hero-subtitle {
-    font-size: 1.5rem;
+    font-size: clamp(1rem, 3vw, 1.5rem);
     color: #666;
     margin-bottom: 1rem;
     animation: fadeInUp 1s ease 0.2s both;
 }
 
 .hero-description {
-    font-size: 1.2rem;
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
     color: #888;
     margin-bottom: 0.5rem;
     animation: fadeInUp 1s ease 0.4s both;
 }
 
 .hero-tagline {
-    font-size: 1rem;
+    font-size: clamp(0.8rem, 2vw, 1rem);
     color: #999;
     margin-bottom: 2rem;
     animation: fadeInUp 1s ease 0.6s both;
@@ -207,12 +233,14 @@ body {
     background: linear-gradient(45deg, #ff6b9d, #ff8fab);
     color: white;
     border: none;
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
+    padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2rem);
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
     border-radius: 50px;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: fadeInUp 1s ease 0.8s both;
+    min-height: 44px;
+    touch-action: manipulation;
 }
 
 .cta-button:hover {
@@ -220,18 +248,23 @@ body {
     box-shadow: 0 10px 30px rgba(255, 107, 157, 0.3);
 }
 
+.cta-button:active {
+    transform: translateY(-1px);
+}
+
 .hero-right {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    padding: 0 20px;
 }
 
 .logo-img {
     display: block;
     margin: 0 auto;
     max-width: 400px;
-    width: 32vw;
+    width: min(32vw, 400px);
     height: auto;
     transition: max-width 0.3s, width 0.3s;
     box-shadow: 0 8px 32px rgba(255, 107, 157, 0.08);
@@ -240,11 +273,13 @@ body {
 
 .shipping-notice {
     position: absolute;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     bottom: -12.5rem;
-    width: 100%;
+    width: calc(100% - 40px);
+    max-width: 500px;
     color: #666;
-    font-size: 1.2rem;
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
     text-align: center;
     padding: 0.8rem 1.5rem;
     background: rgba(255, 255, 255, 0.95);
@@ -256,30 +291,30 @@ body {
 }
 
 .shipping-notice:hover {
-    transform: scale(1.02);
+    transform: translateX(-50%) scale(1.02);
     background: rgba(255, 255, 255, 0.98);
     box-shadow: 0 4px 25px rgba(255, 182, 193, 0.7);
 }
 
 /* 商品展示 */
 .products {
-    padding: 5rem 0;
+    padding: clamp(3rem, 8vw, 5rem) 0;
     background: white;
 }
 
 .section-title {
     text-align: center;
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
     color: #3E2723;
-    margin-bottom: 3rem;
+    margin-bottom: clamp(2rem, 5vw, 3rem);
     font-weight: 700;
     scroll-margin-top: 90px;
 }
 
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: clamp(1rem, 3vw, 2rem);
     margin-top: 2rem;
     align-items: stretch;
 }
@@ -293,6 +328,7 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
+    cursor: pointer;
 }
 
 .product-card:hover {
@@ -300,9 +336,14 @@ body {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
+.product-card:active {
+    transform: translateY(-5px);
+}
+
 .product-image {
     width: 100%;
     overflow: hidden;
+    aspect-ratio: 1 / 1;
 }
 
 .flower-placeholder {
@@ -316,24 +357,24 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 1.5rem;
+    padding: clamp(1rem, 3vw, 1.5rem);
 }
 
 .product-info h3 {
     color: #333;
     margin-bottom: 0.5rem;
-    font-size: 1.3rem;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
 }
 
 .product-info p {
     color: #666;
     margin-bottom: 1rem;
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
 }
 
 .product-price {
     color: #777777;
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
     font-weight: 700;
     margin-bottom: 1rem;
 }
@@ -342,13 +383,15 @@ body {
     background: linear-gradient(45deg, #D8BFA5, #D8BFA5);
     color: white;
     border: none;
-    padding: 0.8rem 1.5rem;
+    padding: clamp(0.6rem, 2vw, 0.8rem) clamp(1rem, 3vw, 1.5rem);
     margin-top: 1rem;
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2vw, 1rem);
     border-radius: 50px;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     width: 100%;
+    min-height: 44px;
+    touch-action: manipulation;
 }
 
 .add-to-cart-btn:hover {
@@ -356,23 +399,27 @@ body {
     box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
 }
 
+.add-to-cart-btn:active {
+    transform: translateY(0);
+}
+
 .product-img {
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
     display: block;
 }
 
 /* 聯繫我們 */
 .contact {
-    padding: 5rem 0;
+    padding: clamp(3rem, 8vw, 5rem) 0;
     background: white;
 }
 
 .contact-info {
     display: flex;
     justify-content: center;
-    gap: 3rem;
+    gap: clamp(1rem, 3vw, 3rem);
     flex-wrap: wrap;
 }
 
@@ -380,12 +427,13 @@ body {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1.5rem;
+    padding: clamp(1rem, 2vw, 1.5rem);
     background: linear-gradient(135deg, #ffeef8, #fff5f7);
     border-radius: 15px;
     transition: transform 0.3s ease, background 0.3s;
     cursor: pointer;
     position: relative;
+    min-height: 44px;
 }
 
 .contact-item:hover {
@@ -393,11 +441,15 @@ body {
     background: linear-gradient(135deg, #ffecf5, #ffe0ef);
 }
 
+.contact-item:active {
+    transform: translateY(-2px);
+}
+
 .contact-item a {
     color: #222;
     text-decoration: none;
     font-weight: 500;
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
     display: block;
     width: 100%;
     height: 100%;
@@ -406,7 +458,7 @@ body {
 }
 
 .contact-item i {
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
     color: #ff6b9d;
     z-index: 2;
 }
@@ -425,6 +477,7 @@ footer {
 
 footer p {
     margin-bottom: 0.5rem;
+    font-size: clamp(0.8rem, 2vw, 1rem);
 }
 
 /* 認證 Modal 樣式 */
@@ -448,6 +501,8 @@ footer p {
     max-width: 400px;
     border-radius: 10px;
     position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .close-button {
@@ -459,6 +514,11 @@ footer p {
     position: absolute;
     right: 15px;
     top: 10px;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .close-button:hover {
@@ -477,8 +537,9 @@ footer p {
     border: none;
     background: none;
     cursor: pointer;
-    font-size: 16px;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     border-bottom: 2px solid transparent;
+    min-height: 44px;
 }
 
 .tab-button.active {
@@ -497,6 +558,7 @@ footer p {
 
 .tab-content .form-group {
     margin-bottom: 15px;
+    position: relative;
 }
 
 .tab-content .form-group label {
@@ -504,6 +566,7 @@ footer p {
     margin-bottom: 5px;
     font-weight: 500;
     color: #333;
+    font-size: clamp(0.875rem, 2vw, 1rem);
 }
 
 .tab-content .form-group input {
@@ -511,7 +574,8 @@ footer p {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 16px; /* 防止iOS縮放 */
+    min-height: 44px;
 }
 
 .auth-submit-btn {
@@ -521,14 +585,20 @@ footer p {
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     cursor: pointer;
     transition: all 0.3s ease;
+    min-height: 44px;
+    touch-action: manipulation;
 }
 
 .auth-submit-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+}
+
+.auth-submit-btn:active {
+    transform: translateY(0);
 }
 
 .auth-message {
@@ -537,6 +607,7 @@ footer p {
     border-radius: 5px;
     text-align: center;
     display: none;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
 }
 
 .auth-message.success {
@@ -573,11 +644,11 @@ footer p {
 .cart-sidebar {
     position: fixed;
     top: 0;
-    right: -400px;
-    /* 改為固定值而不是百分比 */
+    right: -100%;
     width: 100%;
     max-width: 400px;
     height: 100%;
+    height: 100dvh;
     background: white;
     z-index: 1002;
     box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
@@ -586,22 +657,22 @@ footer p {
     flex-direction: column;
 }
 
-/* 購物車開啟狀態 */
 .cart-sidebar.active {
     right: 0;
-    /* 移動到視窗右邊 */
 }
 
 .cart-header {
-    padding: 1.5rem;
+    padding: clamp(1rem, 3vw, 1.5rem);
     border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    min-height: 60px;
 }
 
 .cart-header h3 {
     color: #333;
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
 }
 
 .close-cart-btn {
@@ -610,17 +681,23 @@ footer p {
     font-size: 2rem;
     cursor: pointer;
     color: #888;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cart-items {
     flex-grow: 1;
     overflow-y: auto;
-    padding: 1rem;
+    padding: clamp(0.8rem, 2vw, 1rem);
+    -webkit-overflow-scrolling: touch;
 }
 
 .cart-item {
     display: flex;
-    gap: 1rem;
+    gap: clamp(0.5rem, 2vw, 1rem);
     margin-bottom: 1rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #f0f0f0;
@@ -628,8 +705,8 @@ footer p {
 }
 
 .cart-item-img {
-    width: 80px;
-    height: 80px;
+    width: clamp(60px, 15vw, 80px);
+    height: clamp(60px, 15vw, 80px);
     object-fit: cover;
     border-radius: 10px;
 }
@@ -639,12 +716,12 @@ footer p {
 }
 
 .cart-item-info h4 {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     margin-bottom: 0.3rem;
 }
 
 .cart-item-price {
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
     color: #666;
 }
 
@@ -658,10 +735,14 @@ footer p {
 .quantity-btn {
     background: #f0f0f0;
     border: none;
-    width: 25px;
-    height: 25px;
+    width: clamp(30px, 8vw, 35px);
+    height: clamp(30px, 8vw, 35px);
     border-radius: 5px;
     cursor: pointer;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .remove-item-btn {
@@ -670,11 +751,16 @@ footer p {
     color: #e74c3c;
     cursor: pointer;
     margin-left: auto;
-    font-size: 1.2rem;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cart-footer {
-    padding: 1.5rem;
+    padding: clamp(1rem, 3vw, 1.5rem);
     border-top: 1px solid #eee;
     background: #f9f9f9;
 }
@@ -682,25 +768,31 @@ footer p {
 .cart-total {
     display: flex;
     justify-content: space-between;
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 3vw, 1.2rem);
     margin-bottom: 1rem;
 }
 
 .checkout-btn {
     width: 100%;
-    padding: 1rem;
+    padding: clamp(0.8rem, 2vw, 1rem);
     background: linear-gradient(45deg, #D8BFA5, #D8BFA5);
     color: white;
     border: none;
     border-radius: 10px;
-    font-size: 1.1rem;
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
     cursor: pointer;
     transition: all 0.3s ease;
+    min-height: 44px;
+    touch-action: manipulation;
 }
 
 .checkout-btn:hover {
     box-shadow: 0 5px 20px rgba(255, 107, 157, 0.4);
     transform: translateY(-2px);
+}
+
+.checkout-btn:active {
+    transform: translateY(0);
 }
 
 .checkout-btn.secondary {
@@ -720,6 +812,7 @@ footer p {
     left: 0;
     width: 100%;
     height: 100%;
+    height: 100dvh;
     background: rgba(0, 0, 0, 0.6);
     z-index: 2000;
     display: none;
@@ -737,6 +830,7 @@ footer p {
     width: 100%;
     max-width: 800px;
     height: 90vh;
+    height: 90dvh;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     display: flex;
@@ -745,33 +839,47 @@ footer p {
 }
 
 .checkout-header {
-    padding: 1rem 1.5rem;
+    padding: clamp(0.8rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
     border-bottom: 1px solid #e8e8e8;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: white;
+    min-height: 60px;
+}
+
+.checkout-header h2 {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
 }
 
 .close-checkout-btn {
     background: none;
     border: none;
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 4vw, 2rem);
     cursor: pointer;
     color: #888;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .checkout-steps {
     display: flex;
     justify-content: center;
-    padding: 1rem;
+    padding: clamp(0.5rem, 2vw, 1rem);
     background: #fdfdfd;
     border-bottom: 1px solid #e8e8e8;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .step {
     color: #aaa;
     font-weight: 500;
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
+    white-space: nowrap;
 }
 
 .step.active {
@@ -781,13 +889,14 @@ footer p {
 
 .step-arrow {
     color: #ccc;
-    margin: 0 1rem;
+    margin: 0 clamp(0.3rem, 1vw, 1rem);
 }
 
 .checkout-content {
     flex-grow: 1;
-    padding: 1.5rem 2rem;
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(1rem, 4vw, 2rem);
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .checkout-step-content {
@@ -799,7 +908,7 @@ footer p {
 }
 
 .checkout-content h3 {
-    font-size: 1.4rem;
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
     color: #333;
     margin-bottom: 1rem;
     border-left: 4px solid #ff6b9d;
@@ -811,14 +920,15 @@ footer p {
     overflow-y: auto;
     border: 1px solid #eee;
     border-radius: 10px;
-    padding: 1rem;
-    margin-bottom: 2rem;
+    padding: clamp(0.8rem, 2vw, 1rem);
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
     background: white;
+    -webkit-overflow-scrolling: touch;
 }
 
 .form-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 1rem;
     margin-bottom: 1.5rem;
 }
@@ -835,24 +945,26 @@ footer p {
 .form-group label {
     margin-bottom: 0.5rem;
     color: #555;
-    font-size: 0.9rem;
+    font-size: clamp(0.85rem, 2vw, 0.9rem);
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
-    padding: 0.8rem;
+    padding: clamp(0.6rem, 2vw, 0.8rem);
     border: 1px solid #ddd;
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 16px; /* 防止iOS縮放 */
+    min-height: 44px;
 }
 
 .form-group textarea {
     resize: vertical;
+    min-height: 100px;
 }
 
 .checkout-actions {
-    margin-top: 2rem;
+    margin-top: clamp(1.5rem, 3vw, 2rem);
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
@@ -874,11 +986,12 @@ footer p {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem;
+    padding: clamp(0.6rem, 2vw, 0.75rem);
     border: 1px solid #ddd;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
+    min-height: 44px;
 }
 
 .radio-label:hover {
@@ -887,8 +1000,8 @@ footer p {
 
 .radio-label input[type="radio"] {
     accent-color: #2d3e50;
-    width: 1rem;
-    height: 1rem;
+    width: clamp(16px, 4vw, 20px);
+    height: clamp(16px, 4vw, 20px);
 }
 
 .radio-label input[type="radio"]:checked+* {
@@ -904,10 +1017,11 @@ footer p {
     width: 100%;
     border-collapse: collapse;
     border: 1px solid #eee;
+    font-size: clamp(0.85rem, 2vw, 1rem);
 }
 
 .summary-table td {
-    padding: 0.75rem;
+    padding: clamp(0.5rem, 2vw, 0.75rem);
     border-bottom: 1px solid #eee;
 }
 
@@ -919,26 +1033,40 @@ footer p {
 
 .payment-details {
     margin-top: 1.5rem;
-    padding: 1.5rem;
+    padding: clamp(1rem, 3vw, 1.5rem);
     background: white;
     border: 1px solid #eee;
     border-radius: 10px;
 }
 
+.payment-details p {
+    font-size: clamp(0.85rem, 2vw, 1rem);
+    line-height: 1.6;
+}
+
 .confirmation-message {
     text-align: center;
-    padding: 3rem 1rem;
+    padding: clamp(2rem, 5vw, 3rem) 1rem;
 }
 
 .confirmation-message .fas {
-    font-size: 4rem;
+    font-size: clamp(3rem, 8vw, 4rem);
     color: #2ecc71;
     margin-bottom: 1.5rem;
+}
+
+.confirmation-message h3 {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+}
+
+.confirmation-message p {
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
 }
 
 .cart-item-total {
     font-weight: bold;
     color: #333;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 
 .summary-totals {
@@ -954,9 +1082,59 @@ footer p {
 
 .error-message {
     color: #e74c3c;
-    font-size: 0.875em;
+    font-size: clamp(0.75rem, 2vw, 0.875rem);
     margin-top: 5px;
     display: none;
+}
+
+/* 表單驗證樣式 */
+.form-group input.valid {
+    border-color: #28a745;
+    background-color: #f8fff9;
+}
+
+.form-group input.invalid {
+    border-color: #dc3545;
+    background-color: #fff8f8;
+}
+
+.error-message.show {
+    display: block;
+}
+
+/* 密碼強度指示器 */
+.password-strength {
+    height: 4px;
+    margin-top: 0.5rem;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.password-strength.weak {
+    background-color: #dc3545;
+    width: 33%;
+}
+
+.password-strength.medium {
+    background-color: #ffc107;
+    width: 66%;
+}
+
+.password-strength.strong {
+    background-color: #28a745;
+    width: 100%;
+}
+
+/* 表單提交按鈕狀態 */
+.auth-submit-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.auth-submit-btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
 }
 
 /* 動畫 */
@@ -965,7 +1143,6 @@ footer p {
         opacity: 0;
         transform: translateY(30px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -974,15 +1151,13 @@ footer p {
 
 @keyframes float {
     0% {
-        transform: translateY(0);
+        transform: translateX(-50%) translateY(0);
     }
-
     50% {
-        transform: translateY(-10px);
+        transform: translateX(-50%) translateY(-10px);
     }
-
     100% {
-        transform: translateY(0);
+        transform: translateX(-50%) translateY(0);
     }
 }
 
@@ -990,11 +1165,9 @@ footer p {
     0% {
         box-shadow: 0 2px 15px rgba(255, 182, 193, 0.2);
     }
-
     50% {
         box-shadow: 0 2px 20px rgba(255, 182, 193, 0.6);
     }
-
     100% {
         box-shadow: 0 2px 15px rgba(255, 182, 193, 0.2);
     }
@@ -1006,53 +1179,44 @@ footer p {
     font-family: 'Zen Maru Gothic', 'Noto Sans TC', '微軟正黑體', Arial, sans-serif !important;
 }
 
-/* 響應式設計 */
-@media (max-width: 1024px) {
-    .hero {
-        gap: 1vw;
+/* 響應式設計 - 平板設備 */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .form-grid {
+        grid-template-columns: 1fr 1fr;
     }
-
-    .logo-img {
-        max-width: 260px;
-        width: 40vw;
+    
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
-@media (max-width: 900px) {
+/* 響應式設計 - 手機橫向 */
+@media (max-width: 812px) and (orientation: landscape) {
+    .hero {
+        min-height: 100vh;
+        padding-top: 60px;
+    }
+    
+    .hero-content {
+        max-width: 45%;
+    }
+    
+    .hero-right {
+        max-width: 45%;
+    }
+    
     .products-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+    
+    .checkout-container {
+        height: 95vh;
+    }
 }
 
+/* 響應式設計 - 手機直向 */
 @media (max-width: 768px) {
-    .hero {
-        flex-direction: column;
-        text-align: center;
-        gap: 0;
-    }
-
-    .hero-content {
-        align-items: center;
-        text-align: center;
-        max-width: 90vw;
-        margin-bottom: 2rem;
-    }
-
-    .logo-img {
-        max-width: 180px;
-        width: 80vw;
-    }
-
-    .hero-right {
-        margin-top: 1rem;
-    }
-
-    .shipping-notice {
-        font-size: 1.1rem;
-        bottom: -12rem;
-        padding: 0.6rem 1.2rem;
-    }
-
+    /* 導航欄調整 */
     .hamburger {
         display: flex;
     }
@@ -1078,248 +1242,313 @@ footer p {
         padding: 1rem;
         width: 100%;
     }
-
-    .form-grid {
-        grid-template-columns: 1fr;
+    
+    .nav-logo h2 {
+        font-size: 1.2rem;
+    }
+    
+    .nav-button {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+    }
+    
+    #welcomeUser {
+        font-size: 0.75rem !important;
+        margin-right: 8px !important;
     }
 
-    .checkout-container {
-        width: 95%;
-        padding: 1rem;
-    }
-
-    .checkout-steps {
-        font-size: 0.8em;
-    }
-}
-
-@media (max-width: 600px) {
-    .products-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
-
-    .contact-info {
+    /* 首頁調整 */
+    .hero {
         flex-direction: column;
-        align-items: center;
-    }
-
-    .checkout-container {
-        height: 95vh;
-        max-width: 95vw;
-    }
-
-    .checkout-content {
-        padding: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .logo-img {
-        max-width: 120px;
-        width: 95vw;
+        text-align: center;
+        gap: 2rem;
+        padding-top: 70px;
     }
 
     .hero-content {
-        max-width: 98vw;
-    }
-
-    .hero-title {
-        font-size: 2.5rem;
-    }
-
-    .hero-subtitle {
-        font-size: 1.2rem;
-    }
-
-    .nav-container {
-        padding: 0 10px;
-    }
-
-    .nav-right {
-        gap: 0.5rem;
-    }
-
-    .nav-button {
-        padding: 6px 12px;
-        font-size: 12px;
-    }
-
-    /* 表單驗證樣式 */
-    .form-group {
-        position: relative;
+        align-items: center;
+        text-align: center;
+        max-width: 90vw;
         margin-bottom: 1rem;
     }
-
-    .form-group input.valid {
-        border-color: #28a745;
-        background-color: #f8fff9;
-    }
-
-    .form-group input.invalid {
-        border-color: #dc3545;
-        background-color: #fff8f8;
-    }
-
-    .error-message {
-        color: #dc3545;
-        font-size: 0.875em;
-        margin-top: 0.25rem;
-        display: none;
-    }
-
-    .error-message.show {
-        display: block;
-    }
-
-    /* 密碼強度指示器 */
-    .password-strength {
-        height: 4px;
-        margin-top: 0.5rem;
-        border-radius: 2px;
-        transition: all 0.3s ease;
-    }
-
-    .password-strength.weak {
-        background-color: #dc3545;
-        width: 33%;
-    }
-
-    .password-strength.medium {
-        background-color: #ffc107;
-        width: 66%;
-    }
-
-    .password-strength.strong {
-        background-color: #28a745;
+    
+    .hero-right {
         width: 100%;
     }
 
-    /* 即時驗證反饋 */
-    .validation-icon {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 1.2em;
+    .logo-img {
+        max-width: 280px;
+        width: 80vw;
     }
 
-    .validation-icon.valid {
-        color: #28a745;
+    .shipping-notice {
+        bottom: -10rem;
+        width: calc(100% - 20px);
     }
 
-    .validation-icon.invalid {
-        color: #dc3545;
-    }
-
-    /* 表單提交按鈕狀態 */
-    .auth-submit-btn:disabled {
-        background: #ccc;
-        cursor: not-allowed;
-        opacity: 0.6;
-    }
-
-    .auth-submit-btn:disabled:hover {
-        transform: none;
-        box-shadow: none;
-    }
-
+    /* 商品網格調整 */
     .products-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.7rem;
+        gap: 0.8rem;
+    }
+    
+    /* 側邊欄調整 */
+    aside {
+        display: none;
     }
 
-    .product-card {
+    /* 聯繫區塊調整 */
+    .contact-info {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .contact-item {
+        width: 100%;
+    }
+
+    /* 購物車側邊欄全螢幕 */
+    .cart-sidebar {
+        max-width: 100%;
+    }
+    
+    /* 結帳容器調整 */
+    .checkout-container {
+        height: 100vh;
+        height: 100dvh;
+        border-radius: 0;
+        max-width: 100%;
+    }
+    
+    .checkout-steps {
+        font-size: 0.75rem;
         padding: 0.5rem;
-        border-radius: 12px;
     }
-
-    .hero-title, .cart-header h3 {
-        font-size: 1.3rem;
-    }
-
-    .cta-button, .checkout-btn {
-        font-size: 1rem;
-        padding: 0.7rem 0;
+    
+    .step-arrow {
+        margin: 0 0.3rem;
     }
 }
 
-/* 針對 375px 以下手機螢幕的細節優化 */
+/* 小型手機 (iPhone SE, Galaxy S8 等) */
 @media (max-width: 375px) {
-    .hero-title {
-        font-size: 2rem;
+    /* 導航欄微調 */
+    .nav-container {
+        padding: 0 10px;
     }
-    .nav-button {
-        font-size: 10px;
-        padding: 4px 8px;
-    }
-    .products-grid {
-        grid-template-columns: 1fr;
-    }
-    .product-card {
-        padding: 0.5rem;
-        border-radius: 12px;
-    }
-    .cta-button {
-        width: 90vw;
-        font-size: 1rem;
-        padding: 0.8rem 0;
-    }
-    .cart-header h3 {
+    
+    .nav-logo h2 {
         font-size: 1.1rem;
     }
-    .checkout-btn {
+    
+    .nav-button {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+    }
+    
+    .cart-count {
+        width: 18px;
+        height: 18px;
+        font-size: 0.7rem;
+    }
+
+    /* 首頁微調 */
+    .hero-title {
+        font-size: 1.8rem;
+    }
+    
+    .hero-subtitle {
         font-size: 1rem;
-        padding: 0.7rem 0;
     }
-    .form-group label, .form-group input, .form-group textarea {
-        font-size: 0.95em;
+    
+    .cta-button {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
     }
-    .confirmation-message h3 {
-        font-size: 1.2rem;
+    
+    .logo-img {
+        max-width: 200px;
+    }
+    
+    .shipping-notice {
+        font-size: 0.85rem;
+        padding: 0.6rem 1rem;
+    }
+
+    /* 商品卡片微調 */
+    .product-info {
+        padding: 0.8rem;
+    }
+    
+    .product-info h3 {
+        font-size: 0.9rem;
+    }
+    
+    .product-price {
+        font-size: 0.95rem;
+    }
+    
+    .add-to-cart-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    /* 購物車項目微調 */
+    .cart-item-img {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .cart-item-info h4 {
+        font-size: 0.85rem;
+    }
+    
+    .quantity-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+    }
+
+    /* 結帳頁面微調 */
+    .checkout-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .checkout-content {
+        padding: 0.8rem;
+    }
+    
+    .checkout-content h3 {
+        font-size: 1rem;
+    }
+    
+    /* Modal 微調 */
+    .modal-content {
+        padding: 15px;
+        margin: 10% auto;
+    }
+    
+    .tab-button {
+        font-size: 0.85rem;
+        padding: 8px;
     }
 }
 
-/* 針對 320px 超小螢幕的細節優化 */
+/* 超小型手機 (iPhone 5/SE 第一代) */
 @media (max-width: 320px) {
+    /* 極限空間優化 */
+    .nav-logo h2 {
+        font-size: 1rem;
+    }
+    
+    .nav-button {
+        padding: 4px 8px;
+        font-size: 0.65rem;
+    }
+    
     .hero-title {
         font-size: 1.5rem;
     }
-    .nav-button {
-        font-size: 9px;
-        padding: 3px 6px;
+    
+    .hero-subtitle {
+        font-size: 0.9rem;
     }
-    .cta-button {
-        font-size: 0.95rem;
-        padding: 0.7rem 0;
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
     }
+    
     .product-card {
-        padding: 0.3rem;
-        border-radius: 8px;
+        border-radius: 10px;
     }
+    
+    .section-title {
+        font-size: 1.3rem;
+    }
+    
+    .checkout-steps {
+        font-size: 0.65rem;
+    }
+    
     .checkout-btn {
-        font-size: 0.95rem;
-        padding: 0.6rem 0;
-    }
-    .confirmation-message h3 {
-        font-size: 1rem;
+        font-size: 0.9rem;
+        padding: 0.6rem;
     }
 }
 
-/* 374px 以下極小螢幕：一行一個商品卡片 */
-@media (max-width: 374px) {
-    .products-grid {
-        grid-template-columns: 1fr;
+/* 安全區域適配 (iPhone X 以上) */
+@supports (padding: max(0px)) {
+    .navbar {
+        padding-top: max(1rem, env(safe-area-inset-top));
     }
-    .hero-title, .cart-header h3 {
-        font-size: 1.1rem;
+    
+    .cart-sidebar {
+        padding-bottom: max(1rem, env(safe-area-inset-bottom));
     }
-    .cta-button, .checkout-btn {
-        font-size: 0.95rem;
-        padding: 0.6rem 0;
+    
+    .checkout-container {
+        padding-bottom: max(1rem, env(safe-area-inset-bottom));
     }
-    .product-card {
-        padding: 0.3rem;
-        border-radius: 8px;
+    
+    footer {
+        padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    }
+}
+
+/* 觸控優化 */
+@media (hover: none) and (pointer: coarse) {
+    /* 移除 hover 效果，改用 active */
+    .product-card:hover {
+        transform: none;
+    }
+    
+    .product-card:active {
+        transform: scale(0.98);
+    }
+    
+    .add-to-cart-btn:hover {
+        transform: none;
+    }
+    
+    .add-to-cart-btn:active {
+        transform: scale(0.95);
+    }
+    
+    .contact-item:hover {
+        transform: none;
+    }
+    
+    .contact-item:active {
+        transform: scale(0.98);
+    }
+}
+
+/* 高對比度模式支援 */
+@media (prefers-contrast: high) {
+    .nav-button,
+    .add-to-cart-btn,
+    .checkout-btn {
+        border: 2px solid currentColor;
+    }
+}
+
+/* 深色模式支援 (可選) */
+@media (prefers-color-scheme: dark) {
+    /* 可以在這裡添加深色模式樣式 */
+}
+
+/* 列印樣式 */
+@media print {
+    .navbar,
+    .cart-sidebar,
+    .cart-overlay,
+    .checkout-overlay-page,
+    .modal,
+    .hamburger,
+    .nav-cart,
+    .add-to-cart-btn,
+    .checkout-btn {
+        display: none !important;
     }
 }
