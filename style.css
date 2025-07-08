@@ -1256,31 +1256,45 @@ footer p {
         font-size: 0.75rem !important;
         margin-right: 8px !important;
     }
+    
+    /* 購物車圖示放大 */
+    .nav-cart {
+        font-size: 1.5rem;
+    }
+    
+    .nav-cart i {
+        font-size: 1.5rem;
+    }
+    
+    .cart-count {
+        width: 22px;
+        height: 22px;
+        font-size: 0.85rem;
+        top: -10px;
+        right: -15px;
+    }
 
-    /* 首頁調整 */
+    /* 首頁調整 - 修改為上下排列 */
     .hero {
         flex-direction: column;
         text-align: center;
-        gap: 2rem;
+        gap: 1rem;
         padding-top: 70px;
+        padding-bottom: 2rem;
     }
 
     .hero-content {
         align-items: center;
         text-align: center;
         max-width: 90vw;
-        margin-bottom: 1rem;
-        display: flex;
-        flex-direction: column;
-        order: 1;
+        margin-bottom: 0;
+        order: 1; /* 文字在上 */
     }
     
     .hero-right {
         width: 100%;
-        display: flex;
-        justify-content: center;
-        order: 2;
-        margin-top: 1.5rem;
+        order: 2; /* 圖片在下 */
+        margin-top: 1rem;
     }
 
     .logo-img {
@@ -1289,8 +1303,12 @@ footer p {
     }
 
     .shipping-notice {
-        bottom: -10rem;
-        width: calc(100% - 20px);
+        position: relative;
+        bottom: auto;
+        left: auto;
+        transform: none;
+        margin-top: 2rem;
+        order: 3; /* 運費說明在最下方 */
     }
 
     /* 商品網格調整 */
@@ -1353,10 +1371,21 @@ footer p {
         font-size: 0.7rem;
     }
     
+    /* 購物車圖示保持放大 */
+    .nav-cart {
+        font-size: 1.4rem;
+    }
+    
+    .nav-cart i {
+        font-size: 1.4rem;
+    }
+    
     .cart-count {
-        width: 18px;
-        height: 18px;
-        font-size: 0.7rem;
+        width: 20px;
+        height: 20px;
+        font-size: 0.8rem;
+        top: -8px;
+        right: -12px;
     }
 
     /* 首頁微調 */
@@ -1380,6 +1409,7 @@ footer p {
     .shipping-notice {
         font-size: 0.85rem;
         padding: 0.6rem 1rem;
+        margin-top: 1.5rem;
     }
 
     /* 商品卡片微調 */
@@ -1451,6 +1481,15 @@ footer p {
     .nav-button {
         padding: 4px 8px;
         font-size: 0.65rem;
+    }
+    
+    /* 購物車圖示稍微調小但仍保持可見 */
+    .nav-cart {
+        font-size: 1.3rem;
+    }
+    
+    .nav-cart i {
+        font-size: 1.3rem;
     }
     
     .hero-title {
