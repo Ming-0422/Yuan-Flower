@@ -573,7 +573,7 @@ footer p {
 .cart-sidebar {
     position: fixed;
     top: 0;
-    right: -100%;
+    right: -400px; /* 改為固定值而不是百分比 */
     width: 100%;
     max-width: 400px;
     height: 100%;
@@ -585,12 +585,9 @@ footer p {
     flex-direction: column;
 }
 
-/* 購物車調試修復 */
+/* 購物車開啟狀態 */
 .cart-sidebar.active {
-    right: 0 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: translateX(0) !important;
+    right: 0; /* 移動到視窗右邊 */
 }
 
 .cart-header {
