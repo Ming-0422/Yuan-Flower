@@ -1301,10 +1301,25 @@ footer p {
         gap: 1rem;
         padding-top: 70px;
         padding-bottom: 2rem;
-        /* 手機版添加花朵背景圖案 */
-        background: 
-            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><g opacity="0.1"><circle cx="100" cy="120" r="25" fill="%23FFB6C1"/><circle cx="150" cy="80" r="35" fill="%23FF69B4"/><circle cx="250" cy="100" r="20" fill="%23FFB6C1"/><circle cx="320" cy="130" r="30" fill="%23FF69B4"/><circle cx="80" cy="200" r="15" fill="%23FFB6C1"/><circle cx="180" cy="180" r="40" fill="%23FF69B4"/><circle cx="280" cy="200" r="25" fill="%23FFB6C1"/><circle cx="350" cy="220" r="20" fill="%23FF69B4"/><circle cx="50" cy="280" r="30" fill="%23FFB6C1"/><circle cx="150" cy="300" r="20" fill="%23FF69B4"/><circle cx="250" cy="320" r="35" fill="%23FFB6C1"/><circle cx="320" cy="300" r="15" fill="%23FF69B4"/></g></svg>') no-repeat center 25%/90%,
-            linear-gradient(135deg, #ffeef8 0%, #fff5f7 50%, #f0f8ff 100%);
+        position: relative;
+        /* 基礎背景漸變 */
+        background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 50%, #f0f8ff 100%);
+    }
+
+    /* 添加花朵背景圖案 - 僅在手機版顯示 */
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><g opacity="0.15"><circle cx="80" cy="100" r="20" fill="%23FFB6C1"/><circle cx="150" cy="70" r="30" fill="%23FF69B4"/><circle cx="250" cy="90" r="18" fill="%23FFB6C1"/><circle cx="320" cy="120" r="25" fill="%23FF69B4"/><circle cx="60" cy="180" r="15" fill="%23FFB6C1"/><circle cx="180" cy="160" r="35" fill="%23FF69B4"/><circle cx="280" cy="180" r="22" fill="%23FFB6C1"/><circle cx="350" cy="200" r="18" fill="%23FF69B4"/><circle cx="40" cy="260" r="25" fill="%23FFB6C1"/><circle cx="140" cy="280" r="18" fill="%23FF69B4"/><circle cx="240" cy="300" r="30" fill="%23FFB6C1"/><circle cx="320" cy="280" r="20" fill="%23FF69B4"/><circle cx="90" cy="340" r="15" fill="%23FFB6C1"/><circle cx="200" cy="350" r="25" fill="%23FF69B4"/><circle cx="300" cy="360" r="20" fill="%23FFB6C1"/></g></svg>');
+        background-repeat: no-repeat;
+        background-position: center 20%;
+        background-size: 95%;
+        z-index: 1;
+        pointer-events: none;
     }
 
     .hero-content {
@@ -1333,11 +1348,14 @@ footer p {
     .shipping-notice {
         position: relative;
         bottom: auto;
-        left: auto;
-        transform: none;
+        left: 50%;
+        transform: translateX(-50%);
         margin-top: 2rem;
         order: 3; /* 運費說明在最下方 */
         z-index: 3;
+        text-align: center;
+        width: calc(100% - 40px);
+        max-width: 500px;
     }
 
     /* 商品網格調整 */
