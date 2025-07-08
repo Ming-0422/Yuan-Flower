@@ -1270,10 +1270,17 @@ footer p {
         text-align: center;
         max-width: 90vw;
         margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        order: 1;
     }
     
     .hero-right {
         width: 100%;
+        display: flex;
+        justify-content: center;
+        order: 2;
+        margin-top: 1.5rem;
     }
 
     .logo-img {
