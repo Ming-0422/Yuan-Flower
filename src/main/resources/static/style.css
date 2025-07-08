@@ -96,10 +96,11 @@ body {
     gap: clamp(0.5rem, 2vw, 1.5rem);
 }
 
+/* 優化網頁版購物車圖示 */
 .nav-cart {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
     color: #ff6b9d;
     font-weight: 500;
     cursor: pointer;
@@ -107,6 +108,19 @@ body {
     padding: 0.5rem;
     min-width: 44px;
     min-height: 44px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.nav-cart:hover {
+    background-color: rgba(255, 107, 157, 0.1);
+    transform: scale(1.05);
+}
+
+.nav-cart i {
+    font-size: 1.4rem;
+    line-height: 1;
 }
 
 .cart-count {
@@ -118,10 +132,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 600;
     position: absolute;
-    top: -8px;
-    right: -12px;
+    top: 2px;
+    right: 2px;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .hamburger {
@@ -1257,30 +1274,37 @@ footer p {
         margin-right: 8px !important;
     }
     
-    /* 購物車圖示放大 */
+    /* 手機版購物車圖示調整 */
     .nav-cart {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
+        padding: 0.6rem;
+        min-width: 48px;
+        min-height: 48px;
     }
     
     .nav-cart i {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
     }
     
     .cart-count {
         width: 22px;
         height: 22px;
         font-size: 0.85rem;
-        top: -10px;
-        right: -15px;
+        top: -2px;
+        right: -2px;
     }
 
-    /* 首頁調整 - 修改為上下排列 */
+    /* 首頁調整 - 修改為上下排列，並在手機版添加花朵背景圖案 */
     .hero {
         flex-direction: column;
         text-align: center;
         gap: 1rem;
         padding-top: 70px;
         padding-bottom: 2rem;
+        /* 手機版添加花朵背景圖案 */
+        background: 
+            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><g opacity="0.1"><circle cx="100" cy="120" r="25" fill="%23FFB6C1"/><circle cx="150" cy="80" r="35" fill="%23FF69B4"/><circle cx="250" cy="100" r="20" fill="%23FFB6C1"/><circle cx="320" cy="130" r="30" fill="%23FF69B4"/><circle cx="80" cy="200" r="15" fill="%23FFB6C1"/><circle cx="180" cy="180" r="40" fill="%23FF69B4"/><circle cx="280" cy="200" r="25" fill="%23FFB6C1"/><circle cx="350" cy="220" r="20" fill="%23FF69B4"/><circle cx="50" cy="280" r="30" fill="%23FFB6C1"/><circle cx="150" cy="300" r="20" fill="%23FF69B4"/><circle cx="250" cy="320" r="35" fill="%23FFB6C1"/><circle cx="320" cy="300" r="15" fill="%23FF69B4"/></g></svg>') no-repeat center 25%/90%,
+            linear-gradient(135deg, #ffeef8 0%, #fff5f7 50%, #f0f8ff 100%);
     }
 
     .hero-content {
@@ -1289,12 +1313,16 @@ footer p {
         max-width: 90vw;
         margin-bottom: 0;
         order: 1; /* 文字在上 */
+        position: relative;
+        z-index: 3;
     }
     
     .hero-right {
         width: 100%;
         order: 2; /* 圖片在下 */
         margin-top: 1rem;
+        position: relative;
+        z-index: 2;
     }
 
     .logo-img {
@@ -1309,6 +1337,7 @@ footer p {
         transform: none;
         margin-top: 2rem;
         order: 3; /* 運費說明在最下方 */
+        z-index: 3;
     }
 
     /* 商品網格調整 */
@@ -1371,21 +1400,23 @@ footer p {
         font-size: 0.7rem;
     }
     
-    /* 購物車圖示保持放大 */
+    /* 購物車圖示保持適當大小 */
     .nav-cart {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
+        min-width: 44px;
+        min-height: 44px;
     }
     
     .nav-cart i {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
     }
     
     .cart-count {
         width: 20px;
         height: 20px;
         font-size: 0.8rem;
-        top: -8px;
-        right: -12px;
+        top: -2px;
+        right: -2px;
     }
 
     /* 首頁微調 */
@@ -1483,13 +1514,15 @@ footer p {
         font-size: 0.65rem;
     }
     
-    /* 購物車圖示稍微調小但仍保持可見 */
+    /* 購物車圖示保持可用性 */
     .nav-cart {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
+        min-width: 40px;
+        min-height: 40px;
     }
     
     .nav-cart i {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
     }
     
     .hero-title {
@@ -1567,6 +1600,16 @@ footer p {
     
     .contact-item:active {
         transform: scale(0.98);
+    }
+    
+    .nav-cart:hover {
+        transform: none;
+        background-color: transparent;
+    }
+    
+    .nav-cart:active {
+        transform: scale(0.95);
+        background-color: rgba(255, 107, 157, 0.1);
     }
 }
 
