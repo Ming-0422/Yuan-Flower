@@ -1223,3 +1223,66 @@ footer p {
         box-shadow: none;
     }
 }
+
+/* 針對 375px 以下手機螢幕的細節優化 */
+@media (max-width: 375px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    .nav-button {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    .product-card {
+        padding: 0.5rem;
+        border-radius: 12px;
+    }
+    .cta-button {
+        width: 90vw;
+        font-size: 1rem;
+        padding: 0.8rem 0;
+    }
+    .cart-header h3 {
+        font-size: 1.1rem;
+    }
+    .checkout-btn {
+        font-size: 1rem;
+        padding: 0.7rem 0;
+    }
+    .form-group label, .form-group input, .form-group textarea {
+        font-size: 0.95em;
+    }
+    .confirmation-message h3 {
+        font-size: 1.2rem;
+    }
+}
+
+/* 針對 320px 超小螢幕的細節優化 */
+@media (max-width: 320px) {
+    .hero-title {
+        font-size: 1.5rem;
+    }
+    .nav-button {
+        font-size: 9px;
+        padding: 3px 6px;
+    }
+    .cta-button {
+        font-size: 0.95rem;
+        padding: 0.7rem 0;
+    }
+    .product-card {
+        padding: 0.3rem;
+        border-radius: 8px;
+    }
+    .checkout-btn {
+        font-size: 0.95rem;
+        padding: 0.6rem 0;
+    }
+    .confirmation-message h3 {
+        font-size: 1rem;
+    }
+}
