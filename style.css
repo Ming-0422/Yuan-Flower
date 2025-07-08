@@ -1095,7 +1095,8 @@ footer p {
 
 @media (max-width: 600px) {
     .products-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
     }
 
     .contact-info {
@@ -1222,6 +1223,25 @@ footer p {
         transform: none;
         box-shadow: none;
     }
+
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.7rem;
+    }
+
+    .product-card {
+        padding: 0.5rem;
+        border-radius: 12px;
+    }
+
+    .hero-title, .cart-header h3 {
+        font-size: 1.3rem;
+    }
+
+    .cta-button, .checkout-btn {
+        font-size: 1rem;
+        padding: 0.7rem 0;
+    }
 }
 
 /* 針對 375px 以下手機螢幕的細節優化 */
@@ -1235,7 +1255,6 @@ footer p {
     }
     .products-grid {
         grid-template-columns: 1fr;
-        gap: 0.5rem;
     }
     .product-card {
         padding: 0.5rem;
@@ -1284,5 +1303,23 @@ footer p {
     }
     .confirmation-message h3 {
         font-size: 1rem;
+    }
+}
+
+/* 374px 以下極小螢幕：一行一個商品卡片 */
+@media (max-width: 374px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    .hero-title, .cart-header h3 {
+        font-size: 1.1rem;
+    }
+    .cta-button, .checkout-btn {
+        font-size: 0.95rem;
+        padding: 0.6rem 0;
+    }
+    .product-card {
+        padding: 0.3rem;
+        border-radius: 8px;
     }
 }
