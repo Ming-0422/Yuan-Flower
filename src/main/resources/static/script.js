@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 初始化所有功能
     initializeEventListeners();
     initializeAuth();
-    initializeRegistrationValidation();  // 添加註冊驗證初始化
+    initializeRegistrationValidation();
     setupShoppingCart();
     setupCheckout();
 
@@ -38,6 +38,236 @@ document.addEventListener('DOMContentLoaded', function () {
     // 初始更新購物車UI
     updateCartUI();
 });
+
+// 初始化事件監聽器
+function initializeEventListeners() {
+    // 平滑滾動
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', smoothScroll);
+    });
+
+    // 漢堡選單
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // 點擊選單連結後關閉選單
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
+            });
+        });
+
+        // 點擊頁面其他地方關閉選單
+        document.addEventListener('click', (e) => {
+            if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
+    }
+
+    // 導航欄滾動效果
+    window.addEventListener('scroll', handleNavbarScroll);
+
+    // CTA按鈕
+    const ctaButton = document.querySelector('.cta-button');
+    if (ctaButton) {
+        ctaButton.addEventListener('click', () => {
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+}
+
+// 修復認證功能
+function initializeAuth() {
+    const authModal = document.getElementById('authModal');
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const closeBtn = document.querySelector('.close-button');
+    const tabButtons = document.querySelectorAll('.tab-button');
+
+    console.log('認證元素檢查:');
+    console.log('authModal:', authModal);
+    console.log('loginBtn:', loginBtn);
+    console.log('registerBtn:', registerBtn);
+    console.log('closeBtn:', closeBtn);
+
+    // 開啟登入模態框
+    if (loginBtn && authModal) {
+        loginBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('登入按鈕被點擊');
+            authModal.style.display = 'block';
+            authModal.style.zIndex = '3000';
+            showTab('login');
+        });
+    }
+
+    // 開啟註冊模態框
+    if (registerBtn && authModal) {
+        registerBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('註冊按鈕被點擊');
+            authModal.style.display = 'block';
+            authModal.style.zIndex = '3000';
+            showTab('register');
+        });
+    }
+
+    // 關閉模態框
+    if (closeBtn && authModal) {
+        closeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('關閉按鈕被點擊');
+            authModal.style.display = 'none';
+        });
+    }
+
+    // 點擊外部關閉
+    if (authModal) {
+        authModal.addEventListener('click', function(e) {
+            if (e.target === authModal) {
+                console.log('點擊外部關閉模態框');
+                authModal.style.display = 'none';
+            }
+        });
+    }
+
+    // 標籤切換
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const tab = button.getAttribute('data-tab');
+            console.log('切換標籤:', tab);
+            showTab(tab);
+        });
+    });
+
+    // 登入表單提交
+    const loginForm = document.getElementById('loginFormElement');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+
+    // 註冊表單提交
+    const registerForm = document.getElementById('registerFormElement');
+    if (registerForm) {
+        registerForm.addEventListener('submit', handleEnhancedRegister);
+    }
+
+    // 登出
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('登出按鈕被點擊');
+            await handleLogout();
+        });
+    }
+}
+
+// 修復購物車功能
+function setupShoppingCart() {
+    const cartSidebar = document.querySelector('.cart-sidebar');
+    const cartOverlay = document.querySelector('.cart-overlay');
+    const openCartBtn = document.querySelector('.nav-cart');
+    const closeCartBtn = document.querySelector('.close-cart-btn');
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    const cartItemsContainer = document.querySelector('.cart-items');
+
+    console.log('購物車元素檢查:');
+    console.log('cartSidebar:', cartSidebar);
+    console.log('cartOverlay:', cartOverlay);
+    console.log('openCartBtn:', openCartBtn);
+
+    // 購物車圖示點擊事件
+    if (openCartBtn && cartSidebar && cartOverlay) {
+        // 移除現有事件監聽器
+        const newOpenCartBtn = openCartBtn.cloneNode(true);
+        openCartBtn.parentNode.replaceChild(newOpenCartBtn, openCartBtn);
+        
+        newOpenCartBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('購物車圖示被點擊');
+            
+            const isOpen = cartSidebar.classList.contains('active');
+            
+            if (isOpen) {
+                cartSidebar.classList.remove('active');
+                cartOverlay.classList.remove('active');
+                console.log('購物車已關閉');
+            } else {
+                cartSidebar.classList.add('active');
+                cartOverlay.classList.add('active');
+                console.log('購物車已開啟');
+            }
+        });
+    }
+
+    // 關閉購物車
+    if (closeCartBtn && cartSidebar && cartOverlay) {
+        closeCartBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            cartSidebar.classList.remove('active');
+            cartOverlay.classList.remove('active');
+        });
+    }
+
+    // 點擊遮罩關閉
+    if (cartOverlay && cartSidebar) {
+        cartOverlay.addEventListener('click', function(e) {
+            if (e.target === cartOverlay) {
+                cartSidebar.classList.remove('active');
+                cartOverlay.classList.remove('active');
+            }
+        });
+    }
+
+    // 加入購物車按鈕
+    addToCartButtons.forEach(btn => {
+        btn.addEventListener('click', addToCart);
+    });
+
+    // 購物車操作
+    if (cartItemsContainer) {
+        cartItemsContainer.addEventListener('click', handleCartActions);
+    }
+
+    console.log('購物車功能已初始化');
+}
+
+// 確保 showTab 函數存在
+function showTab(tabName) {
+    console.log('顯示標籤:', tabName);
+    
+    // 更新標籤按鈕
+    document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
+    });
+
+    // 更新內容
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.toggle('active', content.id === tabName + 'Form');
+    });
+}
 
 // 驗證規則
 const validationRules = {
@@ -210,7 +440,6 @@ async function handleEnhancedRegister(e) {
         email: formData.get('email').trim(),
         password: formData.get('password'),
         phone: formData.get('phone').trim()
-        // 移除 address 欄位
     };
     
     // 顯示載入狀態
@@ -254,160 +483,6 @@ async function handleEnhancedRegister(e) {
     }
 }
 
-// 初始化事件監聽器
-function initializeEventListeners() {
-    // 平滑滾動
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', smoothScroll);
-    });
-
-    // 漢堡選單
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
-
-    if (hamburger && navMenu) {
-        hamburger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            navMenu.classList.toggle('active');
-            hamburger.classList.toggle('active');
-        });
-
-        // 點擊選單連結後關閉選單
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                if (navMenu.classList.contains('active')) {
-                    navMenu.classList.remove('active');
-                    hamburger.classList.remove('active');
-                }
-            });
-        });
-
-        // 點擊頁面其他地方關閉選單
-        document.addEventListener('click', (e) => {
-            if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !hamburger.contains(e.target)) {
-                navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-            }
-        });
-    }
-
-    // 導航欄滾動效果
-    window.addEventListener('scroll', handleNavbarScroll);
-
-    // CTA按鈕
-    const ctaButton = document.querySelector('.cta-button');
-    if (ctaButton) {
-        ctaButton.addEventListener('click', () => {
-            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
-        });
-    }
-}
-
-// 認證相關功能 - 修復事件冒泡問題
-function initializeAuth() {
-    const authModal = document.getElementById('authModal');
-    const loginBtn = document.getElementById('loginBtn');
-    const registerBtn = document.getElementById('registerBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const closeBtn = document.querySelector('.close-button');
-    const tabButtons = document.querySelectorAll('.tab-button');
-
-    // 開啟登入模態框 - 加入阻止事件冒泡
-    if (loginBtn) {
-        loginBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation(); // 阻止事件冒泡
-            authModal.style.display = 'block';
-            showTab('login');
-        });
-    }
-
-    // 開啟註冊模態框 - 加入阻止事件冒泡
-    if (registerBtn) {
-        registerBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation(); // 阻止事件冒泡
-            authModal.style.display = 'block';
-            showTab('register');
-        });
-    }
-
-    // 關閉模態框
-    if (closeBtn) {
-        closeBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation(); // 阻止事件冒泡
-            authModal.style.display = 'none';
-        });
-    }
-
-    // 點擊外部關閉
-    window.addEventListener('click', (e) => {
-        if (e.target === authModal) {
-            authModal.style.display = 'none';
-        }
-    });
-
-    // 標籤切換
-    tabButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation(); // 阻止事件冒泡
-            const tab = button.getAttribute('data-tab');
-            showTab(tab);
-        });
-    });
-
-    // 登入表單提交
-    const loginForm = document.getElementById('loginFormElement');
-    if (loginForm) {
-        loginForm.addEventListener('submit', handleLogin);
-    }
-
-    // 註冊表單提交（這個會被 handleEnhancedRegister 覆蓋）
-    const registerForm = document.getElementById('registerFormElement');
-    if (registerForm) {
-        registerForm.addEventListener('submit', handleRegister);
-    }
-
-    // 登出 - 加入阻止事件冒泡
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            e.stopPropagation(); // 阻止事件冒泡
-            await handleLogout();
-        });
-    }
-}
-
-// 額外的保護措施：在導航欄上添加事件委託檢查
-document.addEventListener('DOMContentLoaded', function() {
-    const navbar = document.querySelector('.navbar');
-    if (navbar) {
-        navbar.addEventListener('click', function(e) {
-            // 如果點擊的是認證相關按鈕，阻止冒泡
-            if (e.target.closest('#loginBtn') || 
-                e.target.closest('#registerBtn') || 
-                e.target.closest('#logoutBtn')) {
-                e.stopPropagation();
-            }
-        }, true); // 使用捕獲階段
-    }
-});
-
-function showTab(tabName) {
-    // 更新標籤按鈕
-    document.querySelectorAll('.tab-button').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
-    });
-
-    // 更新內容
-    document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.toggle('active', content.id === tabName + 'Form');
-    });
-}
-
 async function handleLogin(e) {
     e.preventDefault();
 
@@ -449,42 +524,6 @@ async function handleLogin(e) {
     } catch (error) {
         console.error('登入錯誤:', error);
         showMessage('loginMessage', '網路錯誤，請稍後再試', 'error');
-    }
-}
-
-async function handleRegister(e) {
-    e.preventDefault();
-
-    const formData = new FormData(e.target);
-    const registerData = {
-        username: formData.get('username'),
-        email: formData.get('email'),
-        password: formData.get('password'),
-        phone: formData.get('phone') || ''
-    };
-
-    try {
-        const response = await fetch(`${API_BASE_URL}/members/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(registerData)
-        });
-
-        if (response.ok) {
-            showMessage('registerMessage', '註冊成功！請登入', 'success');
-            setTimeout(() => {
-                showTab('login');
-            }, 1500);
-            e.target.reset();
-        } else {
-            const error = await response.text();
-            showMessage('registerMessage', error || '註冊失敗', 'error');
-        }
-    } catch (error) {
-        console.error('註冊錯誤:', error);
-        showMessage('registerMessage', '發生錯誤，請稍後再試', 'error');
     }
 }
 
@@ -611,89 +650,6 @@ function setObjectFit(img) {
     }
 }
 
-// 購物車功能 - 修復版本
-function setupShoppingCart() {
-    const cartSidebar = document.querySelector('.cart-sidebar');
-    const cartOverlay = document.querySelector('.cart-overlay');
-    const openCartBtn = document.querySelector('.nav-cart');
-    const closeCartBtn = document.querySelector('.close-cart-btn');
-    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-    const cartItemsContainer = document.querySelector('.cart-items');
-
-    // 修復：定義 newOpenCartBtn 變數
-    let newOpenCartBtn = openCartBtn;
-
-    // 清除購物車圖示的所有現有事件監聽器
-    if (openCartBtn) {
-        // 克隆元素來移除所有事件監聽器
-        const newOpenCartBtn = openCartBtn.cloneNode(true);
-        openCartBtn.parentNode.replaceChild(newOpenCartBtn, openCartBtn);
-        
-        // 重新添加單一事件監聽器
-        newOpenCartBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('購物車圖示被點擊'); // 除錯用
-            
-            if (cartSidebar && cartOverlay) {
-                const isOpen = cartSidebar.classList.contains('active');
-                
-                if (isOpen) {
-                    // 關閉購物車
-                    cartSidebar.classList.remove('active');
-                    cartOverlay.classList.remove('active');
-                    console.log('購物車已關閉');
-                } else {
-                    // 開啟購物車
-                    cartSidebar.classList.add('active');
-                    cartOverlay.classList.add('active');
-                    console.log('購物車已開啟');
-                }
-            } else {
-                console.log('找不到購物車元素');
-            }
-        });
-    }
-
-    // 關閉購物車
-    if (closeCartBtn) {
-        closeCartBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (cartSidebar && cartOverlay) {
-                cartSidebar.classList.remove('active');
-                cartOverlay.classList.remove('active');
-            }
-        });
-    }
-
-    // 點擊遮罩關閉
-    if (cartOverlay) {
-        cartOverlay.addEventListener('click', function(e) {
-            if (e.target === cartOverlay) {
-                cartSidebar.classList.remove('active');
-                cartOverlay.classList.remove('active');
-            }
-        });
-    }
-
-    // 加入購物車按鈕
-    addToCartButtons.forEach(btn => {
-        btn.addEventListener('click', addToCart);
-    });
-
-    // 購物車操作
-    if (cartItemsContainer) {
-        cartItemsContainer.addEventListener('click', handleCartActions);
-    }
-
-    // 除錯資訊
-    console.log('購物車功能已初始化');
-    console.log('購物車圖示:', newOpenCartBtn || openCartBtn);
-    console.log('購物車側邊欄:', cartSidebar);
-    console.log('購物車遮罩:', cartOverlay);
-}
-
 // 加入購物車
 function addToCart(e) {
     e.preventDefault();
@@ -808,6 +764,20 @@ function handleCartActions(e) {
     }
 }
 
+// 調試函數 - 檢查元素狀態
+function debugElements() {
+    console.log('=== 調試元素狀態 ===');
+    console.log('authModal:', document.getElementById('authModal'));
+    console.log('loginBtn:', document.getElementById('loginBtn'));
+    console.log('registerBtn:', document.getElementById('registerBtn'));
+    console.log('cart-sidebar:', document.querySelector('.cart-sidebar'));
+    console.log('nav-cart:', document.querySelector('.nav-cart'));
+    console.log('========================');
+}
+
+// 在控制台呼叫此函數來調試
+window.debugElements = debugElements;
+
 // 結帳功能設置
 function setupCheckout() {
     const checkoutBtn = document.querySelector('.checkout-btn');
@@ -817,7 +787,7 @@ function setupCheckout() {
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', async function (e) {
             e.preventDefault();
-            e.stopPropagation(); // 阻止事件冒泡
+            e.stopPropagation();
 
             if (cart.length === 0) {
                 showCustomAlert('您的購物車是空的！', 'fas fa-shopping-cart', '購物車提示');
@@ -838,20 +808,16 @@ function setupCheckout() {
             const authData = await response.json();
 
             if (!authData.authenticated) {
-                // 清除前端狀態
                 localStorage.removeItem('username');
                 updateUIForLoggedOutUser();
                 showLoginRequired();
                 return;
             }
 
-            // 同步前端狀態
             localStorage.setItem('username', authData.username);
             updateUIForLoggedInUser(authData.username);
 
-            // 進入結帳流程
             if (checkoutPage) {
-                // 設定日期選擇器的最小日期為明天，最大日期為半年後
                 const deliveryDateInput = document.getElementById('delivery-date');
                 if (deliveryDateInput) {
                     const tomorrow = new Date();
@@ -875,7 +841,6 @@ function setupCheckout() {
                 updateCheckoutSummary();
                 checkoutPage.classList.add('active');
 
-                // 關閉購物車
                 const cartSidebar = document.querySelector('.cart-sidebar');
                 const cartOverlay = document.querySelector('.cart-overlay');
                 if (cartSidebar && cartOverlay) {
@@ -889,7 +854,7 @@ function setupCheckout() {
     if (closeCheckoutBtn) {
         closeCheckoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            e.stopPropagation(); // 阻止事件冒泡
+            e.stopPropagation();
             if (checkoutPage) {
                 checkoutPage.classList.remove('active');
             }
@@ -990,7 +955,6 @@ function initializeDatePicker() {
         return;
     }
 
-    // 如果已經初始化，先銷毀舊的實例
     if (deliveryDateInput._flatpickr) {
         deliveryDateInput._flatpickr.destroy();
     }
@@ -1003,7 +967,6 @@ function initializeDatePicker() {
         }
     };
 
-    // 自定義中文語言包，月份顯示為數字
     const customLocale = Object.assign({}, flatpickr.l10ns.zh_tw, {
         months: {
             shorthand: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -1013,13 +976,12 @@ function initializeDatePicker() {
 
     flatpickr(deliveryDateInput, {
         minDate: new Date().fp_incr(1),
-        maxDate: new Date().fp_incr(180), // 改為半年（180天）
+        maxDate: new Date().fp_incr(180),
         locale: customLocale,
         dateFormat: "Y-m-d",
 
         onChange: function (selectedDates, dateStr, instance) {
             removeExistingWarning();
-            // 移除週末限制，所有日期都可以選擇
         },
         onReady: function (selectedDates, dateStr, instance) {
             const container = instance.calendarContainer;
@@ -1079,7 +1041,6 @@ function validateAddress(inputId) {
     const errorSpan = document.getElementById(`${inputId}-error`);
     const addressRegex = /^(?=.*[路街])(?=.*號).+$/;
 
-    // 只有在指定地址被選中時才需要驗證
     const shippingMethod = document.querySelector('input[name="shipping-method"]:checked').value;
     if (shippingMethod !== 'homedelivery') {
         addressInput.classList.remove('input-error');
@@ -1193,18 +1154,14 @@ function showLoginRequired() {
     modal.appendChild(content);
     document.body.appendChild(modal);
 
-    // 按鈕事件
     document.getElementById('login-required-login').addEventListener('click', () => {
         document.body.removeChild(modal);
-
-        // 關閉購物車
         const cartSidebar = document.querySelector('.cart-sidebar');
         const cartOverlay = document.querySelector('.cart-overlay');
         if (cartSidebar && cartOverlay) {
             cartSidebar.classList.remove('active');
             cartOverlay.classList.remove('active');
         }
-
         const authModal = document.getElementById('authModal');
         if (authModal) {
             authModal.style.display = 'block';
@@ -1214,15 +1171,12 @@ function showLoginRequired() {
 
     document.getElementById('login-required-register').addEventListener('click', () => {
         document.body.removeChild(modal);
-
-        // 關閉購物車
         const cartSidebar = document.querySelector('.cart-sidebar');
         const cartOverlay = document.querySelector('.cart-overlay');
         if (cartSidebar && cartOverlay) {
             cartSidebar.classList.remove('active');
             cartOverlay.classList.remove('active');
         }
-
         const authModal = document.getElementById('authModal');
         if (authModal) {
             authModal.style.display = 'block';
@@ -1234,7 +1188,6 @@ function showLoginRequired() {
         document.body.removeChild(modal);
     });
 
-    // 點擊外部關閉
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             document.body.removeChild(modal);
@@ -1307,7 +1260,6 @@ function showCustomAlert(message, iconClass = 'fas fa-info-circle', title = '提
 
 // 切換結帳步驟
 function switchCheckoutStep(stepNumber) {
-    // 檢查登入狀態
     const username = localStorage.getItem('username');
     if (!username) {
         const checkoutPage = document.getElementById('checkout-page');
@@ -1514,7 +1466,6 @@ async function finishPurchase() {
         shippingAddress = `${storeName}: ${storeInfo}`;
     }
 
-    // 計算金額
     let subtotal = 0;
     const cartItems = cart.map(item => {
         subtotal += item.price * item.quantity;
@@ -1529,7 +1480,6 @@ async function finishPurchase() {
     const shippingFee = subtotal >= 600 ? 0 : 60;
     const total = subtotal + shippingFee;
 
-    // 準備訂單資料
     const deliveryDateInput = document.getElementById('delivery-date');
     const orderNotesInput = document.getElementById('order-notes');
     const bankAccountLast5Input = document.getElementById('bank-account-last5');
@@ -1551,7 +1501,6 @@ async function finishPurchase() {
     };
 
     try {
-        // 發送訂單到後端 API
         const response = await fetch(`${API_BASE_URL}/orders/create`, {
             method: 'POST',
             headers: {
@@ -1566,24 +1515,19 @@ async function finishPurchase() {
             throw new Error(`訂單建立失敗: ${errorText}`);
         }
 
-        // 解析回應
         const responseData = await response.json();
 
-        // 在感謝頁面顯示訂單編號
         const finalOrderIdElement = document.getElementById('final-order-id');
         if (finalOrderIdElement) {
             finalOrderIdElement.textContent = `#${responseData.orderId}`;
         }
 
-        // 清空購物車
         cart = [];
         localStorage.removeItem('cart');
         updateCartUI();
 
-        // 切換到完成頁面
         switchCheckoutStep(5);
 
-        // 發送 EmailJS
         if (typeof emailjs !== 'undefined') {
             const templateParams = {
                 order_id: responseData.orderId,
