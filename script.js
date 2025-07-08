@@ -620,6 +620,9 @@ function setupShoppingCart() {
     const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
     const cartItemsContainer = document.querySelector('.cart-items');
 
+    // 修復：定義 newOpenCartBtn 變數
+    let newOpenCartBtn = openCartBtn;
+
     // 清除購物車圖示的所有現有事件監聽器
     if (openCartBtn) {
         // 克隆元素來移除所有事件監聽器
