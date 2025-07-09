@@ -3,12 +3,15 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent; /* 移除iOS點擊高亮 */
+    -webkit-tap-highlight-color: transparent;
+    /* 移除iOS點擊高亮 */
 }
 
 html {
-    font-size: 16px; /* 基準字體大小 */
-    -webkit-text-size-adjust: 100%; /* 防止iOS橫向模式字體放大 */
+    font-size: 16px;
+    /* 基準字體大小 */
+    -webkit-text-size-adjust: 100%;
+    /* 防止iOS橫向模式字體放大 */
 }
 
 body {
@@ -45,7 +48,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 44px; /* iOS最小觸控高度 */
+    min-height: 44px;
+    /* iOS最小觸控高度 */
 }
 
 .nav-logo h2 {
@@ -182,7 +186,8 @@ body {
 /* 首頁橫幅 */
 .hero {
     min-height: 100vh;
-    min-height: 100dvh; /* 動態視窗高度 */
+    min-height: 100dvh;
+    /* 動態視窗高度 */
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -591,7 +596,8 @@ footer p {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    font-size: 16px; /* 防止iOS縮放 */
+    font-size: 16px;
+    /* 防止iOS縮放 */
     min-height: 44px;
 }
 
@@ -971,7 +977,8 @@ footer p {
     padding: clamp(0.6rem, 2vw, 0.8rem);
     border: 1px solid #ddd;
     border-radius: 8px;
-    font-size: 16px; /* 防止iOS縮放 */
+    font-size: 16px;
+    /* 防止iOS縮放 */
     min-height: 44px;
 }
 
@@ -1160,6 +1167,7 @@ footer p {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1170,9 +1178,11 @@ footer p {
     0% {
         transform: translateX(-50%) translateY(0);
     }
+
     50% {
         transform: translateX(-50%) translateY(-10px);
     }
+
     100% {
         transform: translateX(-50%) translateY(0);
     }
@@ -1182,9 +1192,11 @@ footer p {
     0% {
         box-shadow: 0 2px 15px rgba(255, 182, 193, 0.2);
     }
+
     50% {
         box-shadow: 0 2px 20px rgba(255, 182, 193, 0.6);
     }
+
     100% {
         box-shadow: 0 2px 15px rgba(255, 182, 193, 0.2);
     }
@@ -1201,7 +1213,7 @@ footer p {
     .form-grid {
         grid-template-columns: 1fr 1fr;
     }
-    
+
     .products-grid {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -1213,19 +1225,19 @@ footer p {
         min-height: 100vh;
         padding-top: 60px;
     }
-    
+
     .hero-content {
         max-width: 45%;
     }
-    
+
     .hero-right {
         max-width: 45%;
     }
-    
+
     .products-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .checkout-container {
         height: 95vh;
     }
@@ -1233,6 +1245,55 @@ footer p {
 
 /* 響應式設計 - 手機直向 */
 @media (max-width: 768px) {
+    /* 手機版導航欄添加花朵logo - 新增 */
+    .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 0.3rem 0.8rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(255, 107, 157, 0.15);
+    }
+    
+    /* 花朵logo圖示 - 只在手機版顯示 - 新增 */
+    .nav-logo::before {
+        content: '';
+        width: 20px;
+        height: 20px;
+        background-image: url('image/flower.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        flex-shrink: 0;
+    }
+
+    /* 手機版圖片載入優化 - 新增 */
+    .product-img {
+        transition: opacity 0.3s ease;
+        loading: lazy;
+    }
+    
+    /* 手機版圖片載入失敗時的處理 - 新增 */
+    .product-img:not([src]),
+    .product-img[src=""] {
+        background: linear-gradient(135deg, #ffeef8, #fff5f7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    
+    .product-img:not([src])::after,
+    .product-img[src=""]::after {
+        content: '🌸';
+        font-size: 2.5rem;
+        opacity: 0.6;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
     /* 導航欄調整 */
     .hamburger {
         display: flex;
@@ -1259,21 +1320,21 @@ footer p {
         padding: 1rem;
         width: 100%;
     }
-    
+
     .nav-logo h2 {
         font-size: 1.2rem;
     }
-    
+
     .nav-button {
         padding: 6px 12px;
         font-size: 0.75rem;
     }
-    
+
     #welcomeUser {
         font-size: 0.75rem !important;
         margin-right: 8px !important;
     }
-    
+
     /* 手機版購物車圖示調整 */
     .nav-cart {
         font-size: 1.6rem;
@@ -1281,11 +1342,11 @@ footer p {
         min-width: 48px;
         min-height: 48px;
     }
-    
+
     .nav-cart i {
         font-size: 1.6rem;
     }
-    
+
     .cart-count {
         width: 22px;
         height: 22px;
@@ -1306,41 +1367,29 @@ footer p {
         background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 50%, #f0f8ff 100%);
     }
 
-    /* 添加實際花朵照片背景 - 僅在手機版顯示 */
+    /* 移除可能有問題的背景圖 - 修改現有的 .hero::before */
     .hero::before {
-        content: '';
-        position: absolute;
-        top: 60px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        height: 300px;
-        background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/...');
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        border-radius: 20px;
-        opacity: 0.3;
-        z-index: 1;
-        pointer-events: none;
+        display: none;
     }
 
+
     /* 為文字添加更好的對比度 */
+    /* 手機版hero區域優化 - 修改現有的 .hero-content */
     .hero-content {
         align-items: center;
         text-align: center;
         max-width: 90vw;
         margin-bottom: 0;
-        order: 1; /* 文字在上 */
+        order: 1;
         position: relative;
         z-index: 3;
-        padding: 2rem 1rem;
-        background: rgba(255, 255, 255, 0.85);
-        border-radius: 20px;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        box-shadow: 0 8px 32px rgba(255, 107, 157, 0.1);
-        margin: 1rem;
+        padding: 1.8rem 1.3rem;
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 18px;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 6px 25px rgba(255, 107, 157, 0.12);
+        margin: 1rem 0.8rem;
     }
 
     /* 確保文字有足夠的對比度 */
@@ -1357,10 +1406,11 @@ footer p {
         text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
         font-weight: 600;
     }
-    
+
     .hero-right {
         width: 100%;
-        order: 2; /* 圖片在下 */
+        order: 2;
+        /* 圖片在下 */
         margin-top: 1rem;
         position: relative;
         z-index: 2;
@@ -1377,7 +1427,8 @@ footer p {
         left: 50%;
         transform: translateX(-50%);
         margin-top: 2rem;
-        order: 3; /* 運費說明在最下方 */
+        order: 3;
+        /* 運費說明在最下方 */
         z-index: 3;
         text-align: center;
         width: calc(100% - 40px);
@@ -1392,7 +1443,7 @@ footer p {
         grid-template-columns: repeat(2, 1fr);
         gap: 0.8rem;
     }
-    
+
     /* 側邊欄調整 */
     aside {
         display: none;
@@ -1403,7 +1454,7 @@ footer p {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .contact-item {
         width: 100%;
     }
@@ -1412,7 +1463,7 @@ footer p {
     .cart-sidebar {
         max-width: 100%;
     }
-    
+
     /* 結帳容器調整 */
     .checkout-container {
         height: 100vh;
@@ -1420,12 +1471,12 @@ footer p {
         border-radius: 0;
         max-width: 100%;
     }
-    
+
     .checkout-steps {
         font-size: 0.75rem;
         padding: 0.5rem;
     }
-    
+
     .step-arrow {
         margin: 0 0.3rem;
     }
@@ -1433,31 +1484,32 @@ footer p {
 
 /* 小型手機 (iPhone SE, Galaxy S8 等) */
 @media (max-width: 375px) {
+
     /* 導航欄微調 */
     .nav-container {
         padding: 0 10px;
     }
-    
+
     .nav-logo h2 {
         font-size: 1.1rem;
     }
-    
+
     .nav-button {
         padding: 5px 10px;
         font-size: 0.7rem;
     }
-    
+
     /* 購物車圖示保持適當大小 */
     .nav-cart {
         font-size: 1.5rem;
         min-width: 44px;
         min-height: 44px;
     }
-    
+
     .nav-cart i {
         font-size: 1.5rem;
     }
-    
+
     .cart-count {
         width: 20px;
         height: 20px;
@@ -1470,20 +1522,20 @@ footer p {
     .hero-title {
         font-size: 1.8rem;
     }
-    
+
     .hero-subtitle {
         font-size: 1rem;
     }
-    
+
     .cta-button {
         padding: 0.7rem 1.5rem;
         font-size: 0.9rem;
     }
-    
+
     .logo-img {
         max-width: 200px;
     }
-    
+
     .shipping-notice {
         font-size: 0.85rem;
         padding: 0.6rem 1rem;
@@ -1494,15 +1546,15 @@ footer p {
     .product-info {
         padding: 0.8rem;
     }
-    
+
     .product-info h3 {
         font-size: 0.9rem;
     }
-    
+
     .product-price {
         font-size: 0.95rem;
     }
-    
+
     .add-to-cart-btn {
         padding: 0.5rem 1rem;
         font-size: 0.85rem;
@@ -1513,11 +1565,11 @@ footer p {
         width: 50px;
         height: 50px;
     }
-    
+
     .cart-item-info h4 {
         font-size: 0.85rem;
     }
-    
+
     .quantity-btn {
         width: 28px;
         height: 28px;
@@ -1528,21 +1580,21 @@ footer p {
     .checkout-header h2 {
         font-size: 1.1rem;
     }
-    
+
     .checkout-content {
         padding: 0.8rem;
     }
-    
+
     .checkout-content h3 {
         font-size: 1rem;
     }
-    
+
     /* Modal 微調 */
     .modal-content {
         padding: 15px;
         margin: 10% auto;
     }
-    
+
     .tab-button {
         font-size: 0.85rem;
         padding: 8px;
@@ -1551,52 +1603,53 @@ footer p {
 
 /* 超小型手機 (iPhone 5/SE 第一代) */
 @media (max-width: 320px) {
+
     /* 極限空間優化 */
     .nav-logo h2 {
         font-size: 1rem;
     }
-    
+
     .nav-button {
         padding: 4px 8px;
         font-size: 0.65rem;
     }
-    
+
     /* 購物車圖示保持可用性 */
     .nav-cart {
         font-size: 1.4rem;
         min-width: 40px;
         min-height: 40px;
     }
-    
+
     .nav-cart i {
         font-size: 1.4rem;
     }
-    
+
     .hero-title {
         font-size: 1.5rem;
     }
-    
+
     .hero-subtitle {
         font-size: 0.9rem;
     }
-    
+
     .products-grid {
         grid-template-columns: 1fr;
         gap: 0.5rem;
     }
-    
+
     .product-card {
         border-radius: 10px;
     }
-    
+
     .section-title {
         font-size: 1.3rem;
     }
-    
+
     .checkout-steps {
         font-size: 0.65rem;
     }
-    
+
     .checkout-btn {
         font-size: 0.9rem;
         padding: 0.6rem;
@@ -1608,15 +1661,15 @@ footer p {
     .navbar {
         padding-top: max(1rem, env(safe-area-inset-top));
     }
-    
+
     .cart-sidebar {
         padding-bottom: max(1rem, env(safe-area-inset-bottom));
     }
-    
+
     .checkout-container {
         padding-bottom: max(1rem, env(safe-area-inset-bottom));
     }
-    
+
     footer {
         padding-bottom: max(2rem, env(safe-area-inset-bottom));
     }
@@ -1624,36 +1677,37 @@ footer p {
 
 /* 觸控優化 */
 @media (hover: none) and (pointer: coarse) {
+
     /* 移除 hover 效果，改用 active */
     .product-card:hover {
         transform: none;
     }
-    
+
     .product-card:active {
         transform: scale(0.98);
     }
-    
+
     .add-to-cart-btn:hover {
         transform: none;
     }
-    
+
     .add-to-cart-btn:active {
         transform: scale(0.95);
     }
-    
+
     .contact-item:hover {
         transform: none;
     }
-    
+
     .contact-item:active {
         transform: scale(0.98);
     }
-    
+
     .nav-cart:hover {
         transform: none;
         background-color: transparent;
     }
-    
+
     .nav-cart:active {
         transform: scale(0.95);
         background-color: rgba(255, 107, 157, 0.1);
@@ -1662,6 +1716,7 @@ footer p {
 
 /* 高對比度模式支援 */
 @media (prefers-contrast: high) {
+
     .nav-button,
     .add-to-cart-btn,
     .checkout-btn {
@@ -1676,6 +1731,7 @@ footer p {
 
 /* 列印樣式 */
 @media print {
+
     .navbar,
     .cart-sidebar,
     .cart-overlay,

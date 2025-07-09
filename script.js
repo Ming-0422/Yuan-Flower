@@ -18,21 +18,130 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeRegistrationValidation();
     setupShoppingCart();
     setupCheckout();
+    enhanceImageLoading(); // <-- 新增這行
+});
 
-    // 圖片載入處理
-    document.querySelectorAll('.product-img').forEach(img => {
-        if (img.complete) {
-            setObjectFit(img);
-        } else {
-            img.onload = function () {
+// 手機版圖片載入優化
+function enhanceImageLoading() {
+    const productImages = document.querySelectorAll('.product-img');
+    
+    // 使用 Intersection Observer 實現懶加載
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    
+                    // 如果有 data-src 屬性，執行懶加載
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                    
+                    // 停止觀察已載入的圖片
+                    observer.unobserve(img);
+                }
+            });
+        }, {
+            rootMargin: '50px' // 提前 50px 開始載入
+        });
+
+        productImages.forEach(img => {
+            // 設置載入和錯誤處理
+            img.addEventListener('load', function() {
+                this.classList.add('loaded');
+                setObjectFit(this); // 載入後設置 object-fit
+            });
+
+            img.addEventListener('error', function() {
+                // 創建替代內容的容器
+                const fallbackContainer = document.createElement('div');
+                fallbackContainer.className = 'flower-fallback';
+                fallbackContainer.style.cssText = `
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(135deg, #ffeef8, #fff5f7);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 3rem;
+                `;
+                fallbackContainer.innerHTML = '🌸';
+                
+                // 替換圖片元素
+                this.parentNode.replaceChild(fallbackContainer, this);
+            });
+
+            // 如果圖片已經載入完成
+            if (img.complete && img.naturalHeight > 0) {
+                img.classList.add('loaded');
                 setObjectFit(img);
+            } else if (img.dataset.src) {
+                // 如果有 data-src，使用 Intersection Observer
+                imageObserver.observe(img);
+            }
+        });
+    } else {
+        // 不支援 Intersection Observer 的瀏覽器
+        productImages.forEach(img => {
+            if (img.dataset.src) {
+                img.src = img.dataset.src;
+            }
+            
+            if (img.complete && img.naturalHeight > 0) {
+                img.classList.add('loaded');
+                setObjectFit(img);
+            } else {
+                img.addEventListener('load', function() {
+                    this.classList.add('loaded');
+                    setObjectFit(this);
+                });
+
+                img.addEventListener('error', function() {
+                    const fallbackContainer = document.createElement('div');
+                    fallbackContainer.className = 'flower-fallback';
+                    fallbackContainer.style.cssText = `
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(135deg, #ffeef8, #fff5f7);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 3rem;
+                    `;
+                    fallbackContainer.innerHTML = '🌸';
+                    this.parentNode.replaceChild(fallbackContainer, this);
+                });
+            }
+        });
+    }
+    
+    // 添加圖片預載功能（預載下一批可能會看到的圖片）
+    function preloadNextImages() {
+        const visibleImages = document.querySelectorAll('.product-img.loaded');
+        if (visibleImages.length > 0) {
+            const lastVisibleImage = visibleImages[visibleImages.length - 1];
+            const nextProducts = lastVisibleImage.closest('.product-card')
+                ?.parentElement?.nextElementSibling?.querySelectorAll('.product-img');
+            
+            if (nextProducts) {
+                nextProducts.forEach(img => {
+                    if (img.dataset.src && !img.src) {
+                        const preloadImg = new Image();
+                        preloadImg.src = img.dataset.src;
+                    }
+                });
             }
         }
-    });
-
-    // 初始更新購物車UI
-    updateCartUI();
-});
+    }
+    
+    // 滾動時預載下一批圖片
+    let preloadTimeout;
+    window.addEventListener('scroll', () => {
+        clearTimeout(preloadTimeout);
+        preloadTimeout = setTimeout(preloadNextImages, 300);
+    }, { passive: true });
+}
 
 // 初始化事件監聽器
 function initializeEventListeners() {
