@@ -1316,7 +1316,6 @@ footer p {
     /* 手機版圖片載入優化 - 新增 */
     .product-img {
         transition: opacity 0.3s ease;
-        loading: lazy;
     }
     
     /* 手機版圖片載入失敗時的處理 - 新增 */
