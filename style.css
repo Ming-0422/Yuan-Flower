@@ -1290,29 +1290,6 @@ footer p {
 
 /* 響應式設計 - 手機直向 */
 @media (max-width: 768px) {
-    /* 手機版導航欄添加花朵logo - 新增 */
-    .nav-logo {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        background: rgba(255, 255, 255, 0.95);
-        padding: 0.3rem 0.8rem;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(255, 107, 157, 0.15);
-    }
-    
-    /* 花朵logo圖示 - 只在手機版顯示 - 新增 */
-    .nav-logo::before {
-        content: '';
-        width: 20px;
-        height: 20px;
-        background-image: url('image/flower.png');
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        flex-shrink: 0;
-    }
-
     /* 手機版圖片載入優化 - 新增 */
     .product-img {
         transition: opacity 0.3s ease;
@@ -1433,7 +1410,7 @@ footer p {
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         box-shadow: 0 6px 25px rgba(255, 107, 157, 0.12);
-        margin: 1rem 0.8rem;
+        margin: 1rem auto; /* 改為 auto 以實現水平置中 */
     }
 
     /* 確保文字有足夠的對比度 */
@@ -1468,8 +1445,7 @@ footer p {
     .shipping-notice {
         position: relative;
         bottom: auto;
-        left: 50%;
-        transform: translateX(-50%);
+        /* left and transform removed for proper centering */
         margin-top: 2rem;
         order: 3;
         /* 運費說明在最下方 */
