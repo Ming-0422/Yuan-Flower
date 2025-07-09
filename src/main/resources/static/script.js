@@ -51,6 +51,9 @@ function enhanceImageLoading() {
             img.addEventListener('load', function() {
                 this.classList.add('loaded');
                 setObjectFit(this); // 載入後設置 object-fit
+                // 幫外層骨架屏移除動畫
+                const parent = this.closest('.product-image');
+                if (parent) parent.classList.add('loaded');
             });
 
             img.addEventListener('error', function() {
