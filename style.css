@@ -15,7 +15,7 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', 'Segoe UI', Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacMacSystemFont, 'Noto Sans TC', 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     color: #333;
     overflow-x: hidden;
@@ -201,16 +201,19 @@ body {
 }
 
 .hero-content {
-    flex: 1 1 0;
-    max-width: 500px;
+    /* 這邊不需要設定背景圖，維持原本的樣式即可 */
+    flex: 1 1 0; /* 您原始碼中可能沒有這行，但加上可以確保佈局穩定 */
+    align-items: center;
+    text-align: center;
+    max-width: 90vw;
     margin-bottom: 0;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
+    order: 1;
     position: relative;
-    padding: 0 20px;
+    z-index: 3;
+    padding: 1.8rem 1.3rem;
+    border-radius: 18px;
+    box-shadow: 0 6px 25px rgba(255, 107, 157, 0.12);
+    margin: 1rem 0.8rem;
 }
 
 .hero-title,
@@ -275,11 +278,17 @@ body {
 }
 
 .hero-right {
-    display: flex;
+    display: flex; /* 確保在網頁版上是可見的 */
     flex-direction: column;
     align-items: center;
     gap: 1rem;
     padding: 0 20px;
+    /* 以下是關鍵：用背景圖方式加入圖片 */
+    background-image: url('image/flower.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain; /* 讓圖片能完整顯示 */
+    min-height: 400px; /* 給予一個最小高度以撐開背景 */
 }
 
 .logo-img {
@@ -1275,9 +1284,7 @@ footer p {
         max-width: 45%;
     }
 
-    .hero-right {
-        max-width: 45%;
-    }
+    
 
     .products-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1428,14 +1435,20 @@ footer p {
         position: relative;
         z-index: 3;
         padding: 1.8rem 1.3rem;
-        background: rgba(255, 255, 255, 0.92);
+        /* ↓↓↓ 將這幾行貼到這裡 ↓↓↓ */
+        background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('image/flower.png');
+        background-size: cover;
+        background-position: center;
+        /* ↑↑↑ 將這幾行貼到這裡 ↑↑↑ */
         border-radius: 18px;
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         box-shadow: 0 6px 25px rgba(255, 107, 157, 0.12);
         margin: 1rem 0.8rem;
     }
-
+    .hero-right {
+        display: none; /* 在手機上，完全隱藏右邊的容器 */
+    }
     /* 確保文字有足夠的對比度 */
     .hero-content .hero-title {
         color: #ff6b9d;
@@ -1451,14 +1464,7 @@ footer p {
         font-weight: 600;
     }
 
-    .hero-right {
-        width: 100%;
-        order: 2;
-        /* 圖片在下 */
-        margin-top: 1rem;
-        position: relative;
-        z-index: 2;
-    }
+    
 
     .logo-img {
         max-width: 280px;
