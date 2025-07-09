@@ -430,6 +430,51 @@ body {
     height: 100%;
     object-fit: cover;
     display: block;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-img.loaded {
+    opacity: 1;
+}
+
+/* 圖片載入前的骨架屏效果 */
+.product-image {
+    position: relative;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* 圖片載入後移除骨架屏動畫 */
+.product-image:has(.product-img.loaded) {
+    animation: none;
+    background: none;
+}
+
+/* 錯誤時的替代花朵容器 */
+.flower-fallback {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* 聯繫我們 */
