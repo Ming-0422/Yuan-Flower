@@ -1446,7 +1446,7 @@ footer p {
         position: relative;
         bottom: auto;
         /* left and transform removed for proper centering */
-        margin-top: 2rem;
+        margin-top: -2.5rem; /* 向上移動 4.5rem */
         order: 3;
         /* 運費說明在最下方 */
         z-index: 3;
