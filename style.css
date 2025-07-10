@@ -297,7 +297,7 @@ body {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    bottom: -12.5rem;
+    bottom: -11rem;
     width: calc(100% - 40px);
     max-width: 500px;
     color: #666;
@@ -996,7 +996,7 @@ footer p {
 
 .form-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
     margin-bottom: 1.5rem;
 }
@@ -1253,12 +1253,19 @@ footer p {
     font-family: 'Zen Maru Gothic', 'Noto Sans TC', '微軟正黑體', Arial, sans-serif !important;
 }
 
-/* 響應式設計 - 平板設備 */
-@media (min-width: 768px) and (max-width: 1024px) {
+/* 平板和桌面版本的表單佈局優化 */
+@media (min-width: 768px) {
     .form-grid {
         grid-template-columns: 1fr 1fr;
     }
 
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 響應式設計 - 平板設備 */
+@media (min-width: 768px) and (max-width: 1024px) {
     .products-grid {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -1315,6 +1322,7 @@ footer p {
         left: 50%;
         transform: translate(-50%, -50%);
     }
+    
     /* 導航欄調整 */
     .hamburger {
         display: flex;
@@ -1393,8 +1401,6 @@ footer p {
         display: none;
     }
 
-
-    /* 為文字添加更好的對比度 */
     /* 手機版hero區域優化 - 修改現有的 .hero-content */
     .hero-content {
         align-items: center;
@@ -1410,7 +1416,7 @@ footer p {
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         box-shadow: 0 6px 25px rgba(255, 107, 157, 0.12);
-        margin: 1rem auto; /* 改為 auto 以實現水平置中 */
+        margin: 1rem auto;
     }
 
     /* 確保文字有足夠的對比度 */
@@ -1456,6 +1462,12 @@ footer p {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
+    }
+
+    /* 小螢幕表單調整 - 保持兩欄但縮小間距 */
+    .form-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
     }
 
     /* 商品網格調整 */
@@ -1763,4 +1775,1001 @@ footer p {
     .checkout-btn {
         display: none !important;
     }
+}/* 基礎設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    /* 移除iOS點擊高亮 */
+}
+
+html {
+    font-size: 16px;
+    /* 基準字體大小 */
+    -webkit-text-size-adjust: 100%;
+    /* 防止iOS橫向模式字體放大 */
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 導航欄 */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 1000;
+    padding: 1rem 0;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 44px;
+    /* iOS最小觸控高度 */
+}
+
+.nav-logo h2 {
+    color: #ff6b9d;
+    font-weight: 700;
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+}
+
+.nav-menu {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    position: relative;
+    padding: 0.5rem 0;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-link:hover {
+    color: #ff6b9d;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #ff6b9d;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+/* 優化網頁版購物車圖示 */
+.nav-cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ff6b9d;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    padding: 0.5rem;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.nav-cart:hover {
+    background-color: rgba(255, 107, 157, 0.1);
+    transform: scale(1.05);
+}
+
+.nav-cart i {
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.cart-count {
+    background: #ff6b9d;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 0.5rem;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: #333;
+    margin: 3px 0;
+    transition: 0.3s;
+}
+
+/* 認證按鈕樣式 */
+.nav-button {
+    background: none;
+    border: 1px solid #ff6b9d;
+    color: #ff6b9d;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    transition: all 0.3s ease;
+    min-height: 36px;
+    white-space: nowrap;
+}
+
+.nav-button:hover {
+    background: #ff6b9d;
+    color: white;
+}
+
+/* 首頁橫幅 */
+.hero {
+    min-height: 100vh;
+    min-height: 100dvh;
+    /* 動態視窗高度 */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 50%, #f0f8ff 100%);
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    gap: 3vw;
+    padding-top: 80px;
+}
+
+.hero-content {
+    flex: 1 1 0;
+    max-width: 500px;
+    margin-bottom: 0;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    padding: 0 20px;
+}
+
+.hero-title,
+.hero-subtitle,
+.hero-description,
+.hero-tagline,
+.cta-button {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 700;
+    color: #ff6b9d;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease;
+}
+
+.hero-subtitle {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: #666;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease 0.2s both;
+}
+
+.hero-description {
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    color: #888;
+    margin-bottom: 0.5rem;
+    animation: fadeInUp 1s ease 0.4s both;
+}
+
+.hero-tagline {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    color: #999;
+    margin-bottom: 2rem;
+    animation: fadeInUp 1s ease 0.6s both;
+}
+
+.cta-button {
+    background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+    color: white;
+    border: none;
+    padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2rem);
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInUp 1s ease 0.8s both;
+    min-height: 44px;
+    touch-action: manipulation;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 107, 157, 0.3);
+}
+
+.cta-button:active {
+    transform: translateY(-1px);
+}
+
+.hero-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 20px;
+}
+
+.logo-img {
+    display: block;
+    margin: 0 auto;
+    max-width: 400px;
+    width: min(32vw, 400px);
+    height: auto;
+    transition: max-width 0.3s, width 0.3s;
+    box-shadow: 0 8px 32px rgba(255, 107, 157, 0.08);
+    border-radius: 20px;
+}
+
+.shipping-notice {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -11rem;
+    width: calc(100% - 40px);
+    max-width: 500px;
+    color: #666;
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    text-align: center;
+    padding: 0.8rem 1.5rem;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    z-index: 1;
+    animation: float 3s ease-in-out infinite, glow 2s ease-in-out infinite;
+    border: 1px solid rgba(255, 182, 193, 0.3);
+}
+
+.shipping-notice:hover {
+    transform: translateX(-50%) scale(1.02);
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 4px 25px rgba(255, 182, 193, 0.7);
+}
+
+/* 商品展示 */
+.products {
+    padding: clamp(3rem, 8vw, 5rem) 0;
+    background: white;
+}
+
+.section-title {
+    text-align: center;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    color: #3E2723;
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    scroll-margin-top: 90px;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: clamp(1rem, 3vw, 2rem);
+    margin-top: 2rem;
+    align-items: stretch;
+}
+
+.product-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.product-card:active {
+    transform: translateY(-5px);
+}
+
+.product-image {
+    width: 100%;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+}
+
+.flower-placeholder {
+    width: 100%;
+    height: 100%;
+    font-size: 4rem;
+}
+
+.product-info {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.product-info h3 {
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+}
+
+.product-info p {
+    color: #666;
+    margin-bottom: 1rem;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+}
+
+.product-price {
+    color: #777777;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.add-to-cart-btn {
+    background: linear-gradient(45deg, #D8BFA5, #D8BFA5);
+    color: white;
+    border: none;
+    padding: clamp(0.6rem, 2vw, 0.8rem) clamp(1rem, 3vw, 1.5rem);
+    margin-top: 1rem;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    min-height: 44px;
+    touch-action: manipulation;
+}
+
+.add-to-cart-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+}
+
+.add-to-cart-btn:active {
+    transform: translateY(0);
+}
+
+.product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-img.loaded {
+    opacity: 1;
+}
+
+/* 圖片載入前的骨架屏效果 */
+.product-image {
+    position: relative;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* 圖片載入後移除骨架屏動畫 */
+.product-image.loaded {
+    animation: none;
+    background: none;
+}
+
+/* 錯誤時的替代花朵容器 */
+.flower-fallback {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 聯繫我們 */
+.contact {
+    padding: clamp(3rem, 8vw, 5rem) 0;
+    background: white;
+}
+
+.contact-info {
+    display: flex;
+    justify-content: center;
+    gap: clamp(1rem, 3vw, 3rem);
+    flex-wrap: wrap;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    background: linear-gradient(135deg, #ffeef8, #fff5f7);
+    border-radius: 15px;
+    transition: transform 0.3s ease, background 0.3s;
+    cursor: pointer;
+    position: relative;
+    min-height: 44px;
+}
+
+.contact-item:hover {
+    transform: translateY(-5px);
+    background: linear-gradient(135deg, #ffecf5, #ffe0ef);
+}
+
+.contact-item:active {
+    transform: translateY(-2px);
+}
+
+.contact-item a {
+    color: #222;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0.2rem 0;
+    z-index: 2;
+}
+
+.contact-item i {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    color: #ff6b9d;
+    z-index: 2;
+}
+
+.contact-item:hover a {
+    color: #ff6b9d;
+}
+
+/* 頁腳 */
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+footer p {
+    margin-bottom: 0.5rem;
+    font-size: clamp(0.8rem, 2vw, 1rem);
+}
+
+/* 認證 Modal 樣式 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: none;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 10px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-button:hover {
+    color: black;
+}
+
+.auth-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    border-bottom: 2px solid transparent;
+    min-height: 44px;
+}
+
+.tab-button.active {
+    border-bottom-color: #ff6b9d;
+    color: #ff6b9d;
+    font-weight: bold;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-content .form-group {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.tab-content .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+    font-size: clamp(0.875rem, 2vw, 1rem);
+}
+
+.tab-content .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    /* 防止iOS縮放 */
+    min-height: 44px;
+}
+
+.auth-submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 44px;
+    touch-action: manipulation;
+}
+
+.auth-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+}
+
+.auth-submit-btn:active {
+    transform: translateY(0);
+}
+
+.auth-message {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    text-align: center;
+    display: none;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+}
+
+.auth-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.auth-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* 購物車側邊欄 */
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.cart-overlay.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 400px;
+    height: 100%;
+    height: 100dvh;
+    background: white;
+    z-index: 1002;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+    transition: right 0.4s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-sidebar.active {
+    right: 0;
+}
+
+.cart-header {
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 60px;
+}
+
+.cart-header h3 {
+    color: #333;
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+}
+
+.close-cart-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #888;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-items {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: clamp(0.8rem, 2vw, 1rem);
+    -webkit-overflow-scrolling: touch;
+}
+
+.cart-item {
+    display: flex;
+    gap: clamp(0.5rem, 2vw, 1rem);
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    align-items: center;
+}
+
+.cart-item-img {
+    width: clamp(60px, 15vw, 80px);
+    height: clamp(60px, 15vw, 80px);
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.cart-item-info {
+    flex-grow: 1;
+}
+
+.cart-item-info h4 {
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    margin-bottom: 0.3rem;
+}
+
+.cart-item-price {
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+    color: #666;
+}
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.quantity-btn {
+    background: #f0f0f0;
+    border: none;
+    width: clamp(30px, 8vw, 35px);
+    height: clamp(30px, 8vw, 35px);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remove-item-btn {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    margin-left: auto;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-footer {
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border-top: 1px solid #eee;
+    background: #f9f9f9;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    margin-bottom: 1rem;
+}
+
+.checkout-btn {
+    width: 100%;
+    padding: clamp(0.8rem, 2vw, 1rem);
+    background: linear-gradient(45deg, #D8BFA5, #D8BFA5);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 44px;
+    touch-action: manipulation;
+}
+
+.checkout-btn:hover {
+    box-shadow: 0 5px 20px rgba(255, 107, 157, 0.4);
+    transform: translateY(-2px);
+}
+
+.checkout-btn:active {
+    transform: translateY(0);
+}
+
+.checkout-btn.secondary {
+    background: #eee;
+    color: #555;
+}
+
+.checkout-btn.secondary:hover {
+    background: #ddd;
+    box-shadow: none;
+}
+
+/* 結帳頁面 */
+.checkout-overlay-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.checkout-overlay-page.active {
+    display: flex;
+}
+
+.checkout-container {
+    background: #f9f9fa;
+    width: 100%;
+    max-width: 800px;
+    height: 90vh;
+    height: 90dvh;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.checkout-header {
+    padding: clamp(0.8rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
+    border-bottom: 1px solid #e8e8e8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    min-height: 60px;
+}
+
+.checkout-header h2 {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+}
+
+.close-checkout-btn {
+    background: none;
+    border: none;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    cursor: pointer;
+    color: #888;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkout-steps {
+    display: flex;
+    justify-content: center;
+    padding: clamp(0.5rem, 2vw, 1rem);
+    background: #fdfdfd;
+    border-bottom: 1px solid #e8e8e8;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.step {
+    color: #aaa;
+    font-weight: 500;
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
+    white-space: nowrap;
+}
+
+.step.active {
+    color: #ff6b9d;
+    font-weight: 700;
+}
+
+.step-arrow {
+    color: #ccc;
+    margin: 0 clamp(0.3rem, 1vw, 1rem);
+}
+
+.checkout-content {
+    flex-grow: 1;
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(1rem, 4vw, 2rem);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.checkout-step-content {
+    display: none;
+}
+
+.checkout-step-content.active {
+    display: block;
+}
+
+.checkout-content h3 {
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    color: #333;
+    margin-bottom: 1rem;
+    border-left: 4px solid #ff6b9d;
+    padding-left: 0.8rem;
+}
+
+.order-summary {
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.order-summary h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
 }
