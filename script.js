@@ -6,8 +6,30 @@ let cart = [];
 
 // 初始化
 document.addEventListener('DOMContentLoaded', function () {
-    // 載入購物車數據
-    cart = JSON.parse(localStorage.getItem('cart')) || [];
+    // 清除可能存在的舊數據
+    // localStorage.removeItem('cart'); // 如果需要完全清除，取消這行註釋
+    
+    // 載入購物車數據，確保數據一致性
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+        try {
+            cart = JSON.parse(savedCart);
+            // 驗證購物車數據格式
+            if (!Array.isArray(cart)) {
+                cart = [];
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+        } catch (e) {
+            console.error('購物車數據解析錯誤:', e);
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+    } else {
+        cart = [];
+    }
+
+    // 立即更新購物車UI
+    updateCartUI();
 
     // 檢查登入狀態
     checkAuthStatus();
@@ -899,7 +921,12 @@ function setupCheckout() {
             e.preventDefault();
             e.stopPropagation();
 
-            if (cart.length === 0) {
+            // 確保使用最新的購物車數據
+            console.log('結帳前購物車狀態:', cart);
+            console.log('購物車長度:', cart.length);
+            console.log('localStorage 中的購物車:', localStorage.getItem('cart'));
+
+            if (!cart || cart.length === 0) {
                 showCustomAlert('您的購物車是空的！', 'fas fa-shopping-cart', '購物車提示');
                 return;
             }
@@ -1544,6 +1571,8 @@ function renderConfirmationSummary() {
     `;
 
     const orderSummaryContainer = document.getElementById('confirmation-order-summary');
+    // 使用全域 cart 變數而不是重新從 localStorage 讀取
+    console.log('確認頁面的購物車內容:', cart);
     renderOrderSummary(orderSummaryContainer);
 }
 
@@ -1665,3 +1694,35 @@ async function finishPurchase() {
         showCustomAlert(`訂單處理失敗: ${error.message}`, 'fas fa-times-circle', '錯誤');
     }
 }
+
+// 添加購物車數據同步函數
+function syncCartData() {
+    // 確保所有地方都使用相同的購物車數據
+    const currentCart = JSON.parse(localStorage.getItem('cart') || '[]');
+    if (JSON.stringify(cart) !== JSON.stringify(currentCart)) {
+        console.warn('購物車數據不同步，正在修正...');
+        cart = currentCart;
+        updateCartUI();
+    }
+}
+
+// 在頁面切換或重要操作前調用同步函數
+window.addEventListener('focus', syncCartData);
+window.addEventListener('storage', function(e) {
+    if (e.key === 'cart') {
+        syncCartData();
+    }
+});
+
+// 添加調試函數
+function debugCart() {
+    console.log('=== 購物車調試信息 ===');
+    console.log('JavaScript cart 變數:', cart);
+    console.log('localStorage cart:', localStorage.getItem('cart'));
+    console.log('購物車數量顯示:', document.querySelector('.cart-count')?.textContent);
+    console.log('購物車項目 DOM 數量:', document.querySelectorAll('.cart-item').length);
+    console.log('====================');
+}
+
+// 在控制台可以調用 debugCart() 來查看購物車狀態
+window.debugCart = debugCart;
