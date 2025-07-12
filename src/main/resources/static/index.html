@@ -70,7 +70,10 @@
                             style="color: #2d3e50; text-decoration: none; font-weight: bold;">花束</a></li>
                     <li style="margin-bottom: 0.7rem;"><a href="#flowers"
                             style="color: #2d3e50; text-decoration: none; font-weight: bold;">精選單花</a></li>
-                    <li><a href="#vase" style="color: #2d3e50; text-decoration: none; font-weight: bold;">花瓶組</a></li>
+                    <li style="margin-bottom: 0.7rem;"><a href="#vase"
+                            style="color: #2d3e50; text-decoration: none; font-weight: bold;">花瓶組</a></li>
+                    <li style="margin-bottom: 0.7rem;"><a href="#bucket"
+                            style="color: #2d3e50; text-decoration: none; font-weight: bold;">抱抱桶</a></li>
                 </ul>
             </aside>
 
@@ -444,8 +447,36 @@
                         </div>
                     </div>
                 </div>
+                <br><br><br>
+                <h2 id="bucket" class="section-title">抱抱桶</h2>
+                <br>
+                <div class="products-grid">
+                    <div class="product-card product-item" data-id="f30" data-name="" data-price="">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f30.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3></h3>
+                            <div class="product-price">NT$ </div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                    <div class="product-card product-item" data-id="f31" data-name="" data-price="">
+                        <div class="product-image">
+                            <div class="flower-placeholder">
+                                <img src="image/f31.jpg" class="product-img">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3></h3>
+                            <div class="product-price">NT$ </div>
+                            <button class="add-to-cart-btn">加入購物車</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
     </section>
 
     <section id="contact" class="contact">
@@ -637,8 +668,21 @@
                     </div>
                 </div>
 
+                <!-- 找到 id="checkout-step-4" 的區塊，修改如下 -->
                 <div id="checkout-step-4" class="checkout-step-content">
                     <h3>付款方式</h3>
+
+                    <!-- 新增付款方式選擇 -->
+                    <div class="payment-method-selection" style="margin-bottom: 1.5rem;">
+                        <label class="radio-label" style="margin-bottom: 0.5rem;">
+                            <input type="radio" name="payment-method" value="bank-transfer" checked>
+                            <span style="margin-left: 0.5rem;">銀行轉帳</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="payment-method" value="line-pay">
+                            <span style="margin-left: 0.5rem;">LINE Pay</span>
+                        </label>
+                    </div>
 
                     <div id="bank-transfer-info-checkout" class="payment-details">
                         <h4 style="margin-bottom: 10px;">銀行轉帳資訊</h4>
@@ -646,6 +690,14 @@
                         <p>帳號：21868141845</p>
                         <p>戶名：吳沂臻</p>
                         <p style="margin-top: 10px; color: #e74c3c;">如果遇到問題可以到IG或Line詢問，有什麼需求可以跟我們說，謝謝您的喜愛！</p>
+                    </div>
+
+                    <div id="line-pay-info" class="payment-details" style="display: none;">
+                        <h4 style="margin-bottom: 10px;">LINE Pay 付款</h4>
+                        <p>點擊「確認購買」後，將導向 LINE Pay 付款頁面</p>
+                        <p>請在 LINE Pay 頁面完成付款</p>
+                        <img src="https://pay.line.me/static/images/logo/linepay_logo_240x56.png" alt="LINE Pay"
+                            style="margin-top: 1rem; height: 56px;">
                     </div>
 
                     <div class="checkout-actions space-between">

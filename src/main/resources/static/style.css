@@ -1528,7 +1528,7 @@ footer p {
 
     .nav-button {
         padding: 5px 10px;
-        font-size: 0.7rem;
+        font-size: 0.75rem;
     }
 
     /* 購物車圖示保持適當大小 */
@@ -1775,4 +1775,45 @@ footer p {
     .checkout-btn {
         display: none !important;
     }
+}
+/* LINE Pay 相關樣式 */
+.payment-method-selection {
+    margin-bottom: 1.5rem;
+}
+
+.payment-method-selection .radio-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.payment-method-selection .radio-label:hover {
+    border-color: #ff6b9d;
+    background-color: #fff5f7;
+}
+
+.payment-method-selection input[type="radio"]:checked + img {
+    filter: none;
+}
+
+.payment-method-selection img {
+    filter: grayscale(50%);
+    transition: filter 0.3s ease;
+}
+
+#line-pay-info {
+    text-align: center;
+    padding: 2rem;
+    background: #f9f9f9;
+    border-radius: 10px;
+}
+
+#line-pay-info img {
+    opacity: 0.8;
 }

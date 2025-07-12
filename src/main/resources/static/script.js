@@ -41,6 +41,42 @@ document.addEventListener('DOMContentLoaded', function () {
     setupShoppingCart();
     setupCheckout();
     enhanceImageLoading(); // <-- 新增這行
+
+    // 處理 LINE Pay 回調
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (urlParams.has('success') && urlParams.get('success') === 'true') {
+        const orderId = urlParams.get('orderId');
+        if (orderId) {
+            // 顯示付款成功訊息
+            showCustomAlert(`訂單 #${orderId} 付款成功！`, 'fas fa-check-circle', '付款成功');
+            
+            // 清空購物車
+            cart = [];
+            localStorage.removeItem('cart');
+            updateCartUI();
+        }
+    } else if (urlParams.has('error')) {
+        const error = urlParams.get('error');
+        let errorMessage = '付款失敗';
+        
+        switch(error) {
+            case 'payment_cancelled':
+                errorMessage = '您已取消付款';
+                break;
+            case 'payment_failed':
+                errorMessage = '付款失敗，請重試';
+                break;
+            case 'invalid_transaction':
+                errorMessage = '無效的交易';
+                break;
+            case 'system_error':
+                errorMessage = '系統錯誤，請聯繫客服';
+                break;
+        }
+        
+        showCustomAlert(errorMessage, 'fas fa-times-circle', '付款錯誤');
+    }
 });
 
 // 手機版圖片載入優化
@@ -115,7 +151,7 @@ function enhanceImageLoading() {
             
             if (img.complete && img.naturalHeight > 0) {
                 img.classList.add('loaded');
-                setObjectFit(img);
+                setObjectFit(this);
             } else {
                 img.addEventListener('load', function() {
                     this.classList.add('loaded');
@@ -1000,6 +1036,22 @@ function setupCheckout() {
 
     // 結帳步驟按鈕
     setupCheckoutSteps();
+
+    // 在 setupCheckout() 函數中新增付款方式切換
+    document.addEventListener('change', function(e) {
+        if (e.target.name === 'payment-method') {
+            const bankInfo = document.getElementById('bank-transfer-info-checkout');
+            const linePayInfo = document.getElementById('line-pay-info');
+            
+            if (e.target.value === 'bank-transfer') {
+                if(bankInfo) bankInfo.style.display = 'block';
+                if(linePayInfo) linePayInfo.style.display = 'none';
+            } else if (e.target.value === 'line-pay') {
+                if(bankInfo) bankInfo.style.display = 'none';
+                if(linePayInfo) linePayInfo.style.display = 'block';
+            }
+        }
+    });
 }
 
 // 設置結帳步驟
@@ -1035,8 +1087,13 @@ function setupCheckoutSteps() {
         gotoStep3Btn.addEventListener('click', (e) => {
             e.preventDefault();
             const isAddressValid = validateAddress('customer-address');
-            const isBankAccountValid = validateBankAccountLast5('bank-account-last5');
-            if (shippingForm && shippingForm.checkValidity() && isAddressValid && isBankAccountValid) {
+            const isBankAccountValid = validateBankAccountLast5('bank-account-last5'); // 銀行轉帳後5碼驗證
+            
+            // 檢查付款方式，如果是 LINE Pay 則不需驗證銀行帳號後5碼
+            const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value;
+            const skipBankAccountValidation = (paymentMethod === 'line-pay');
+
+            if (shippingForm && shippingForm.checkValidity() && isAddressValid && (skipBankAccountValidation || isBankAccountValid)) {
                 renderConfirmationSummary();
                 switchCheckoutStep(3);
             } else if (shippingForm) {
@@ -1547,10 +1604,12 @@ function renderConfirmationSummary() {
     const deliveryDateInput = document.getElementById('delivery-date');
     const orderNotesInput = document.getElementById('order-notes');
     const bankAccountLast5Input = document.getElementById('bank-account-last5');
+    const paymentMethodInput = document.querySelector('input[name="payment-method"]:checked');
 
     const deliveryDate = deliveryDateInput ? deliveryDateInput.value : '';
     const orderNotes = orderNotesInput ? orderNotesInput.value : '';
     const bankAccountLast5 = bankAccountLast5Input ? bankAccountLast5Input.value : '';
+    const paymentMethod = paymentMethodInput ? (paymentMethodInput.value === 'line-pay' ? 'LINE Pay' : '銀行轉帳') : '銀行轉帳';
 
     confirmationSummaryContainer.innerHTML = `
         <h4 style="text-align: left; margin-bottom: 1rem; font-weight: bold;">顧客與寄送資訊</h4>
@@ -1564,8 +1623,12 @@ function renderConfirmationSummary() {
                 <td>${phone}</td>
             </tr>
             ${shippingInfo}
+            <tr>
+                <td>付款方式</td>
+                <td>${paymentMethod}</td>
+            </tr>
             ${deliveryDate ? `<tr><td>希望到貨日</td><td>${deliveryDate}</td></tr>` : ''}
-            ${bankAccountLast5 ? `<tr><td>銀行帳號後5碼</td><td>${bankAccountLast5}</td></tr>` : ''}
+            ${paymentMethod === '銀行轉帳' && bankAccountLast5 ? `<tr><td>銀行帳號後5碼</td><td>${bankAccountLast5}</td></tr>` : ''}
             ${orderNotes ? `<tr><td>備註</td><td>${orderNotes}</td></tr>` : ''}
         </table>
     `;
@@ -1622,7 +1685,9 @@ async function finishPurchase() {
     const deliveryDateInput = document.getElementById('delivery-date');
     const orderNotesInput = document.getElementById('order-notes');
     const bankAccountLast5Input = document.getElementById('bank-account-last5');
-
+    const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value || 'bank-transfer';
+    
+    // 根據付款方式調整訂單資料
     const orderData = {
         customerName: name,
         customerPhone: phone,
@@ -1635,11 +1700,13 @@ async function finishPurchase() {
         shippingFee: shippingFee,
         deliveryDate: deliveryDateInput ? deliveryDateInput.value || null : null,
         orderNotes: orderNotesInput ? orderNotesInput.value || null : null,
-        bankAccountLast5: bankAccountLast5Input ? bankAccountLast5Input.value || null : null,
-        cartItems: cartItems
+        bankAccountLast5: paymentMethod === 'bank-transfer' ? (bankAccountLast5Input ? bankAccountLast5Input.value || null : null) : null,
+        cartItems: cartItems,
+        paymentMethod: paymentMethod === 'line-pay' ? 'LINE Pay' : '銀行轉帳'
     };
-
+    
     try {
+        // 建立訂單
         const response = await fetch(`${API_BASE_URL}/orders/create`, {
             method: 'POST',
             headers: {
@@ -1648,28 +1715,48 @@ async function finishPurchase() {
             body: JSON.stringify(orderData),
             credentials: 'include'
         });
-
+        
         if (!response.ok) {
             const errorText = await response.text();
             throw new Error(`訂單建立失敗: ${errorText}`);
         }
-
+        
         const responseData = await response.json();
-
-        const finalOrderIdElement = document.getElementById('final-order-id');
-        if (finalOrderIdElement) {
-            finalOrderIdElement.textContent = `#${responseData.orderId}`;
+        const orderId = responseData.orderId;
+        
+        // 如果選擇 LINE Pay，發起付款請求
+        if (paymentMethod === 'line-pay') {
+            const linePayResponse = await fetch(`${API_BASE_URL}/line-pay/request/${orderId}`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+            
+            if (linePayResponse.ok) {
+                const linePayData = await linePayResponse.json();
+                // 導向 LINE Pay 付款頁面
+                window.location.href = linePayData.paymentUrl;
+                return; // 成功導向，不再執行後續的清空購物車和顯示步驟5
+            } else {
+                const errorLinePay = await linePayResponse.text();
+                throw new Error(`LINE Pay 請求失敗: ${errorLinePay}`);
+            }
         }
-
+        
+        // 原有的銀行轉帳流程 (或非 LINE Pay 付款方式)
         cart = [];
         localStorage.removeItem('cart');
         updateCartUI();
-
+        
+        const finalOrderIdElement = document.getElementById('final-order-id');
+        if (finalOrderIdElement) {
+            finalOrderIdElement.textContent = `#${orderId}`;
+        }
+        
         switchCheckoutStep(5);
-
+        
         if (typeof emailjs !== 'undefined') {
             const templateParams = {
-                order_id: responseData.orderId,
+                order_id: orderId,
                 customer_name: name,
                 customer_phone: phone,
                 shipping_address: shippingAddress,
@@ -1678,7 +1765,8 @@ async function finishPurchase() {
                 bank_account_last5: orderData.bankAccountLast5 || '未提供',
                 order_notes: orderData.orderNotes || '無',
                 cart_items: cartItems.map(item => `${item.productName} (x${item.quantity}) - NT$ ${item.price}`).join('\n'),
-                total_amount: `NT$ ${total.toLocaleString()}`
+                total_amount: `NT$ ${total.toLocaleString()}`,
+                payment_method: orderData.paymentMethod
             };
 
             // emailjs.send('service_y0212', 'template_y0212', templateParams)
@@ -1688,7 +1776,7 @@ async function finishPurchase() {
             //         console.error('EmailJS FAILED...', error);
             //     });
         }
-
+        
     } catch (error) {
         console.error('完成購買時發生錯誤:', error);
         showCustomAlert(`訂單處理失敗: ${error.message}`, 'fas fa-times-circle', '錯誤');

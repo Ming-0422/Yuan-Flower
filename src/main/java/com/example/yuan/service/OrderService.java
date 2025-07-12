@@ -22,8 +22,8 @@ public class OrderService {
     private final SimpleLineBotService lineBotService;
     
     public OrderService(OrderRepository orderRepository, 
-                       MemberRepository memberRepository,
-                       SimpleLineBotService lineBotService) {
+                        MemberRepository memberRepository,
+                        SimpleLineBotService lineBotService) {
         this.orderRepository = orderRepository;
         this.memberRepository = memberRepository;
         this.lineBotService = lineBotService;
@@ -155,6 +155,21 @@ public class OrderService {
     }
     
     public Order updateOrder(Order order) {
+        return orderRepository.save(order);
+    }
+
+    // 更新訂單付款方式為 LINE Pay
+    public Order updatePaymentMethodToLinePay(Long orderId) throws Exception {
+        Order order = getOrderById(orderId);
+        order.setPaymentMethod("LINE Pay");
+        return orderRepository.save(order);
+    }
+
+    // 更新訂單 LINE Pay 交易資訊
+    public Order updateLinePayTransaction(Long orderId, String transactionId) throws Exception {
+        Order order = getOrderById(orderId);
+        // 可以在 Order entity 新增 linePayTransactionId 欄位來儲存
+        // order.setLinePayTransactionId(transactionId); // 如果 Order 類別有此欄位，請取消此行註解
         return orderRepository.save(order);
     }
 }
