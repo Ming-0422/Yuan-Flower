@@ -1716,13 +1716,35 @@ async function finishPurchase() {
             credentials: 'include'
         });
         
+        // 先取得回應文字
+        const responseText = await response.text();
+        console.log('訂單回應狀態:', response.status);
+        console.log('訂單回應內容:', responseText);
+        
         if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`訂單建立失敗: ${errorText}`);
+            // 嘗試解析錯誤訊息
+            let errorMessage = '訂單建立失敗';
+            try {
+                const errorData = JSON.parse(responseText);
+                errorMessage = errorData.message || errorData.error || errorMessage;
+                console.error('訂單錯誤詳情:', errorData);
+            } catch (e) {
+                errorMessage = responseText || errorMessage;
+            }
+            throw new Error(errorMessage);
         }
         
-        const responseData = await response.json();
+        // 解析成功回應
+        let responseData;
+        try {
+            responseData = JSON.parse(responseText);
+        } catch (e) {
+            console.error('解析訂單回應失敗:', e);
+            throw new Error('訂單回應格式錯誤');
+        }
+        
         const orderId = responseData.orderId;
+        console.log('訂單建立成功，訂單ID:', orderId);
         
         // 如果選擇 LINE Pay，發起付款請求
         if (paymentMethod === 'line-pay') {
@@ -1769,17 +1791,23 @@ async function finishPurchase() {
                 payment_method: orderData.paymentMethod
             };
 
-            // emailjs.send('service_y0212', 'template_y0212', templateParams)
-            //     .then(function (response) {
-            //         console.log('EmailJS SUCCESS!', response.status, response.text);
-            //     }, function (error) {
-            //         console.error('EmailJS FAILED...', error);
-            //     });
         }
         
     } catch (error) {
         console.error('完成購買時發生錯誤:', error);
-        showCustomAlert(`訂單處理失敗: ${error.message}`, 'fas fa-times-circle', '錯誤');
+        console.error('錯誤堆疊:', error.stack);
+        
+        // 更友善的錯誤訊息
+        let userMessage = '訂單處理失敗';
+        if (error.message.includes('Network')) {
+            userMessage = '網路連線錯誤，請稍後再試';
+        } else if (error.message.includes('500')) {
+            userMessage = '伺服器錯誤，請聯繫客服';
+        } else {
+            userMessage = error.message;
+        }
+        
+        showCustomAlert(userMessage, 'fas fa-times-circle', '錯誤');
     }
 }
 
