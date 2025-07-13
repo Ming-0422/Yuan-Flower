@@ -86,33 +86,33 @@ public class OrderService {
         Order savedOrder = orderRepository.save(order);
         System.out.println("訂單已儲存，訂單編號: " + savedOrder.getOrderId());
         
-        //        // 發送 LINE Bot 通知
-        //        try {
-        //            System.out.println("準備發送 LINE Bot 通知...");
-        //            lineBotService.sendOrderNotification(savedOrder)
-        //                .thenAccept(result -> {
-        //                    System.out.println("LINE Bot 通知結果: " + result);
-        //                    if ("success".equals(result)) {
-        //                        // 在異步線程中更新訂單狀態
-        //                        Order orderToUpdate = orderRepository.findById(savedOrder.getOrderId()).orElse(null);
-        //                        if (orderToUpdate != null) {
-        //                            orderToUpdate.setLineNotified(true);
-        //                            orderToUpdate.setLineNotifiedAt(LocalDateTime.now());
-        //                            orderRepository.save(orderToUpdate);
-        //                            System.out.println("LINE Bot 通知狀態已更新");
-        //                        }
-        //                    }
-        //                })
-        //                .exceptionally(ex -> {
-        //                    System.err.println("LINE Bot 通知處理異常: " + ex.getMessage());
-        //                    ex.printStackTrace();
-        //                    return null;
-        //                }).join(); // 等待異步操作完成
-        //        } catch (Exception e) {
-        //            // 記錄錯誤但不影響訂單建立
-        //            System.err.println("LINE Bot 通知發送失敗: " + e.getMessage());
-        //            e.printStackTrace();
-        //        }
+        // 發送 LINE Bot 通知
+        try {
+            System.out.println("準備發送 LINE Bot 通知...");
+            lineBotService.sendOrderNotification(savedOrder)
+                .thenAccept(result -> {
+                    System.out.println("LINE Bot 通知結果: " + result);
+                    if ("success".equals(result)) {
+                        // 在異步線程中更新訂單狀態
+                        Order orderToUpdate = orderRepository.findById(savedOrder.getOrderId()).orElse(null);
+                        if (orderToUpdate != null) {
+                            orderToUpdate.setLineNotified(true);
+                            orderToUpdate.setLineNotifiedAt(LocalDateTime.now());
+                            orderRepository.save(orderToUpdate);
+                            System.out.println("LINE Bot 通知狀態已更新");
+                        }
+                    }
+                })
+                .exceptionally(ex -> {
+                    System.err.println("LINE Bot 通知處理異常: " + ex.getMessage());
+                    ex.printStackTrace();
+                    return null;
+                }).join(); // 等待異步操作完成
+        } catch (Exception e) {
+            // 記錄錯誤但不影響訂單建立
+            System.err.println("LINE Bot 通知發送失敗: " + e.getMessage());
+            e.printStackTrace();
+        }
         
         return savedOrder;
     }
