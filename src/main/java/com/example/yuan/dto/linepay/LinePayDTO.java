@@ -21,8 +21,17 @@ public class LinePayDTO {
         private BigDecimal amount;
         private String currency = "TWD";
         private String orderId;
-        private List<Product> packages;
+        private List<Package> packages;
         private RedirectUrls redirectUrls;
+
+        @Data
+        @Getter
+        @Setter
+        public static class Package {
+            private String id;
+            private BigDecimal amount;
+            private List<Product> products;
+        }
 
         @Data
         @Getter

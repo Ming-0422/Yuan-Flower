@@ -18,9 +18,9 @@ import java.util.*;
 
 @Service
 public class LinePayService {
-    
+
     private static final Logger log = LoggerFactory.getLogger(LinePayService.class);
-    
+
     private final LinePayConfig config;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
@@ -39,14 +39,14 @@ public class LinePayService {
         if (config.getChannelId() == null || config.getChannelSecret() == null) {
             throw new Exception("LINE Pay 設定不完整，請檢查環境變數");
         }
-        
+
         String apiPath = "/v3/payments/request";
         String nonce = UUID.randomUUID().toString();
 
         // 建立請求資料
         PaymentRequest request = createPaymentRequest(order);
         String requestBody = objectMapper.writeValueAsString(request);
-        
+
         log.info("LINE Pay 請求資料: {}", requestBody);
 
         // 產生簽名
@@ -130,17 +130,25 @@ public class LinePayService {
         request.setCurrency("TWD");
         request.setOrderId(String.valueOf(order.getOrderId()));
 
-        // 設定商品資訊
-        List<PaymentRequest.Product> packages = new ArrayList<>();
-        PaymentRequest.Product packageProduct = new PaymentRequest.Product();
-        packageProduct.setId("order_" + order.getOrderId());
-        packageProduct.setName("小花圓訂單 #" + order.getOrderId());
-        packageProduct.setQuantity(BigDecimal.ONE);
-        packageProduct.setPrice(order.getTotalAmount());
-        packages.add(packageProduct);
-        
+        // 設定商品資訊 - LINE Pay 需要的是 packages 陣列，每個 package 包含 products
+        List<PaymentRequest.Package> packages = new ArrayList<>();
+        PaymentRequest.Package pkg = new PaymentRequest.Package();
+        pkg.setId("package_" + order.getOrderId());
+        pkg.setAmount(order.getTotalAmount());
+
+        // 設定商品列表
+        List<PaymentRequest.Product> products = new ArrayList<>();
+        PaymentRequest.Product product = new PaymentRequest.Product();
+        product.setId("product_1");
+        product.setName("小花圓 訂單 #" + order.getOrderId());
+        product.setQuantity(BigDecimal.ONE);
+        product.setPrice(order.getTotalAmount());
+        products.add(product);
+
+        pkg.setProducts(products);
+        packages.add(pkg);
         request.setPackages(packages);
-        
+
         // 設定重導向 URL
         PaymentRequest.RedirectUrls redirectUrls = new PaymentRequest.RedirectUrls();
         redirectUrls.setConfirmUrl(config.getConfirmUrl() + "?orderId=" + order.getOrderId());
