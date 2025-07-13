@@ -8,7 +8,7 @@ let cart = [];
 document.addEventListener('DOMContentLoaded', function () {
     // 清除可能存在的舊數據
     // localStorage.removeItem('cart'); // 如果需要完全清除，取消這行註釋
-    
+
     // 載入購物車數據，確保數據一致性
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
@@ -44,13 +44,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 處理 LINE Pay 回調
     const urlParams = new URLSearchParams(window.location.search);
-    
+
     if (urlParams.has('success') && urlParams.get('success') === 'true') {
         const orderId = urlParams.get('orderId');
         if (orderId) {
             // 顯示付款成功訊息
             showCustomAlert(`訂單 #${orderId} 付款成功！`, 'fas fa-check-circle', '付款成功');
-            
+
             // 清空購物車
             cart = [];
             localStorage.removeItem('cart');
@@ -59,8 +59,8 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (urlParams.has('error')) {
         const error = urlParams.get('error');
         let errorMessage = '付款失敗';
-        
-        switch(error) {
+
+        switch (error) {
             case 'payment_cancelled':
                 errorMessage = '您已取消付款';
                 break;
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 errorMessage = '系統錯誤，請聯繫客服';
                 break;
         }
-        
+
         showCustomAlert(errorMessage, 'fas fa-times-circle', '付款錯誤');
     }
 });
@@ -82,20 +82,20 @@ document.addEventListener('DOMContentLoaded', function () {
 // 手機版圖片載入優化
 function enhanceImageLoading() {
     const productImages = document.querySelectorAll('.product-img');
-    
+
     // 使用 Intersection Observer 實現懶加載
     if ('IntersectionObserver' in window) {
         const imageObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const img = entry.target;
-                    
+
                     // 如果有 data-src 屬性，執行懶加載
                     if (img.dataset.src) {
                         img.src = img.dataset.src;
                         img.removeAttribute('data-src');
                     }
-                    
+
                     // 停止觀察已載入的圖片
                     observer.unobserve(img);
                 }
@@ -106,7 +106,7 @@ function enhanceImageLoading() {
 
         productImages.forEach(img => {
             // 設置載入和錯誤處理
-            img.addEventListener('load', function() {
+            img.addEventListener('load', function () {
                 this.classList.add('loaded');
                 setObjectFit(this); // 載入後設置 object-fit
                 // 幫外層骨架屏移除動畫
@@ -114,7 +114,7 @@ function enhanceImageLoading() {
                 if (parent) parent.classList.add('loaded');
             });
 
-            img.addEventListener('error', function() {
+            img.addEventListener('error', function () {
                 // 創建替代內容的容器
                 const fallbackContainer = document.createElement('div');
                 fallbackContainer.className = 'flower-fallback';
@@ -128,7 +128,7 @@ function enhanceImageLoading() {
                     font-size: 3rem;
                 `;
                 fallbackContainer.innerHTML = '🌸';
-                
+
                 // 替換圖片元素
                 this.parentNode.replaceChild(fallbackContainer, this);
             });
@@ -148,17 +148,17 @@ function enhanceImageLoading() {
             if (img.dataset.src) {
                 img.src = img.dataset.src;
             }
-            
+
             if (img.complete && img.naturalHeight > 0) {
                 img.classList.add('loaded');
                 setObjectFit(this);
             } else {
-                img.addEventListener('load', function() {
+                img.addEventListener('load', function () {
                     this.classList.add('loaded');
                     setObjectFit(this);
                 });
 
-                img.addEventListener('error', function() {
+                img.addEventListener('error', function () {
                     const fallbackContainer = document.createElement('div');
                     fallbackContainer.className = 'flower-fallback';
                     fallbackContainer.style.cssText = `
@@ -176,7 +176,7 @@ function enhanceImageLoading() {
             }
         });
     }
-    
+
     // 添加圖片預載功能（預載下一批可能會看到的圖片）
     function preloadNextImages() {
         const visibleImages = document.querySelectorAll('.product-img.loaded');
@@ -184,7 +184,7 @@ function enhanceImageLoading() {
             const lastVisibleImage = visibleImages[visibleImages.length - 1];
             const nextProducts = lastVisibleImage.closest('.product-card')
                 ?.parentElement?.nextElementSibling?.querySelectorAll('.product-img');
-            
+
             if (nextProducts) {
                 nextProducts.forEach(img => {
                     if (img.dataset.src && !img.src) {
@@ -195,7 +195,7 @@ function enhanceImageLoading() {
             }
         }
     }
-    
+
     // 滾動時預載下一批圖片
     let preloadTimeout;
     window.addEventListener('scroll', () => {
@@ -1038,17 +1038,26 @@ function setupCheckout() {
     setupCheckoutSteps();
 
     // 在 setupCheckout() 函數中新增付款方式切換
-    document.addEventListener('change', function(e) {
+    document.addEventListener('change', function (e) {
         if (e.target.name === 'payment-method') {
             const bankInfo = document.getElementById('bank-transfer-info-checkout');
             const linePayInfo = document.getElementById('line-pay-info');
-            
+            const bankAccountInput = document.getElementById('bank-account-last5');
+            const bankAccountError = document.getElementById('bank-account-last5-error');
+
             if (e.target.value === 'bank-transfer') {
-                if(bankInfo) bankInfo.style.display = 'block';
-                if(linePayInfo) linePayInfo.style.display = 'none';
+                if (bankInfo) bankInfo.style.display = 'block';
+                if (linePayInfo) linePayInfo.style.display = 'none';
+                if (bankAccountInput) bankAccountInput.required = true;
             } else if (e.target.value === 'line-pay') {
-                if(bankInfo) bankInfo.style.display = 'none';
-                if(linePayInfo) linePayInfo.style.display = 'block';
+                if (bankInfo) bankInfo.style.display = 'none';
+                if (linePayInfo) linePayInfo.style.display = 'block';
+                if (bankAccountInput) {
+                    bankAccountInput.required = false;
+                    bankAccountInput.value = ''; // 清空輸入
+                    bankAccountInput.classList.remove('input-error');
+                }
+                if (bankAccountError) bankAccountError.style.display = 'none';
             }
         }
     });
@@ -1088,7 +1097,7 @@ function setupCheckoutSteps() {
             e.preventDefault();
             const isAddressValid = validateAddress('customer-address');
             const isBankAccountValid = validateBankAccountLast5('bank-account-last5'); // 銀行轉帳後5碼驗證
-            
+
             // 檢查付款方式，如果是 LINE Pay 則不需驗證銀行帳號後5碼
             const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value;
             const skipBankAccountValidation = (paymentMethod === 'line-pay');
@@ -1686,7 +1695,7 @@ async function finishPurchase() {
     const orderNotesInput = document.getElementById('order-notes');
     const bankAccountLast5Input = document.getElementById('bank-account-last5');
     const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value || 'bank-transfer';
-    
+
     // 根據付款方式調整訂單資料
     const orderData = {
         customerName: name,
@@ -1704,7 +1713,7 @@ async function finishPurchase() {
         cartItems: cartItems,
         paymentMethod: paymentMethod === 'line-pay' ? 'LINE Pay' : '銀行轉帳'
     };
-    
+
     try {
         // 建立訂單
         const response = await fetch(`${API_BASE_URL}/orders/create`, {
@@ -1715,12 +1724,12 @@ async function finishPurchase() {
             body: JSON.stringify(orderData),
             credentials: 'include'
         });
-        
+
         // 先取得回應文字
         const responseText = await response.text();
         console.log('訂單回應狀態:', response.status);
         console.log('訂單回應內容:', responseText);
-        
+
         if (!response.ok) {
             // 嘗試解析錯誤訊息
             let errorMessage = '訂單建立失敗';
@@ -1733,7 +1742,7 @@ async function finishPurchase() {
             }
             throw new Error(errorMessage);
         }
-        
+
         // 解析成功回應
         let responseData;
         try {
@@ -1742,17 +1751,17 @@ async function finishPurchase() {
             console.error('解析訂單回應失敗:', e);
             throw new Error('訂單回應格式錯誤');
         }
-        
+
         const orderId = responseData.orderId;
         console.log('訂單建立成功，訂單ID:', orderId);
-        
+
         // 如果選擇 LINE Pay，發起付款請求
         if (paymentMethod === 'line-pay') {
             const linePayResponse = await fetch(`${API_BASE_URL}/line-pay/request/${orderId}`, {
                 method: 'POST',
                 credentials: 'include'
             });
-            
+
             if (linePayResponse.ok) {
                 const linePayData = await linePayResponse.json();
                 // 導向 LINE Pay 付款頁面
@@ -1763,19 +1772,19 @@ async function finishPurchase() {
                 throw new Error(`LINE Pay 請求失敗: ${errorLinePay}`);
             }
         }
-        
+
         // 原有的銀行轉帳流程 (或非 LINE Pay 付款方式)
         cart = [];
         localStorage.removeItem('cart');
         updateCartUI();
-        
+
         const finalOrderIdElement = document.getElementById('final-order-id');
         if (finalOrderIdElement) {
             finalOrderIdElement.textContent = `#${orderId}`;
         }
-        
+
         switchCheckoutStep(5);
-        
+
         if (typeof emailjs !== 'undefined') {
             const templateParams = {
                 order_id: orderId,
@@ -1792,11 +1801,11 @@ async function finishPurchase() {
             };
 
         }
-        
+
     } catch (error) {
         console.error('完成購買時發生錯誤:', error);
         console.error('錯誤堆疊:', error.stack);
-        
+
         // 更友善的錯誤訊息
         let userMessage = '訂單處理失敗';
         if (error.message.includes('Network')) {
@@ -1806,7 +1815,7 @@ async function finishPurchase() {
         } else {
             userMessage = error.message;
         }
-        
+
         showCustomAlert(userMessage, 'fas fa-times-circle', '錯誤');
     }
 }
@@ -1824,7 +1833,7 @@ function syncCartData() {
 
 // 在頁面切換或重要操作前調用同步函數
 window.addEventListener('focus', syncCartData);
-window.addEventListener('storage', function(e) {
+window.addEventListener('storage', function (e) {
     if (e.key === 'cart') {
         syncCartData();
     }
