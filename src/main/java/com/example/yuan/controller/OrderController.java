@@ -3,19 +3,23 @@ package com.example.yuan.controller;
 import com.example.yuan.dto.OrderRequest;
 import com.example.yuan.model.Order;
 import com.example.yuan.service.OrderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap; // 新增導入
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map; // 新增導入
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
+    
+    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
     
     private final OrderService orderService;
     
@@ -27,31 +31,55 @@ public class OrderController {
     public ResponseEntity<?> createOrder(@RequestBody OrderRequest orderRequest, 
                                        Authentication authentication) {
         try {
+            // 詳細日誌
+            log.info("=== 開始建立訂單 ===");
+            log.info("認證狀態: {}", authentication != null ? authentication.getName() : "未認證");
+            log.info("顧客姓名: {}", orderRequest.getCustomerName());
+            log.info("顧客電話: {}", orderRequest.getCustomerPhone());
+            log.info("付款方式: {}", orderRequest.getPaymentMethod());
+            log.info("購物車項目數: {}", orderRequest.getCartItems() != null ? orderRequest.getCartItems().size() : 0);
+            
+            // 驗證認證
+            if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+                log.error("用戶未認證");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "請先登入"));
+            }
+            
             String username = authentication.getName();
-            System.out.println("=== 開始建立訂單 ==="); // 新增日誌
-            System.out.println("用戶: " + username); // 新增日誌
-            System.out.println("訂單資料: " + orderRequest); // 新增日誌
+            log.info("已登入用戶: {}", username);
             
+            // 驗證訂單資料
+            if (orderRequest.getCartItems() == null || orderRequest.getCartItems().isEmpty()) {
+                log.error("購物車為空");
+                return ResponseEntity.badRequest()
+                    .body(Map.of("error", "購物車不能為空"));
+            }
+            
+            // 建立訂單
             Order order = orderService.createOrder(orderRequest, username);
+            log.info("訂單建立成功，訂單ID: {}", order.getOrderId());
             
-            // 創建一個簡單的回應物件，避免序列化整個 Order 物件
-            Map<String, Object> response = new HashMap<>(); // 修改為 Map
+            // 創建回應
+            Map<String, Object> response = new HashMap<>();
             response.put("orderId", order.getOrderId());
             response.put("message", "訂單建立成功");
             
-            return ResponseEntity.ok(response); // 修改為 ResponseEntity.ok
+            return ResponseEntity.ok(response);
             
         } catch (Exception e) {
-            System.err.println("=== 訂單建立失敗 ==="); // 新增日誌
-            System.err.println("錯誤類型: " + e.getClass().getName()); // 新增日誌
-            System.err.println("錯誤訊息: " + e.getMessage()); // 新增日誌
-            e.printStackTrace(); // 確保錯誤堆疊被列印
+            log.error("=== 訂單建立失敗 ===");
+            log.error("錯誤類型: {}", e.getClass().getName());
+            log.error("錯誤訊息: {}", e.getMessage());
+            log.error("錯誤堆疊:", e);
             
+            // 返回詳細錯誤資訊
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", "訂單建立失敗");
             errorResponse.put("message", e.getMessage());
+            errorResponse.put("type", e.getClass().getSimpleName());
             
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR) // 修改為 INTERNAL_SERVER_ERROR
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                .body(errorResponse);
         }
     }
