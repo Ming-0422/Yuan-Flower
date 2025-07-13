@@ -3,7 +3,6 @@ package com.example.yuan.service;
 import com.example.yuan.config.LinePayConfig;
 import com.example.yuan.dto.linepay.LinePayDTO.*;
 import com.example.yuan.model.Order;
-import com.example.yuan.model.OrderItem;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,12 +35,19 @@ public class LinePayService {
      * 請求付款
      */
     public PaymentResponse requestPayment(Order order) throws Exception {
+        // 檢查設定
+        if (config.getChannelId() == null || config.getChannelSecret() == null) {
+            throw new Exception("LINE Pay 設定不完整，請檢查環境變數");
+        }
+        
         String apiPath = "/v3/payments/request";
         String nonce = UUID.randomUUID().toString();
 
         // 建立請求資料
         PaymentRequest request = createPaymentRequest(order);
         String requestBody = objectMapper.writeValueAsString(request);
+        
+        log.info("LINE Pay 請求資料: {}", requestBody);
 
         // 產生簽名
         String signature = generateSignature(
@@ -57,15 +63,19 @@ public class LinePayService {
         String url = config.getApiUrl() + apiPath;
         HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
-        ResponseEntity<PaymentResponse> response = restTemplate.exchange(
-                url,
-                HttpMethod.POST,
-                entity,
-                PaymentResponse.class);
+        try {
+            ResponseEntity<PaymentResponse> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    entity,
+                    PaymentResponse.class);
 
-        log.info("LINE Pay 請求付款回應: {}", response.getBody());
-
-        return response.getBody();
+            log.info("LINE Pay 請求付款回應: {}", response.getBody());
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("LINE Pay 請求失敗", e);
+            throw new Exception("LINE Pay 請求失敗: " + e.getMessage());
+        }
     }
 
     /**
@@ -96,15 +106,19 @@ public class LinePayService {
         String url = config.getApiUrl() + apiPath;
         HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
-        ResponseEntity<ConfirmResponse> response = restTemplate.exchange(
-                url,
-                HttpMethod.POST,
-                entity,
-                ConfirmResponse.class);
+        try {
+            ResponseEntity<ConfirmResponse> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    entity,
+                    ConfirmResponse.class);
 
-        log.info("LINE Pay 確認付款回應: {}", response.getBody());
-
-        return response.getBody();
+            log.info("LINE Pay 確認付款回應: {}", response.getBody());
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("LINE Pay 確認失敗", e);
+            throw new Exception("LINE Pay 確認失敗: " + e.getMessage());
+        }
     }
 
     /**
@@ -116,16 +130,16 @@ public class LinePayService {
         request.setCurrency("TWD");
         request.setOrderId(String.valueOf(order.getOrderId()));
 
-        // 設定商品資訊 - 修正重複宣告的問題
-        List<PaymentRequest.Product> productList = new ArrayList<>();
-        PaymentRequest.Product product = new PaymentRequest.Product();
-        product.setId("products");
-        product.setName("小花圓 訂單 #" + order.getOrderId());
-        product.setQuantity(BigDecimal.ONE);
-        product.setPrice(order.getTotalAmount());
-        productList.add(product);
+        // 設定商品資訊
+        List<PaymentRequest.Product> packages = new ArrayList<>();
+        PaymentRequest.Product packageProduct = new PaymentRequest.Product();
+        packageProduct.setId("order_" + order.getOrderId());
+        packageProduct.setName("小花圓訂單 #" + order.getOrderId());
+        packageProduct.setQuantity(BigDecimal.ONE);
+        packageProduct.setPrice(order.getTotalAmount());
+        packages.add(packageProduct);
         
-        request.setPackages(productList);
+        request.setPackages(packages);
         
         // 設定重導向 URL
         PaymentRequest.RedirectUrls redirectUrls = new PaymentRequest.RedirectUrls();

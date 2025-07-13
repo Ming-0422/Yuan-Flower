@@ -1,6 +1,10 @@
 package com.example.yuan.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -22,17 +26,19 @@ public class OrderRequest {
     private BigDecimal shippingFee;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate deliveryDate;
 
     private String orderNotes;
 
-    // 新增：銀行帳號後五碼
+    // 銀行帳號後五碼
     private String bankAccountLast5;
 
     // 購物車項目
     private List<CartItem> cartItems;
 
-    // 新增付款方式欄位
+    // 付款方式欄位
     private String paymentMethod;
 
     // 內部類別：購物車項目
@@ -74,7 +80,6 @@ public class OrderRequest {
         public void setPrice(BigDecimal price) {
             this.price = price;
         }
-        
     }
 
     // Getters and Setters
@@ -157,11 +162,7 @@ public class OrderRequest {
     public void setOrderNotes(String orderNotes) {
         this.orderNotes = orderNotes;
     }
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
 
-    // 新增：銀行帳號後五碼的 getter/setter
     public String getBankAccountLast5() {
         return bankAccountLast5;
     }
@@ -177,6 +178,11 @@ public class OrderRequest {
     public void setCartItems(List<CartItem> cartItems) {
         this.cartItems = cartItems;
     }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
