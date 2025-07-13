@@ -107,7 +107,7 @@ public class OrderService {
                     System.err.println("LINE Bot 通知處理異常: " + ex.getMessage());
                     ex.printStackTrace();
                     return null;
-                }).join(); // 等待異步操作完成
+                }); 
         } catch (Exception e) {
             // 記錄錯誤但不影響訂單建立
             System.err.println("LINE Bot 通知發送失敗: " + e.getMessage());
