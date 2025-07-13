@@ -9,7 +9,9 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap; // 新增導入
 import java.util.List;
+import java.util.Map; // 新增導入
 
 @RestController
 @RequestMapping("/api/orders")
@@ -26,18 +28,31 @@ public class OrderController {
                                        Authentication authentication) {
         try {
             String username = authentication.getName();
-            System.out.println("已登入用戶建立訂單: " + username);
+            System.out.println("=== 開始建立訂單 ==="); // 新增日誌
+            System.out.println("用戶: " + username); // 新增日誌
+            System.out.println("訂單資料: " + orderRequest); // 新增日誌
             
             Order order = orderService.createOrder(orderRequest, username);
             
             // 創建一個簡單的回應物件，避免序列化整個 Order 物件
-            String responseJson = String.format("{\"orderId\": %d, \"message\": \"訂單建立成功\"}", order.getOrderId());
+            Map<String, Object> response = new HashMap<>(); // 修改為 Map
+            response.put("orderId", order.getOrderId());
+            response.put("message", "訂單建立成功");
             
-            return new ResponseEntity<>(responseJson, HttpStatus.CREATED);
+            return ResponseEntity.ok(response); // 修改為 ResponseEntity.ok
             
         } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            System.err.println("=== 訂單建立失敗 ==="); // 新增日誌
+            System.err.println("錯誤類型: " + e.getClass().getName()); // 新增日誌
+            System.err.println("錯誤訊息: " + e.getMessage()); // 新增日誌
+            e.printStackTrace(); // 確保錯誤堆疊被列印
+            
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "訂單建立失敗");
+            errorResponse.put("message", e.getMessage());
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR) // 修改為 INTERNAL_SERVER_ERROR
+                               .body(errorResponse);
         }
     }
     
