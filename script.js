@@ -55,6 +55,9 @@ document.addEventListener('DOMContentLoaded', function () {
             cart = [];
             localStorage.removeItem('cart');
             updateCartUI();
+
+            // 清除 URL 參數
+            window.history.replaceState({}, document.title, window.location.pathname);
         }
     } else if (urlParams.has('error')) {
         const error = urlParams.get('error');
@@ -76,6 +79,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         showCustomAlert(errorMessage, 'fas fa-times-circle', '付款錯誤');
+
+        // 清除 URL 參數
+        window.history.replaceState({}, document.title, window.location.pathname);
     }
 });
 
