@@ -3,6 +3,7 @@ package com.example.yuan.service;
 import com.example.yuan.config.LinePayConfig;
 import com.example.yuan.dto.linepay.LinePayDTO.*;
 import com.example.yuan.model.Order;
+import com.example.yuan.model.OrderItem;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,7 +127,11 @@ public class LinePayService {
      */
     private PaymentRequest createPaymentRequest(Order order) {
         PaymentRequest request = new PaymentRequest();
-        request.setAmount(order.getTotalAmount());
+
+        // 確保金額是整數（LINE Pay 不接受小數點）
+        BigDecimal totalAmount = order.getTotalAmount().setScale(0, BigDecimal.ROUND_HALF_UP);
+
+        request.setAmount(totalAmount);
         request.setCurrency("TWD");
         request.setOrderId(String.valueOf(order.getOrderId()));
 
@@ -134,16 +139,21 @@ public class LinePayService {
         List<PaymentRequest.Package> packages = new ArrayList<>();
         PaymentRequest.Package pkg = new PaymentRequest.Package();
         pkg.setId("package_" + order.getOrderId());
-        pkg.setAmount(order.getTotalAmount());
+        pkg.setAmount(totalAmount);
 
         // 設定商品列表
         List<PaymentRequest.Product> products = new ArrayList<>();
-        PaymentRequest.Product product = new PaymentRequest.Product();
-        product.setId("product_1");
-        product.setName("小花圓 訂單 #" + order.getOrderId());
-        product.setQuantity(BigDecimal.ONE);
-        product.setPrice(order.getTotalAmount());
-        products.add(product);
+
+        // 將每個訂單項目加入產品列表
+        int productIndex = 1;
+        for (OrderItem item : order.getOrderItems()) {
+            PaymentRequest.Product product = new PaymentRequest.Product();
+            product.setId("product_" + productIndex++);
+            product.setName(item.getProductName());
+            product.setQuantity(new BigDecimal(item.getQuantity()));
+            product.setPrice(item.getPrice().setScale(0, BigDecimal.ROUND_HALF_UP));
+            products.add(product);
+        }
 
         pkg.setProducts(products);
         packages.add(pkg);
