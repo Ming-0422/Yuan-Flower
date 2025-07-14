@@ -145,16 +145,13 @@ public class LinePayController {
             @RequestParam String transactionId,
             @RequestParam(required = false) Long orderId) {
         try {
-            logger.info("收到 LINE Pay 確認回調: transactionId={}, orderId={}", transactionId, orderId);
-            
             // 如果沒有 orderId，從暫存取得
             if (orderId == null) {
                 orderId = transactionOrderMap.get(transactionId);
             }
             
             if (orderId == null) {
-                logger.error("找不到對應的訂單ID: transactionId={}", transactionId);
-                return "redirect:/checkout?error=invalid_transaction";
+                return "redirect:/?error=invalid_transaction";
             }
             
             // 取得訂單
@@ -175,18 +172,16 @@ public class LinePayController {
                 // 清除暫存
                 transactionOrderMap.remove(transactionId);
                 
-                logger.info("LINE Pay 付款確認成功: orderId={}", orderId);
-                
-                // 重導向到成功頁面
-                return "redirect:/checkout?success=true&orderId=" + orderId;
+                // 重導向到首頁並顯示成功訊息
+                return "redirect:/?success=true&orderId=" + orderId;
             } else {
-                logger.error("LINE Pay 確認失敗: {}", response.getReturnMessage());
-                return "redirect:/checkout?error=payment_failed";
+                log.error("LINE Pay 確認失敗: {}", response.getReturnMessage());
+                return "redirect:/?error=payment_failed";
             }
             
         } catch (Exception e) {
-            logger.error("LINE Pay 確認錯誤", e);
-            return "redirect:/checkout?error=system_error";
+            log.error("LINE Pay 確認錯誤", e);
+            return "redirect:/?error=system_error";
         }
     }
     
